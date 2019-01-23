@@ -1,3 +1,0 @@
-Here is a test file.
-
-Now I am changing it.
