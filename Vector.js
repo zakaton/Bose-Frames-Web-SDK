@@ -1,10 +1,4 @@
-class Vector {
-    constructor(x, y, z) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
-    }
-
+class Vector extends THREE.Vector3 {
     static get byteLength() {
         return 6;
     }
@@ -19,10 +13,6 @@ class Vector {
         const z = getComponent(2);
 
         return new this(x, y, z);
-    }
-
-    get magnitude() {
-        return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2) + Math.pow(this.z, 2));
     }
 }
 
