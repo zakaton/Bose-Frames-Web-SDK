@@ -1,3 +1,26 @@
+// Create a Quaternion Singleton to correct the annoying Bose Frames Z-Down Orientation:
+
+const matrix = new THREE.Matrix4();
+
+const vectorX = new THREE.Vector3();
+const vectorY = new THREE.Vector3();
+const vectorZ = new THREE.Vector3();
+
+matrix.extractBasis(vectorX, vectorY, vectorZ);
+
+const reflectionZ = new THREE.Vector3(1, 1, -1);
+
+vectorX.multiply(reflectionZ);
+vectorY.multiply(reflectionZ);
+vectorZ.multiply(reflectionZ);
+
+matrix.makeBasis(vectorX, vectorZ, vectorY);
+
+const _quaternion = new THREE.Quaternion();
+_quaternion.setFromRotationMatrix(matrix);
+
+///////////////////////////////////////////////
+
 class Quaternion extends THREE.Quaternion {
     static parse(dataView, offset = 0) {
         function getComponent(index) {
@@ -9,11 +32,17 @@ class Quaternion extends THREE.Quaternion {
         const z = getComponent(2);
         const w = getComponent(3);
 
-        return new this(x, y, z, w);
+        const quaternion = new this(x, y, z, w);
+        Quaternion.correctOrientationForTHREEjs(quaternion);
+        return quaternion;
     }
 
     static get byteLength() {
         return 8;
+    }
+
+    static correctOrientationForTHREEjs(quaternion) {
+        quaternion.multiply(_quaternion);
     }
 }
 
