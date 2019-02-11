@@ -1,10 +1,278 @@
 <html>
     <head>
         <script src="three.js"></script>
-        <script src="script.js" type="module"></script>
     </head>
 
     <body>
+        <button id=connectButton>🕶️</button>
         
+        <div id=dataContainer style="display: none ">
+
+            <h1>Bose Frames</h1>
+
+            <h2>Sensor Data</h2>
+
+            <form id=accelerometerContainer>
+                <h3>Accelerometer</h3>
+
+                <select size="6" style="overflow: hidden" oninput="boseFrames.enableSensor('accelerometer', Number(this.value))">
+                    <option selected value=0>Disabled</option>
+                    <option value=20>20 ms</option>
+                    <option value=40>40 ms</option>
+                    <option value=80>80 ms</option>
+                    <option value=160>160 ms</option>
+                    <option value=320>320 ms</option>
+                </select>
+
+                <br>
+                <br>
+
+                <label for=accelerometerX>x</label>
+                <input id=accelerometerX readonly size=2>
+
+                <label for=accelerometerY>y</label>
+                <input id=accelerometerY readonly size=2>
+
+                <label for=accelerometerZ>z</label>
+                <input id=accelerometerZ readonly size=2>
+
+                <br>
+                <br>
+
+                <label for=accelerometerTimestamp>timestamp</label>
+                <input id=accelerometerTimestamp readonly size=2>
+
+                <label for=accelerometerAccuracy>accuracy</label>
+                <input id=accelerometerAccuracy readonly size=5>
+
+            </form>
+
+            <form id="Gyroscope">
+                <h3>Gyroscope</h3>
+                <select size="6" style="overflow: hidden" oninput="boseFrames.enableSensor('gyroscope', Number(this.value))">
+                    <option selected value=0>Disabled</option>
+                    <option value=20>20 ms</option>
+                    <option value=40>40 ms</option>
+                    <option value=80>80 ms</option>
+                    <option value=160>160 ms</option>
+                    <option value=320>320 ms</option>
+                </select>
+
+                <br>
+                <br>
+
+                <label for=gyroscopeX>x</label>
+                <input id=gyroscopeX readonly size=2>
+
+                <label for=gyroscopeY>y</label>
+                <input id=gyroscopeY readonly size=2>
+
+                <label for=gyroscopeZ>z</label>
+                <input id=gyroscopeZ readonly size=2>
+
+                <br>
+                <br>
+
+                <label for=gyroscopeTimestamp>timestamp</label>
+                <input id=gyroscopeTimestamp size=2>
+
+                <label for=gyroscopeAccuracy>accuracy</label>
+                <input id=gyroscopeAccuracy readonly size=2>
+
+            </form>
+
+            <form id="Rotation">
+                <h3>Rotation</h3>
+                <select size="6" style="overflow: hidden" oninput="boseFrames.enableSensor('rotation', Number(this.value))">
+                    <option selected value=0>Disabled</option>
+                    <option value=20>20 ms</option>
+                    <option value=40>40 ms</option>
+                    <option value=80>80 ms</option>
+                    <option value=160>160 ms</option>
+                    <option value=320>320 ms</option>
+                </select>
+
+                <br>
+                <br>
+
+                <label for=rotationX>x</label>
+                <input id=rotationX readonly size=2>
+
+                <label for=rotationY>y</label>
+                <input id=rotationY readonly size=2>
+
+                <label for=rotationZ>z</label>
+                <input id=rotationZ readonly size=2>
+
+                <label for=rotationW>w</label>
+                <input id=rotationW readonly size=2>
+
+                <br>
+                <br>
+
+                <label for=rotationPitch>pitch</label>
+                <input id=rotationPitch readonly size=2>
+
+                <label for=rotationRoll>roll</label>
+                <input id=rotationRoll readonly size=2>
+
+                <label for=rotationYaw>yaw</label>
+                <input id=rotationYaw readonly size=2>
+
+                <br>
+                <br>
+
+                <label for=rotationTimestamp>timestamp</label>
+                <input id=rotationTimestamp readonly size=2>
+
+                <label style="display: none" for=rotationAccuracy>accuracy</label>
+                <input style="display: none" id=rotationAccuracy readonly size=2>
+
+            </form>
+
+            
+            <form id="Game Rotation">
+                <h3>Game Rotation</h3>
+                <select size="6" style="overflow: hidden" oninput="boseFrames.enableSensor('gameRotation', Number(this.value))">
+                    <option selected value=0>Disabled</option>
+                    <option value=20>20 ms</option>
+                    <option value=40>40 ms</option>
+                    <option value=80>80 ms</option>
+                    <option value=160>160 ms</option>
+                    <option value=320>320 ms</option>
+                </select>
+
+                <br>
+                <br>
+
+                <label for=gameRotationX>x</label>
+                <input id=gameRotationX readonly size=2>
+
+                <label for=gameRotationY>y</label>
+                <input id=gameRotationY readonly size=2>
+
+                <label for=gameRotationZ>z</label>
+                <input id=gameRotationZ readonly size=2>
+
+                <label for=gameRotationW>w</label>
+                <input id=gameRotationW readonly size=2>
+
+                <br>
+                <br>
+
+                <label for=gameRotationPitch>pitch</label>
+                <input id=gameRotationPitch readonly size=2>
+
+                <label for=gameRotationRoll>roll</label>
+                <input id=gameRotationRoll readonly size=2>
+
+                <label for=gameRotationYaw>yaw</label>
+                <input id=gameRotationYaw readonly size=2>
+
+                <br>
+                <br>
+
+                <label for=gameRotationTimestamp>timestamp</label>
+                <input id=gameRotationTimestamp readonly size=2>
+            </form>
+
+            <hr>
+
+            <h2>Gesture Data</h2>
+
+            <form id="DoubleTap">
+                <h3>Double Tap</h3>
+
+                <label for="enableDoubleTap">Enable</label>
+                <input type="checkbox" id="enableDoubleTap" oninput="this.checked? boseFrames.enableGesture('doubleTap') : boseFrames.disableGesture('doubleTap') ">
+
+                <br>
+                
+                <div id=doubleTapNotifications style="width: 500px; border: solid">
+
+                </div>
+                        
+                </form>
+        </div>
+
+        <script type="module">
+                import BoseFrames from "/BoseFrames.js";
+                const boseFrames = new BoseFrames();
+                window.boseFrames = boseFrames;
+
+                boseFrames.addEventListener("sensorData", sensorData => {
+                    const sensorValues = sensorData.values;
+                    sensorValues.forEach(sensorValue => {
+                        const {sample, sensor, timestamp} = sensorValue;
+                        const {value, bias, accuracy} = sample;
+
+                        switch(sensorValue.sensor.name) {
+                            case "accelerometer":
+                                accelerometerX.value = value.x.toFixed(3);
+                                accelerometerY.value = value.y.toFixed(3);
+                                accelerometerZ.value = value.z.toFixed(3);
+
+                                accelerometerTimestamp.value = timestamp.timestamp;
+                                accelerometerAccuracy.value = accuracy.rawValue;
+                                break;
+
+                            case "gyroscope":
+                                gyroscopeX.value = value.x.toFixed(3);
+                                gyroscopeY.value = value.y.toFixed(3);
+                                gyroscopeZ.value = value.z.toFixed(3);
+
+                                gyroscopeTimestamp.value = timestamp.timestamp;
+                                gyroscopeAccuracy.value = accuracy.rawValue;
+                                break;
+
+                            case "rotation":
+                                rotationX.value = value.x.toFixed(3);
+                                rotationY.value = value.y.toFixed(3);
+                                rotationZ.value = value.z.toFixed(3);
+                                
+                                rotationW.value = value.w.toFixed(3);
+
+                                rotationPitch.value = value.pitch.toFixed(3);
+                                rotationRoll.value = value.roll.toFixed(3);
+                                rotationYaw.value = value.yaw.toFixed(3);
+
+                                rotationTimestamp.value = timestamp.timestamp;
+                                //rotationAccuracy.value = accuracy.estimatedAccuracy;
+                                break;
+
+                            case "gameRotation":
+                                gameRotationX.value = value.x.toFixed(3);
+                                gameRotationY.value = value.y.toFixed(3);
+                                gameRotationZ.value = value.z.toFixed(3);
+                                
+                                gameRotationW.value = value.w.toFixed(3);
+
+                                gameRotationPitch.value = value.pitch.toFixed(3);
+                                gameRotationRoll.value = value.roll.toFixed(3);
+                                gameRotationYaw.value = value.yaw.toFixed(3);
+
+                                gameRotationTimestamp.value = timestamp.timestamp;
+                                break;
+
+                            default:
+                                break;
+                        }
+                    })
+                });
+                boseFrames.addEventListener("gestureData", gestureData => {
+                    const eventString =
+                        "Gesture Type: " + gestureData.gesture.name +
+                        "\nTimestamp: " + gestureData.timestamp.timestamp + '\n\n';
+                    doubleTapNotifications.innerText += eventString;
+                })
+
+                connectButton.onclick = () => {
+                    boseFrames.connect()
+                        .then(boseFrames => {
+                            connectButton.style.display = "none";
+                            dataContainer.style.display = '';
+                        })
+                }
+        </script>
     </body>
 </html>

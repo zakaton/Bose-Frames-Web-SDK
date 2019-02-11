@@ -1,5 +1,5 @@
-import SamplePeriod from "/SamplePeriod.js"
-import SensorType from "/SensorType.js"
+import SamplePeriod from "/SamplePeriod.js";
+import SensorType from "/SensorType.js";
 
 class SensorConfigurationEntry {
     constructor(sensorType, samplePeriod) {

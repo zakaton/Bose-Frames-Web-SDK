@@ -1,7 +1,7 @@
 class VectorAccuracy {
     constructor(accuracy) {
         this.accuracy = accuracy;
-        this.rawValue = ["unreliable", "low", "medium", "high"].indexOf(accuracy);
+        this.rawValue = ["unreliable", "low", "medium", "high"][accuracy];
     }
 
     static get byteLength() {

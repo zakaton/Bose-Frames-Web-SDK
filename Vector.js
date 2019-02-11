@@ -1,3 +1,5 @@
+import correctionMatrix from "/correctionMatrix.js"
+
 class Vector extends THREE.Vector3 {
     static get byteLength() {
         return 6;
@@ -12,7 +14,9 @@ class Vector extends THREE.Vector3 {
         const y = getComponent(1);
         const z = getComponent(2);
 
-        return new this(x, y, z);
+        const vector = new this(x, y, z);
+        vector.applyMatrix4(correctionMatrix);
+        return vector;
     }
 }
 

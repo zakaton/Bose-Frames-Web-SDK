@@ -56,7 +56,12 @@ class BoseFrames {
             })
             .then(service => {
                 this.service = service;
-                return service.getCharacteristics();
+
+                const characteristicPromises = Object.values(this.characteristicUUIDs).map(characteristicUUID => {
+                    return service.getCharacteristic(characteristicUUID);
+                })
+
+                return Promise.all(characteristicPromises)
             })
             .then(characteristics => {
                 return new Promise((resolve, reject) => {
