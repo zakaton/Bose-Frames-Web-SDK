@@ -71,21 +71,18 @@ class BoseFrames {
                         this.characteristics[name] = characteristic;
                     }
                     
-                    this.characteristics.sensorData.startNotifications()
-                        .then(characteristic => {
-                            characteristic.addEventListener("characteristicvaluechanged", () => {
-                                const sensorData = this.sensorData;
-                                this.eventListeners.sensorData.forEach(callback => callback(sensorData));
-                            })
-                        })
+
+                    this.characteristics.sensorData.startNotifications();
+                    this.characteristics.sensorData.addEventListener("characteristicvaluechanged", () => {
+                        const sensorData = this.sensorData;
+                        this.eventListeners.sensorData.forEach(callback => callback(sensorData));
+                    })
                         
-                    this.characteristics.gestureData.startNotifications()
-                        .then(characteristic => {
-                            characteristic.addEventListener("characteristicvaluechanged", () => {
-                                const gestureData = this.gestureData;
-                                this.eventListeners.gestureData.forEach(callback => callback(gestureData));
-                            })
-                        })
+                    this.characteristics.gestureData.startNotifications();
+                    this.characteristics.gestureData.addEventListener("characteristicvaluechanged", () => {
+                        const gestureData = this.gestureData;
+                        this.eventListeners.gestureData.forEach(callback => callback(gestureData));
+                    })
 
                     resolve(this);
                 })
@@ -169,7 +166,10 @@ class BoseFrames {
                     const sensorType = SensorType.from(sensorName);
                     sensorConfiguration.enable(sensorType, samplePeriod);
                     const dataView = sensorConfiguration.data;
-                    this.characteristics.sensorConfiguration.writeValue(dataView);
+                    this.characteristics.sensorConfiguration.writeValue(dataView.buffer)
+                        .then(() => {
+                            console.log("writeValue Complete");
+                        })
                     resolve();
                 })
             })
@@ -181,7 +181,7 @@ class BoseFrames {
                 const sensorType = SensorType.from(sensorName);
                 sensorConfiguration.disable(sensorType);
                 const dataView = sensorConfiguration.data;
-                this.characteristics.sensorConfiguration.writeValue(dataView);
+                this.characteristics.sensorConfiguration.writeValue(dataView.buffer);
                 resolve();
             })
         })
@@ -192,7 +192,7 @@ class BoseFrames {
             return new Promise((resolve, reject) => {
                 sensorConfiguration.disableAll();
                 const dataView = sensorConfiguration.data;
-                this.characteristics.sensorConfiguration.writeValue(dataView);
+                this.characteristics.sensorConfiguration.writeValue(dataView.buffer);
                 resolve();
             })
         })
@@ -205,7 +205,7 @@ class BoseFrames {
                 const gestureType = GestureType.from(gestureName);
                 gestureConfiguration.set(gestureType, true);
                 const dataView = gestureConfiguration.data;
-                this.characteristics.gestureConfiguration.writeValue(dataView);
+                this.characteristics.gestureConfiguration.writeValue(dataView.buffer);
                 resolve();
             })
         })
@@ -217,7 +217,7 @@ class BoseFrames {
                 const gestureType = GestureType.from(gestureName);
                 gestureConfiguration.set(gestureType, false);
                 const dataView = gestureConfiguration.data;
-                this.characteristics.gestureConfiguration.writeValue(dataView);
+                this.characteristics.gestureConfiguration.writeValue(dataView.buffer);
                 resolve();
             })
         })
@@ -228,7 +228,7 @@ class BoseFrames {
             return new Promise((resolve, reject) => {
                 gestureConfiguration.disableAll();
                 const dataView = gestureConfiguration.data;
-                this.characteristics.gestureConfiguration.writeValue(dataView);
+                this.characteristics.gestureConfiguration.writeValue(dataView.buffer);
                 resolve();
             })
         })

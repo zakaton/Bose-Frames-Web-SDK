@@ -1,12 +1,15 @@
 <html>
     <head>
         <script src="three.js"></script>
-        <script src="BoseFrames.js" type="module"></script>
-        <script src="script.js" type="module"></script>
+        <style>
+            input {
+                width: 50px
+            }
+        </style>
     </head>
 
     <body>
-        <button id=connectButton>🕶️</button>
+        <button style="font-size: 50px" id=connectButton>🕶️</button>
         
         <div id=dataContainer style="display: none ">
 
@@ -30,7 +33,7 @@
                 <br>
 
                 <label for=accelerometerX>x</label>
-                <input id=accelerometerX readonly size=2>
+                <input id=accelerometerX readonly>
 
                 <label for=accelerometerY>y</label>
                 <input id=accelerometerY readonly size=2>
@@ -185,8 +188,10 @@
             <form id="DoubleTap">
                 <h3>Double Tap</h3>
 
-                <label for="enableDoubleTap">Enable</label>
-                <input type="checkbox" id="enableDoubleTap" oninput="this.checked? boseFrames.enableGesture('doubleTap') : boseFrames.disableGesture('doubleTap') ">
+                <select size="2" style="overflow: hidden" oninput="(this.value == 'enable')? boseFrames.enableGesture('doubleTap') : boseFrames.disableGesture('doubleTap')">
+                    <option selected value=disable>disable</option>
+                    <option value=enable>enable</option>
+                </select>
 
                 <br>
                 
@@ -196,5 +201,86 @@
                         
                 </form>
         </div>
+
+        <script type="module">
+            import BoseFrames from "/BoseFrames.js";
+            const boseFrames = new BoseFrames();
+
+            boseFrames.addEventListener("sensorData", sensorData => {
+                const sensorValues = sensorData.values;
+                sensorValues.forEach(sensorValue => {
+                    const {sample, sensor, timestamp} = sensorValue;
+                    const {value, bias, accuracy} = sample;
+
+                    switch(sensorValue.sensor.name) {
+                        case "accelerometer":
+                            accelerometerX.value = value.x.toFixed(3);
+                            accelerometerY.value = value.y.toFixed(3);
+                            accelerometerZ.value = value.z.toFixed(3);
+
+                            accelerometerTimestamp.value = timestamp.timestamp;
+                            accelerometerAccuracy.value = accuracy.rawValue;
+                            break;
+
+                        case "gyroscope":
+                            gyroscopeX.value = value.x.toFixed(3);
+                            gyroscopeY.value = value.y.toFixed(3);
+                            gyroscopeZ.value = value.z.toFixed(3);
+
+                            gyroscopeTimestamp.value = timestamp.timestamp;
+                            gyroscopeAccuracy.value = accuracy.rawValue;
+                            break;
+
+                        case "rotation":
+                            rotationX.value = value.x.toFixed(3);
+                            rotationY.value = value.y.toFixed(3);
+                            rotationZ.value = value.z.toFixed(3);
+                            
+                            rotationW.value = value.w.toFixed(3);
+
+                            rotationPitch.value = value.pitch.toFixed(3);
+                            rotationRoll.value = value.roll.toFixed(3);
+                            rotationYaw.value = value.yaw.toFixed(3);
+
+                            rotationTimestamp.value = timestamp.timestamp;
+                            //rotationAccuracy.value = accuracy.estimatedAccuracy;
+                            break;
+
+                        case "gameRotation":
+                            gameRotationX.value = value.x.toFixed(3);
+                            gameRotationY.value = value.y.toFixed(3);
+                            gameRotationZ.value = value.z.toFixed(3);
+                            
+                            gameRotationW.value = value.w.toFixed(3);
+
+                            gameRotationPitch.value = value.pitch.toFixed(3);
+                            gameRotationRoll.value = value.roll.toFixed(3);
+                            gameRotationYaw.value = value.yaw.toFixed(3);
+
+                            gameRotationTimestamp.value = timestamp.timestamp;
+                            break;
+
+                        default:
+                            break;
+                    }
+                })
+            });
+
+            boseFrames.addEventListener("gestureData", gestureData => {
+                const eventString =
+                    "Gesture Type: " + gestureData.gesture.name +
+                    "\nTimestamp: " + gestureData.timestamp.timestamp + '\n\n';
+                doubleTapNotifications.innerText += eventString;
+            })
+
+            connectButton.onclick = () => {
+                boseFrames.connect()
+                    .then(boseFrames => {
+                        connectButton.style.display = "none";
+                        dataContainer.style.display = '';
+                        window.boseFrames = boseFrames;
+                    })
+            }
+        </script>
     </body>
 </html>
