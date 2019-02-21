@@ -1,4 +1,4 @@
-import WearableDeviceInformation from "/WearableDeviceInformation.js"
+import WearableDeviceInformation from "WearableDeviceInformation.js"
 
 import SensorInformation from "/SensorInformation.js"
 import SensorConfiguration from "/SensorConfiguration.js"
