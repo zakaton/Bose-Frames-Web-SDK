@@ -1,34 +1,7 @@
 <html>
     <head>
         <script src="three.js"></script>
-
-        <script src="BoseFrames.js" type="module"></script>
-
-        <script src="WearableDeviceInformation.js" type="module"></script>
-
-        <script src="SensorInformation.js" type="module"></script>
-        <script src="SensorConfiguration.js" type="module"></script>
-
-        <script src="SensorInformationEntry.js" type="module"></script>
-        <script src="SensorConfigurationEntry.js" type="module"></script>
-
-        <script src="GestureInformation.js" type="module"></script>
-        <script src="GestureConfiguration.js" type="module"></script>
-
-        <script src="GestureInformationEntry.js" type="module"></script>
-        <script src="GestureConfigurationEntry.js" type="module"></script>
-
-        <script src="SensorData.js" type="module"></script>
-        <script src="GestureData.js" type="module"></script>
-
-        <script src="SensorSample.js" type="module"></script>
-        <script src="SensorTimestamp.js" type="module"></script>
-        <script src="SensorType.js" type="module"></script>
-        <script src="SensorValue.js" type="module"></script>
-
-        <script src="SensorType.js" type="module"></script>
-        <script src="GestureType.js" type="module"></script>
-        <script src="GestureType.js" type="module"></script>
+        <script src="BoseFrames.js"></script>
 
         <style>
             input {
@@ -231,8 +204,7 @@
                 </form>
         </div>
 
-        <script type="module">
-            import BoseFrames from "/BoseFrames.js";
+        <script>
             const boseFrames = new BoseFrames();
 
             boseFrames.addEventListener("sensorData", sensorData => {
