@@ -192,6 +192,7 @@ class BoseFrames {
                 gestureConfiguration.set(gestureType, true);
                 const dataView = gestureConfiguration.data;
                 this.characteristics.gestureConfiguration.writeValue(dataView.buffer);
+                console.log(gestureConfiguration)
                 resolve();
             })
         })
@@ -288,7 +289,7 @@ BoseFrames.DeviceStatus = class {
         return new this(deviceStatusMask);
     }
 }
-
+/*
 BoseFrames.GestureType = class {
     constructor(gestureId) {
         this.rawValue = gestureId;
@@ -322,6 +323,7 @@ BoseFrames.GestureType = class {
         return new this(gestureId);
     }
 }
+*/
 
 BoseFrames.SensorInformation = class {
     constructor(entries) {
@@ -879,6 +881,7 @@ BoseFrames.GestureType = class {
 
     static from(gestureName) {
         const gestureId = 128 + this.all.indexOf(gestureName);
+        console.log(gestureId);
         return new this(gestureId);
     }
 }

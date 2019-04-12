@@ -187,6 +187,22 @@
 
             <h2>Gesture Data</h2>
 
+            <form id="SingleTap">
+                <h3>Single Tap</h3>
+
+                <select size="2" style="overflow: hidden" oninput="(this.value == 'enable')? boseFrames.enableGesture('singleTap') : boseFrames.disableGesture('singleTap')">
+                    <option selected value=disable>disable</option>
+                    <option value=enable>enable</option>
+                </select>
+
+                <br>
+                
+                <div id=singleTapNotifications style="width: 500px; border: solid">
+
+                </div>
+                        
+                </form>
+
             <form id="DoubleTap">
                 <h3>Double Tap</h3>
 
@@ -198,6 +214,38 @@
                 <br>
                 
                 <div id=doubleTapNotifications style="width: 500px; border: solid">
+
+                </div>
+                        
+                </form>
+
+                <form id="headNod">
+                    <h3>Head Nod</h3>
+    
+                    <select size="2" style="overflow: hidden" oninput="(this.value == 'enable')? boseFrames.enableGesture('headNod') : boseFrames.disableGesture('headNod')">
+                        <option selected value=disable>disable</option>
+                        <option value=enable>enable</option>
+                    </select>
+    
+                    <br>
+                    
+                    <div id=headNodNotifications style="width: 500px; border: solid">
+    
+                    </div>
+                            
+                    </form>
+                
+                <form id="headShake">
+                <h3>Head Shake</h3>
+
+                <select size="2" style="overflow: hidden" oninput="(this.value == 'enable')? boseFrames.enableGesture('headShake') : boseFrames.disableGesture('headShake')">
+                    <option selected value=disable>disable</option>
+                    <option value=enable>enable</option>
+                </select>
+
+                <br>
+                
+                <div id=headShakeNotifications style="width: 500px; border: solid">
 
                 </div>
                         
@@ -271,8 +319,9 @@
                 const eventString =
                     "Gesture Type: " + gestureData.gesture.name +
                     "\nTimestamp: " + gestureData.timestamp.timestamp + '\n\n';
-                doubleTapNotifications.innerText += eventString;
-            })
+
+                window[gestureData.gesture.name + "Notifications"].innerText += eventString;
+            });
 
             connectButton.onclick = () => {
                 boseFrames.connect()
