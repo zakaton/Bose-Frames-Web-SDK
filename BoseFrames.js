@@ -192,7 +192,6 @@ class BoseFrames {
                 gestureConfiguration.set(gestureType, true);
                 const dataView = gestureConfiguration.data;
                 this.characteristics.gestureConfiguration.writeValue(dataView.buffer);
-                console.log(gestureConfiguration)
                 resolve();
             })
         })
@@ -446,7 +445,6 @@ BoseFrames.SensorConfiguration = class {
             return entry.isEnabled;
     }
     get allSensors() {
-        console.log(this.entrues);
         return this.entries.map(entry => entry.sensor);
     }
     get enabledSensors() {
@@ -881,7 +879,6 @@ BoseFrames.GestureType = class {
 
     static from(gestureName) {
         const gestureId = 128 + this.all.indexOf(gestureName);
-        console.log(gestureId);
         return new this(gestureId);
     }
 }

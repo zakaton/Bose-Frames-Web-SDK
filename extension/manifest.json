@@ -1,0 +1,19 @@
+{
+    "name" : "Frames Extension",
+    "version" : "1.0",
+    "manifest_version" : 2,
+
+    "browser_action": {
+        "default_popup" : "popup.html"
+    },
+
+    "content_scripts" : [
+        {
+            "matches" : ["http://*/*", "https://*/*"],
+            "js" : ["content.js"],
+            "run_at" : "document_end"
+        }
+    ],
+    "permissions" : ["activeTab", "tabs"],
+    "web_accessible_resources" : ["/injection.js", "/BoseFrames.js", "/three.js"]
+}
