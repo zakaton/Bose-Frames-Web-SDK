@@ -9,7 +9,7 @@ class BoseARDeviceElement extends HTMLElement {
             this.disconnect();
         });
 
-        this.root = this.attachShadow({mode : "open"});
+        this.root = this.attachShadow({mode : "closed"});
         
         this.connectButton = document.createElement("button");
         this.connectButton.innerText = '🕶️';
