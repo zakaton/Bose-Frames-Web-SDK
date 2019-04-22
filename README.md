@@ -93,7 +93,7 @@ document.querySelector("bose-ar-device").addEventListener("accelerometer", yourC
 - To get the event data, you can get it from the custom element's attributes:
 ```javascript
 document.querySelector("bose-ar-device").addEventListener("accelerometer", event => {
-  const rotationX = document.querySelector("bose-ar-device").getAttribute("rotationX");
+  const rotationX = Number(document.querySelector("bose-ar-device").getAttribute("rotationX"));
 });
 ```
 
