@@ -134,6 +134,12 @@ coming soon.
 ## Developer Showcase
 *Send us an email at zack@ukaton.com if you have a cool application made with our sdk!*
 
+- [Cameron Cundiff](https://www.ckundo.com) - [Auto Mute Video Calls](https://twitter.com/ckundo/status/1109872642520166400)
+- [Cameron Cundiff](https://www.ckundo.com) - [Spatial Audio Demo using Resonance SDK](https://twitter.com/ckundo/status/1109603745497784326)
+- [Cameron Cundiff](https://www.ckundo.com) - [WebVR Glasses](https://twitter.com/ckundo/status/1109563901463674881)
+- [Fabien Benetou](https://fabien.benetou.fr/) - [AR Voice Notes](https://twitter.com/utopiah/status/1115286049536843782)
+- [Fabien Benetou](https://fabien.benetou.fr/) - [A-Frame Hello World](https://twitter.com/utopiah/status/1113829382269865984)
+
 ## Developer Wishlist
 *Our time is limited, so we'd greatly appreciate it if you guys could implement some of these ideas:*
 - [ ] **Social Area Network** - Place [voice recordings](https://developers.google.com/web/fundamentals/media/recording-audio/) on a [map](https://developers.google.com/web/fundamentals/native-hardware/user-location/) for others to hear (or only for yourself as a location-triggered notes app or to-do list).
