@@ -1,6 +1,7 @@
 # Bose-Frames-Web-SDK
 A JavaScript SDK for [Bose AR](https://www.bose.com/en_us/better_with_bose/augmented_reality.html)-enabled products.
 
+
 ## Setting up the SDK
 0. Make sure you have a Web Bluetooth-enabled device
     - **Chrome for Desktop**: enable Web Bluetooth by going to `chrome://flags/#enable-experimental-web-platform-features` and check `Experimental Web Platform features` 
@@ -49,6 +50,7 @@ document.querySelector("bose-ar-device").removeAttribute("rotation");
   - `160` or `"slow"`
   - `320` or `"very-slow"`
 
+
 ## Enabling and Disabling Gestures
 - To enable gestures before runtime, add them as attributes in the custom element:
 ```html
@@ -70,6 +72,7 @@ document.querySelector("bose-ar-device").removeAttribute("double-tap");
   - `double-tap`
   - `head-nod`
   - `head-shake`
+
 
 ## Listening for Events
 - To listen for sensor or gesture events, add an `eventListener` to the custom element:
@@ -128,6 +131,7 @@ document.querySelector("bose-ar-device").addEventListener("accelerometer", event
   - `"headShake"`
     - `"headShakeTimestamp"`
 
+
 ## How to create a Bose AR Extension
 1. Download the [extension folder](https://github.com/zakaton/Bose-Frames-Web-SDK/tree/master/extension)
 2. Customize the extension interface by adding buttons and sliders and stuff to `popup.html`
@@ -145,6 +149,7 @@ document.querySelector("bose-ar-device").addEventListener("accelerometer", event
 6. You can change the name of the extension by going to `manifest.json` and changing the `name` property.
 7. You can change the icon by replacing `icon.png` with your own image.
 
+
 ## Developer Showcase
 *Send us an email at zack@ukaton.com if you have a cool application made with our sdk!*
 
@@ -153,6 +158,7 @@ document.querySelector("bose-ar-device").addEventListener("accelerometer", event
 - [Cameron Cundiff](https://www.ckundo.com) - [WebVR Glasses](https://twitter.com/ckundo/status/1109563901463674881)
 - [Fabien Benetou](https://fabien.benetou.fr/) - [AR Voice Notes](https://twitter.com/utopiah/status/1115286049536843782)
 - [Fabien Benetou](https://fabien.benetou.fr/) - [A-Frame Hello World](https://twitter.com/utopiah/status/1113829382269865984)
+
 
 ## Developer Wishlist
 *Our time is limited, so we'd greatly appreciate it if you guys could implement some of these ideas:*
