@@ -162,7 +162,8 @@ document.querySelector("bose-ar-device").addEventListener("accelerometer", event
 ## Developer Showcase
 *Send us an email at zack@ukaton.com if you have a cool application made with our sdk!*
 
-- [Cameron Cundiff](https://www.ckundo.com) - [Auto Mute Video Calls](https://twitter.com/ckundo/status/1109872642520166400)
+- [Cameron Cundiff](https://www.ckundo.com) - [Mute Video when turned away](https://www.youtube.com/watch?v=SZagtIsUx9Q)
+- [Cameron Cundiff](https://www.ckundo.com) - [Mute Audio when turned away](https://twitter.com/ckundo/status/1109872642520166400)
 - [Cameron Cundiff](https://www.ckundo.com) - [Spatial Audio Demo using Resonance SDK](https://twitter.com/ckundo/status/1109603745497784326)
 - [Cameron Cundiff](https://www.ckundo.com) - [WebVR Glasses](https://twitter.com/ckundo/status/1109563901463674881)
 - [Fabien Benetou](https://fabien.benetou.fr/) - [AR Voice Notes](https://twitter.com/utopiah/status/1115286049536843782)
