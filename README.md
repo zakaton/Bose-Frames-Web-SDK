@@ -161,13 +161,12 @@ document.querySelector("bose-ar-device").addEventListener("accelerometer", event
 
 ## Developer Showcase
 *Send us an email at zack@ukaton.com if you have a cool application made with our sdk!*
-- <a href="https://www.youtube.com/watch?v=SZagtIsUx9Q"><img src="https://zakaton.github.io/Bose-Frames-Web-SDK/developerShowcase/developerShowcase1.gif"></a>
-- <a href="https://twitter.com/ckundo/status/1109872642520166400"><img src="https://zakaton.github.io/Bose-Frames-Web-SDK/developerShowcase/developerShowcase2.gif"></a>
-- <a href="https://twitter.com/ckundo/status/1109603745497784326"><img src="https://zakaton.github.io/Bose-Frames-Web-SDK/developerShowcase/developerShowcase3.gif"></a>
-- <a href="https://twitter.com/ckundo/status/1109563901463674881"><img src="https://zakaton.github.io/Bose-Frames-Web-SDK/developerShowcase/developerShowcase4.gif"></a>
-- <a href="https://twitter.com/utopiah/status/1115286049536843782"><img src="https://zakaton.github.io/Bose-Frames-Web-SDK/developerShowcase/developerShowcase5.gif"></a>
-- <a href="https://twitter.com/utopiah/status/1113829382269865984"><img src="https://zakaton.github.io/Bose-Frames-Web-SDK/developerShowcase/developerShowcase6.gif"></a>
-- <a>![altTest](developerShowcase/developerShowcase6.gif)</a>
+- <a href="https://www.youtube.com/watch?v=SZagtIsUx9Q">![Cameron](developerShowcase/developerShowcase1.gif)</a>
+- <a href="https://twitter.com/ckundo/status/1109872642520166400">![Cameron](developerShowcase/developerShowcase2.gif)</a>
+- <a href="https://twitter.com/ckundo/status/1109603745497784326">![Cameron](developerShowcase/developerShowcase3.gif)</a>
+- <a href="https://twitter.com/ckundo/status/1109563901463674881">![Cameron](developerShowcase/developerShowcase4.gif)</a>
+- <a href="https://twitter.com/utopiah/status/1115286049536843782">![Fabien](developerShowcase/developerShowcase5.gif)</a>
+- <a href="https://twitter.com/utopiah/status/1113829382269865984">![Fabien](developerShowcase/developerShowcase6.gif)</a>
 
 ## Application Wishlist
 *Our time is limited, so we'd greatly appreciate it if you guys could implement some of these ideas:*
