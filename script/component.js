@@ -134,7 +134,7 @@ class BoseARDeviceElement extends HTMLElement {
                 normal : 80,
                 fast : 40,
                 "very-fast" : 20,
-            }[rate] || 320;
+            }[rate] || 80;
     }
 
     static get observedAttributes() {
