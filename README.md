@@ -12,7 +12,7 @@ A JavaScript SDK for [Bose AR](https://www.bose.com/en_us/better_with_bose/augme
 
 [👂 Listening for Events](#-listening-for-events)
 
-[🛠️ Creating an Extension](#-Creating-an-Extension)
+[🛠️ Creating an Extension](#-creating-an-extension)
 
 [🏆 Developer Showcase](#-developer-showcase)
 
