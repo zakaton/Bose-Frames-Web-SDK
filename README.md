@@ -161,14 +161,12 @@ document.querySelector("bose-ar-device").addEventListener("accelerometer", event
 
 ## Developer Showcase
 *Send us an email at zack@ukaton.com if you have a cool application made with our sdk!*
-
-- [Cameron Cundiff](https://www.ckundo.com) - [Mute Video when turned away](https://www.youtube.com/watch?v=SZagtIsUx9Q)
-- [Cameron Cundiff](https://www.ckundo.com) - [Mute Audio when turned away](https://twitter.com/ckundo/status/1109872642520166400)
-- [Cameron Cundiff](https://www.ckundo.com) - [Spatial Audio Demo using Resonance SDK](https://twitter.com/ckundo/status/1109603745497784326)
-- [Cameron Cundiff](https://www.ckundo.com) - [WebVR Glasses](https://twitter.com/ckundo/status/1109563901463674881)
-- [Fabien Benetou](https://fabien.benetou.fr/) - [AR Voice Notes](https://twitter.com/utopiah/status/1115286049536843782)
-- [Fabien Benetou](https://fabien.benetou.fr/) - [A-Frame Hello World](https://twitter.com/utopiah/status/1113829382269865984)
-
+- <a href="https://www.youtube.com/watch?v=SZagtIsUx9Q" target="_blank"><img src="https://zakaton.github.io/Bose-Frames-Web-SDK/developerShowcase/developerShowcase1.gif"></a>
+- <a href="https://twitter.com/ckundo/status/1109872642520166400" target="_blank"><img src="https://zakaton.github.io/Bose-Frames-Web-SDK/developerShowcase/developerShowcase2.gif"></a>
+- <a href="https://twitter.com/ckundo/status/1109603745497784326" target="_blank"><img src="https://zakaton.github.io/Bose-Frames-Web-SDK/developerShowcase/developerShowcase3.gif"></a>
+- <a href="https://twitter.com/ckundo/status/1109563901463674881" target="_blank"><img src="https://zakaton.github.io/Bose-Frames-Web-SDK/developerShowcase/developerShowcase4.gif"></a>
+- <a href="https://twitter.com/utopiah/status/1115286049536843782" target="_blank"><img src="https://zakaton.github.io/Bose-Frames-Web-SDK/developerShowcase/developerShowcase5.gif"></a>
+- <a href="https://twitter.com/utopiah/status/1113829382269865984" target="_blank"><img src="https://zakaton.github.io/Bose-Frames-Web-SDK/developerShowcase/developerShowcase6.gif"></a>
 
 ## Application Wishlist
 *Our time is limited, so we'd greatly appreciate it if you guys could implement some of these ideas:*
