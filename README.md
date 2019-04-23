@@ -1,17 +1,24 @@
 <a href="https://twitter.com/utopiah/status/1113829382269865984" target="_blank">![Fabien](developerShowcase/developerShowcase6.gif)</a>
 
-# Bose AR Web SDK
+# 🕶️ Bose AR Web SDK
 A JavaScript SDK for [Bose AR](https://www.bose.com/en_us/better_with_bose/augmented_reality.html)-enabled products.
 
-## Table of Contents
-- [Setting up the SDK](#setting-up-the-sdk)
-- [Enabling and Disabling Sensors](#enabling-and-disabling-sensors)
-- [Listening for Events](#listening-for-events)
-- [Creating an Extension](#creating-an-extension)
-- [Developer Showcase](#developer-showcase)
-- [Application Wishlist](#application-wishlist)
+## 📚 Table of Contents
+[⚙️ Setting up the SDK](#-setting-up-the-sdk)
 
-## Setting up the SDK
+[🔓 Enabling and Disabling Sensors](#-enabling-and-disabling-sensors)
+
+[🙇 Enabling and Disabling Gestures](#-enabling-and-disabling-gestures)
+
+[👂 Listening for Events](#-listening-for-events)
+
+[🛠️ Creating an Extension](#-creating-an-extension)
+
+[🏆 Developer Showcase](#-developer-showcase)
+
+[🙏 Developer Wishlist](#-developer-wishlist)
+
+## ⚙️ Setting up the SDK
 0. Make sure you have a Web Bluetooth-enabled device
     - **Chrome for Desktop**: enable Web Bluetooth by going to `chrome://flags/#enable-experimental-web-platform-features` and check `Experimental Web Platform features` 
     - **iOS**: Use [this app](https://itunes.apple.com/us/app/webble/id1193531073?mt=8) to demo your web apps. Unfortunately iOS is [very negligent](https://github.com/WebBluetoothCG/web-bluetooth/blob/master/implementation-status.md) on various Web API's.
@@ -30,7 +37,7 @@ A JavaScript SDK for [Bose AR](https://www.bose.com/en_us/better_with_bose/augme
 This element represents your Bose AR-enabled device, and will be used to interface with it. On your website the element will display a `🕶️` button that will attempt to connect with your Bose AR-enabled device when clicked, and become hidden once connected.
 
 
-## Enabling and Disabling Sensors
+## 🔓 Enabling and Disabling Sensors
 - To enable sensors before runtime, add them as attributes in the custom element (with an optional attribute value to specify the refresh rate):
 ```html
 <bose-ar-device accelerometer gyroscope=20 rotation="fast"></bose-ar-device>
@@ -60,7 +67,7 @@ document.querySelector("bose-ar-device").removeAttribute("rotation");
   - `320` or `"very-slow"`
 
 
-## Enabling and Disabling Gestures
+## 🙇 Enabling and Disabling Gestures
 - To enable gestures before runtime, add them as attributes in the custom element:
 ```html
 <bose-ar-device double-tap head-nod head-shake></bose-ar-device>
@@ -83,7 +90,7 @@ document.querySelector("bose-ar-device").removeAttribute("double-tap");
   - `head-shake`
 
 
-## Listening for Events
+## 👂 Listening for Events
 - To listen for sensor or gesture events, add an `eventListener` to the custom element:
 ```javascript
 document.querySelector("bose-ar-device").addEventListener("accelerometer", yourCustomCallback);
@@ -143,7 +150,7 @@ document.querySelector("bose-ar-device").addEventListener("accelerometer", event
     - `"headShakeTimestamp"`
 
 
-## Creating an Extension
+## 🛠️ Creating an Extension
 1. Download the [extension folder](https://github.com/zakaton/Bose-Frames-Web-SDK/tree/master/extension)
 2. Customize the extension interface by adding buttons and sliders and stuff to `popup.html`
 3. Add eventListeners to the interface elements in `popup.js`, using `sendMessage(message)` to forward the event to the current website you're on. This message should include a `case` property value to specify the purpose of the message.
@@ -161,7 +168,7 @@ document.querySelector("bose-ar-device").addEventListener("accelerometer", event
 7. You can change the icon by replacing `icon.png` with your own image.
 
 
-## Developer Showcase
+## 🏆 Developer Showcase
 *Send us an email at zack@ukaton.com if you have a cool application made with our sdk!*
 <a href="https://www.youtube.com/watch?v=SZagtIsUx9Q" target="_target">![Cameron](developerShowcase/developerShowcase1.gif)</a>
 <br>
@@ -175,7 +182,7 @@ document.querySelector("bose-ar-device").addEventListener("accelerometer", event
 <br>
 <a href="https://twitter.com/utopiah/status/1113829382269865984" target="_blank">![Fabien](developerShowcase/developerShowcase6.gif)</a>
 
-## Application Wishlist
+## 🙏 Developer Wishlist
 *Our time is limited, so we'd greatly appreciate it if you guys could implement some of these ideas:*
 - [ ] **Social Area Network** - Place [voice recordings](https://developers.google.com/web/fundamentals/media/recording-audio/) on a [map](https://developers.google.com/web/fundamentals/native-hardware/user-location/) for others to hear (or only for yourself as a location-triggered notes app or to-do list).
 - [ ] **Where You At?** - Call a friend (or a group of friends) and know where they are by listening to what direction their voice is coming from, using [WebRTC](https://webrtc.org/) (or a [WebRTC wrapper](https://peerjs.com/)) to stream both [Voice](https://developers.google.com/web/fundamentals/media/recording-audio/) and [Location Data](https://developers.google.com/web/fundamentals/native-hardware/user-location/), as well as using the [Resonance Audio SDK](https://resonance-audio.github.io/resonance-audio/) for sound spatialization.
