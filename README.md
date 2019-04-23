@@ -1,4 +1,4 @@
-# Bose-Frames-Web-SDK
+# Bose AR Web SDK
 A JavaScript SDK for [Bose AR](https://www.bose.com/en_us/better_with_bose/augmented_reality.html)-enabled products.
 
 ## Table of Contents
