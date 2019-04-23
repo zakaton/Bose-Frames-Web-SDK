@@ -162,10 +162,15 @@ document.querySelector("bose-ar-device").addEventListener("accelerometer", event
 ## Developer Showcase
 *Send us an email at zack@ukaton.com if you have a cool application made with our sdk!*
 <a href="https://www.youtube.com/watch?v=SZagtIsUx9Q" target="_target">![Cameron](developerShowcase/developerShowcase1.gif)</a>
+<br>
 <a href="https://twitter.com/ckundo/status/1109872642520166400" target="_target">![Cameron](developerShowcase/developerShowcase2.gif)</a>
+<br>
 <a href="https://twitter.com/ckundo/status/1109603745497784326" target="_target">![Cameron](developerShowcase/developerShowcase3.gif)</a>
+<br>
 <a href="https://twitter.com/ckundo/status/1109563901463674881" target="_target">![Cameron](developerShowcase/developerShowcase4.gif)</a>
+<br>
 <a href="https://twitter.com/utopiah/status/1115286049536843782" target="_target">![Fabien](developerShowcase/developerShowcase5.gif)</a>
+<br>
 <a href="https://twitter.com/utopiah/status/1113829382269865984" target="_target">![Fabien](developerShowcase/developerShowcase6.gif)</a>
 
 ## Application Wishlist
