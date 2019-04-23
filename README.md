@@ -1,6 +1,13 @@
 # Bose-Frames-Web-SDK
 A JavaScript SDK for [Bose AR](https://www.bose.com/en_us/better_with_bose/augmented_reality.html)-enabled products.
 
+## Table of Contents
+- [Setting up the SDK](#setting-up-the-sdk)
+- [Enabling and Disabling Sensors](#enabling-and-disabling-sensors)
+- [Listening for Events](#listening-for-events)
+- [Creating an Extension](#creating-an-extension)
+- [Developer Showcase](#developer-showcase)
+- [Application Wishlist](#application-wishlist)
 
 ## Setting up the SDK
 0. Make sure you have a Web Bluetooth-enabled device
@@ -109,6 +116,7 @@ document.querySelector("bose-ar-device").addEventListener("accelerometer", event
     - `"gyroscopeZ"`
     - `"gyroscopeTimestamp"`
   - `"rotation"`
+    - `"rotationW"`
     - `"rotationX"`
     - `"rotationY"`
     - `"rotationZ"`
@@ -117,6 +125,7 @@ document.querySelector("bose-ar-device").addEventListener("accelerometer", event
     - `"rotationRoll"`
     - `"rotationTimestamp"`
   - `"gameRotation"`
+    - `"gameRotationW"`
     - `"gameRotationX"`
     - `"gameRotationY"`
     - `"gameRotationZ"`
@@ -132,7 +141,7 @@ document.querySelector("bose-ar-device").addEventListener("accelerometer", event
     - `"headShakeTimestamp"`
 
 
-## How to create a Bose AR Extension
+## Creating an Extension
 1. Download the [extension folder](https://github.com/zakaton/Bose-Frames-Web-SDK/tree/master/extension)
 2. Customize the extension interface by adding buttons and sliders and stuff to `popup.html`
 3. Add eventListeners to the interface elements in `popup.js`, using `sendMessage(message)` to forward the event to the current website you're on. This message should include a `case` property value to specify the purpose of the message.
@@ -160,7 +169,7 @@ document.querySelector("bose-ar-device").addEventListener("accelerometer", event
 - [Fabien Benetou](https://fabien.benetou.fr/) - [A-Frame Hello World](https://twitter.com/utopiah/status/1113829382269865984)
 
 
-## Developer Wishlist
+## Application Wishlist
 *Our time is limited, so we'd greatly appreciate it if you guys could implement some of these ideas:*
 - [ ] **Social Area Network** - Place [voice recordings](https://developers.google.com/web/fundamentals/media/recording-audio/) on a [map](https://developers.google.com/web/fundamentals/native-hardware/user-location/) for others to hear (or only for yourself as a location-triggered notes app or to-do list).
 - [ ] **Where You At?** - Call a friend (or a group of friends) and know where they are by listening to what direction their voice is coming from, using [WebRTC](https://webrtc.org/) (or a [WebRTC wrapper](https://peerjs.com/)) to stream both [Voice](https://developers.google.com/web/fundamentals/media/recording-audio/) and [Location Data](https://developers.google.com/web/fundamentals/native-hardware/user-location/), as well as using the [Resonance Audio SDK](https://resonance-audio.github.io/resonance-audio/) for sound spatialization.
