@@ -164,8 +164,8 @@ document.querySelector("bose-ar-device").addEventListener("accelerometer", event
 ```
 4. Add your `case` string to the [`switch(event.data.case){}`](https://github.com/zakaton/Bose-Frames-Web-SDK/blob/master/extension/injection.js#L11) block in [`injection.js`](https://github.com/zakaton/Bose-Frames-Web-SDK/blob/master/extension/injection.js), which will receive the `message` object created in the previous step. Here you can define your custom behavior, using both the message case and any extra values you passed in the `message` object.
 5. Load your extension into Chrome by going to `chrome://extensions/`, clicking `Load unpacked`, and selecting your edited `extension` folder.
-6. You can change the name of the extension by going to `manifest.json` and changing the `name` property.
-7. You can change the icon by replacing `icon.png` with your own image.
+6. You can change the name of the extension by going to [`manifest.json`](https://github.com/zakaton/Bose-Frames-Web-SDK/blob/master/extension/manifest.json) and changing the [`name`](https://github.com/zakaton/Bose-Frames-Web-SDK/blob/master/extension/manifest.json#L2) property.
+7. You can change the icon by replacing [`icon.png`](https://github.com/zakaton/Bose-Frames-Web-SDK/blob/master/extension/icon.png) with your own image.
 
 
 ## 🏆 Developer Showcase
