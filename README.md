@@ -1,7 +1,7 @@
+<a href="https://twitter.com/utopiah/status/1113829382269865984" target="_blank">![Fabien](developerShowcase/developerShowcase6.gif)</a>
+
 # Bose AR Web SDK
 A JavaScript SDK for [Bose AR](https://www.bose.com/en_us/better_with_bose/augmented_reality.html)-enabled products.
-
-<a href="https://twitter.com/utopiah/status/1113829382269865984" target="_blank">![Fabien](developerShowcase/developerShowcase6.gif)</a>
 
 ## Table of Contents
 - [Setting up the SDK](#setting-up-the-sdk)
