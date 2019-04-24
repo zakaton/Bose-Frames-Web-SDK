@@ -4,7 +4,7 @@
 A JavaScript SDK for [Bose AR](https://www.bose.com/en_us/better_with_bose/augmented_reality.html)-enabled products.
 
 ## 📚 Table of Contents
-[⚙️ Setting up the SDK](#-setting-up-the-sdk)
+[⚙️ Setting up the SDK](https://github.com/zakaton/Bose-Frames-Web-SDK#%EF%B8%8F-setting-up-the-sdk)
 
 [🔓 Enabling and Disabling Sensors](#-enabling-and-disabling-sensors)
 
@@ -12,7 +12,7 @@ A JavaScript SDK for [Bose AR](https://www.bose.com/en_us/better_with_bose/augme
 
 [👂 Listening for Events](#-listening-for-events)
 
-[🛠️ Creating an Extension](#-creating-an-extension)
+[🛠️ Creating an Extension](https://github.com/zakaton/Bose-Frames-Web-SDK#%EF%B8%8F-creating-an-extension)
 
 [🏆 Developer Showcase](#-developer-showcase)
 
