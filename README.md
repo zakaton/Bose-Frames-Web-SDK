@@ -38,28 +38,28 @@ This element represents your Bose AR-enabled device, and will be used to interfa
 
 
 ## 🔓 Enabling and Disabling Sensors
-- To enable sensors before runtime, add them as attributes in the custom element, with an attribute value indicating the refresh rate (in milliseconds or as a string):
+🔓 To enable sensors before runtime, add them as attributes in the custom element, with an attribute value indicating the refresh rate (in milliseconds or as a string):
 ```html
 <bose-ar-device gyroscope=20 rotation="fast"></bose-ar-device>
 ```
 
-- To enable sensors during runtime, set the custom element's attribute:
+🔓 To enable sensors during runtime, set the custom element's attribute:
 ```javascript
 document.querySelector("bose-ar-device").setAttribute("rotation", "fast");
 ```
 
-- To disable sensors during runtime, remove the custom element's attribute:
+🔒 To disable sensors during runtime, remove the custom element's attribute:
 ```javascript
 document.querySelector("bose-ar-device").removeAttribute("rotation");
 ```
 
-- Valid sensor attributes:
+👌 Valid sensor attributes:
   - `accelerometer`
   - `gyroscope`
   - `rotation`
   - `game-rotation`
 
-- Valid sensor attribute values:
+⏲️ Valid sensor attribute values:
   - `20` or `"very-fast"`
   - `40` or "`fast"`
   - `80` or "`normal"`
@@ -68,27 +68,26 @@ document.querySelector("bose-ar-device").removeAttribute("rotation");
 
 
 ## 🙇 Enabling and Disabling Gestures
-- To enable gestures before runtime, add them as attributes in the custom element:
+🔓 To enable gestures before runtime, add them as attributes in the custom element:
 ```html
 <bose-ar-device double-tap head-nod head-shake></bose-ar-device>
 ```
 
-- To enable gestures during runtime, set the custom element's attribute:
+🔓 To enable gestures during runtime, set the custom element's attribute:
 ```javascript
 document.querySelector("bose-ar-device").setAttribute("double-tap", '');
 ```
 
-- To disable gestures during runtime, remove the custom element's attribute:
+🔒 To disable gestures during runtime, remove the custom element's attribute:
 ```javascript
 document.querySelector("bose-ar-device").removeAttribute("double-tap");
 ```
 
-- Valid gesture attributes:
+👌 Valid gesture attributes:
   - ~~`single-tap`~~ (coming soon)
   - `double-tap`
   - `head-nod`
   - `head-shake`
-
 
 ## 👂 Listening for Events
 - To listen for sensor or gesture events, add an `eventListener` to the custom element:
@@ -96,7 +95,7 @@ document.querySelector("bose-ar-device").removeAttribute("double-tap");
 document.querySelector("bose-ar-device").addEventListener("accelerometer", yourCustomCallback);
 ```
 
-- Valid event names:
+👌 Valid event names:
   - `"accelerometer"`
   - `"gyroscope"`
   - `"rotation"`
@@ -113,7 +112,7 @@ document.querySelector("bose-ar-device").addEventListener("accelerometer", event
 });
 ```
 
-- Valid attributes for events:
+👌 Valid attributes for events:
   - `"accelerometer"`
     - `"accelerometerX"`
     - `"accelerometerY"`
@@ -184,6 +183,6 @@ document.querySelector("bose-ar-device").addEventListener("accelerometer", event
 
 ## 🙏 Developer Wishlist
 *Our time is limited, so we'd greatly appreciate it if you guys could implement some of these ideas:*
-- [ ] **Social Area Network** - Place [voice recordings](https://developers.google.com/web/fundamentals/media/recording-audio/) on a [map](https://developers.google.com/web/fundamentals/native-hardware/user-location/) for others to hear (or only for yourself as a location-triggered notes app or to-do list).
-- [ ] **Where You At?** - Call a friend (or a group of friends) and know where they are by listening to what direction their voice is coming from, using [WebRTC](https://webrtc.org/) (or a [WebRTC wrapper](https://peerjs.com/)) to stream both [Voice](https://developers.google.com/web/fundamentals/media/recording-audio/) and [Location Data](https://developers.google.com/web/fundamentals/native-hardware/user-location/), as well as using the [Resonance Audio SDK](https://resonance-audio.github.io/resonance-audio/) for sound spatialization.
-- [ ] **Yelp Eavesdropping** - Hear Yelp reviews as you pass by restaurants, using your location and [Yelp's APIs](https://www.yelp.com/developers) to convert written reviews to speech using the [Web Speech API](https://developers.google.com/web/updates/2013/01/Voice-Driven-Web-Apps-Introduction-to-the-Web-Speech-API).
+- [ ] **Social Area Network** 🗫 - Place [voice recordings](https://developers.google.com/web/fundamentals/media/recording-audio/) on a [map](https://developers.google.com/web/fundamentals/native-hardware/user-location/) for others to hear (or only for yourself as a location-triggered notes app or to-do list).
+- [ ] **Where You At?** 🤷 - Call a friend (or a group of friends) and know where they are by listening to what direction their voice is coming from, using [WebRTC](https://webrtc.org/) (or a [WebRTC wrapper](https://peerjs.com/)) to stream both [Voice](https://developers.google.com/web/fundamentals/media/recording-audio/) and [Location Data](https://developers.google.com/web/fundamentals/native-hardware/user-location/), as well as using the [Resonance Audio SDK](https://resonance-audio.github.io/resonance-audio/) for sound spatialization.
+- [ ] **Yelp Radio** 🥡😋💬 🤤 - Hear Yelp reviews as you pass by restaurants, using your location and [Yelp's APIs](https://www.yelp.com/developers) to convert written reviews to speech using the [Web Speech API](https://developers.google.com/web/updates/2013/01/Voice-Driven-Web-Apps-Introduction-to-the-Web-Speech-API).
