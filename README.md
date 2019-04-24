@@ -4,7 +4,7 @@
 _A JavaScript SDK for [Bose AR](https://www.bose.com/en_us/better_with_bose/augmented_reality.html)-enabled products._
 
 ## 📚 Table of Contents
-[⚙️ Setting up the SDK](https://github.com/zakaton/Bose-Frames-Web-SDK#%EF%B8%8F-setting-up-the-sdk)
+[⚙️ Setting up the SDK](#-setting-up-the-sdk)
 
 [🔓 Enabling and Disabling Sensors](#-enabling-and-disabling-sensors)
 
@@ -12,7 +12,7 @@ _A JavaScript SDK for [Bose AR](https://www.bose.com/en_us/better_with_bose/augm
 
 [👂 Listening for Events](#-listening-for-events)
 
-[🛠️ Creating an Extension](https://github.com/zakaton/Bose-Frames-Web-SDK#%EF%B8%8F-creating-an-extension)
+[🛠️ Creating an Extension](#-creating-an-extension)
 
 [🏆 Developer Showcase](#-developer-showcase)
 
@@ -38,9 +38,9 @@ This element represents your Bose AR-enabled device, and will be used to interfa
 
 
 ## 🔓 Enabling and Disabling Sensors
-- To enable sensors before runtime, add them as attributes in the custom element (with an optional attribute value to specify the refresh rate):
+- To enable sensors before runtime, add them as attributes in the custom element, with an attribute value indicating the refresh rate (in milliseconds or as a string):
 ```html
-<bose-ar-device accelerometer gyroscope=20 rotation="fast"></bose-ar-device>
+<bose-ar-device gyroscope=20 rotation="fast"></bose-ar-device>
 ```
 
 - To enable sensors during runtime, set the custom element's attribute:
@@ -75,7 +75,7 @@ document.querySelector("bose-ar-device").removeAttribute("rotation");
 
 - To enable gestures during runtime, set the custom element's attribute:
 ```javascript
-document.querySelector("bose-ar-device").setAttribute("double-tap");
+document.querySelector("bose-ar-device").setAttribute("double-tap", '');
 ```
 
 - To disable gestures during runtime, remove the custom element's attribute:
