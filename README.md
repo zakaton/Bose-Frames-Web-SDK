@@ -151,8 +151,9 @@ document.querySelector("bose-ar-device").addEventListener("accelerometer", event
 
 ## 🛠️ Creating an Extension
 1. Download the [extension folder](https://github.com/zakaton/Bose-Frames-Web-SDK/tree/master/extension)
-2. Customize the extension interface by adding buttons and sliders and stuff to [`popup.html`](https://github.com/zakaton/Bose-Frames-Web-SDK/blob/master/extension/popup.html)
-3. Add eventListeners to the interface elements in [`popup.js`](https://github.com/zakaton/Bose-Frames-Web-SDK/blob/master/extension/popup.js), using [`sendMessage(message)`](https://github.com/zakaton/Bose-Frames-Web-SDK/blob/master/extension/popup.js#L2) to forward the event to the current website you're on. This message should include a `case` property value to specify the purpose of the message.
+2. Add your custom code in a Promise returned in `injection.js` by the [`window.boseARDeviceElement.connect();`](https://github.com/zakaton/Bose-Frames-Web-SDK/blob/master/extension/injection.js#L20) method 
+3. Customize the extension interface by adding buttons and sliders and stuff to [`popup.html`](https://github.com/zakaton/Bose-Frames-Web-SDK/blob/master/extension/popup.html)
+4. Add eventListeners to the interface elements in [`popup.js`](https://github.com/zakaton/Bose-Frames-Web-SDK/blob/master/extension/popup.js), using [`sendMessage(message)`](https://github.com/zakaton/Bose-Frames-Web-SDK/blob/master/extension/popup.js#L2) to forward the event to the current website you're on. This message should include a `case` property value to specify the purpose of the message.
 ```javascript
     myButton.addEventListener("click", event => {
         const myMessage = {
@@ -161,10 +162,10 @@ document.querySelector("bose-ar-device").addEventListener("accelerometer", event
         sendMessage(myMessage);
     });
 ```
-4. Add your `case` string to the [`switch(event.data.case){}`](https://github.com/zakaton/Bose-Frames-Web-SDK/blob/master/extension/injection.js#L11) block in [`injection.js`](https://github.com/zakaton/Bose-Frames-Web-SDK/blob/master/extension/injection.js), which will receive the `message` object created in the previous step. Here you can define your custom behavior, using both the message case and any extra values you passed in the `message` object.
-5. Load your extension into Chrome by going to `chrome://extensions/`, clicking `Load unpacked`, and selecting your edited `extension` folder.
-6. You can change the name of the extension by going to [`manifest.json`](https://github.com/zakaton/Bose-Frames-Web-SDK/blob/master/extension/manifest.json) and changing the [`name`](https://github.com/zakaton/Bose-Frames-Web-SDK/blob/master/extension/manifest.json#L2) property.
-7. You can change the icon by replacing [`icon.png`](https://github.com/zakaton/Bose-Frames-Web-SDK/blob/master/extension/icon.png) with your own image.
+5. Add your `case` string to the [`switch(event.data.case){}`](https://github.com/zakaton/Bose-Frames-Web-SDK/blob/master/extension/injection.js#L11) block in [`injection.js`](https://github.com/zakaton/Bose-Frames-Web-SDK/blob/master/extension/injection.js), which will receive the `message` object created in the previous step. Here you can define your custom behavior, using both the message case and any extra values you passed in the `message` object.
+6. Load your extension into Chrome by going to `chrome://extensions/`, clicking `Load unpacked`, and selecting your edited `extension` folder.
+7. You can change the name of the extension by going to [`manifest.json`](https://github.com/zakaton/Bose-Frames-Web-SDK/blob/master/extension/manifest.json) and changing the [`name`](https://github.com/zakaton/Bose-Frames-Web-SDK/blob/master/extension/manifest.json#L2) property.
+8. You can change the icon by replacing [`icon.png`](https://github.com/zakaton/Bose-Frames-Web-SDK/blob/master/extension/icon.png) with your own image.
 
 
 ## 🏆 Developer Showcase
