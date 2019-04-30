@@ -151,7 +151,7 @@ document.querySelector("bose-ar-device").addEventListener("accelerometer", event
 
 ## 🛠️ Creating an Extension
 1. Download the [extension folder](https://github.com/zakaton/Bose-Frames-Web-SDK/tree/master/extension)
-2. Add your custom code in a Promise returned in `injection.js` by the [`window.boseARDeviceElement.connect();`](https://github.com/zakaton/Bose-Frames-Web-SDK/blob/master/extension/injection.js#L20) method 
+2. Add your custom code in a Promise returned in [`injection.js`](https://github.com/zakaton/Bose-Frames-Web-SDK/blob/master/extension/injection.js) by the [`window.boseARDeviceElement.connect();`](https://github.com/zakaton/Bose-Frames-Web-SDK/blob/master/extension/injection.js#L20) method 
 3. Customize the extension interface by adding buttons and sliders and stuff to [`popup.html`](https://github.com/zakaton/Bose-Frames-Web-SDK/blob/master/extension/popup.html)
 4. Add eventListeners to the interface elements in [`popup.js`](https://github.com/zakaton/Bose-Frames-Web-SDK/blob/master/extension/popup.js), using [`sendMessage(message)`](https://github.com/zakaton/Bose-Frames-Web-SDK/blob/master/extension/popup.js#L2) to forward the event to the current website you're on. This message should include a `case` property value to specify the purpose of the message.
 ```javascript
