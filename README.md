@@ -181,6 +181,9 @@ document.querySelector("bose-ar-device").addEventListener("accelerometer", event
 <a href="https://twitter.com/utopiah/status/1115286049536843782" target="_blank">![Fabien](developerShowcase/developerShowcase5.gif)</a>
 <br>
 <a href="https://twitter.com/utopiah/status/1113829382269865984" target="_blank">![Fabien](developerShowcase/developerShowcase6.gif)</a>
+<br>
+<a href="https://twitter.com/ckundo/status/1132817208881614848" target="_blank">![Cameron](developerShowcase/developerShowcase7.gif)</a>
+
 
 ## 🙏 Developer Wishlist
 *Our time is limited, so we'd greatly appreciate it if you guys could implement some of these ideas:*
