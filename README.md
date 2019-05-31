@@ -183,6 +183,15 @@ document.querySelector("bose-ar-device").addEventListener("accelerometer", event
 <a href="https://twitter.com/utopiah/status/1113829382269865984" target="_blank">![Fabien](developerShowcase/developerShowcase6.gif)</a>
 <br>
 <a href="https://twitter.com/ckundo/status/1132817208881614848" target="_blank">![Cameron](developerShowcase/developerShowcase7.gif)</a>
+<br>
+<a href="https://www.youtube.com/watch?v=W8UvGehtQvs" target="_blank">![Zack](developerShowcase/developerShowcase8.gif)</a>
+<br>
+<a href="https://www.youtube.com/watch?v=ThkYJTmqIp4" target="_blank">![Zack](developerShowcase/developerShowcase9.gif)</a>
+<br>
+<a href="https://www.youtube.com/watch?v=rk_SEOyMN9g" target="_blank">![Cameron](developerShowcase/developerShowcase10.gif)</a>
+<br>
+<a href="https://www.youtube.com/watch?v=sCJ7YQSfeyE" target="_blank">![Cameron](developerShowcase/developerShowcase11.gif)</a>
+
 
 
 ## 🙏 Developer Wishlist
