@@ -36,6 +36,11 @@ _A JavaScript SDK for [Bose AR](https://www.bose.com/en_us/better_with_bose/augm
 ```
 This element represents your Bose AR-enabled device, and will be used to interface with it. On your website the element will display a `🕶️` button that will attempt to connect with your Bose AR-enabled device when clicked, and become hidden once connected.
 
+__NOTE: Bose AR devices have 2 types of Bluetooth Connections: an Audio connection (audio playback and microphone controls) and an AR connection (head-tracking and gestures). This SDK is used to establish an AR connection and will allow you to enable/disable sensors/gestures, as well as access the sensor/gesture data. If you want to access the Bose AR device as an audio device (like normal bluetooth headphones and headsets), you'll need to connect to it again "the usual way" and use the standard [Web Audio API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API).__
+
+__ALSO NOTE: You can connect to multiple Bose AR devices (as an AR device) simultaneously, as well as have a single Bose AR device be accessed from multiple browsers (e.g. your smartphone and laptop). However, disabling a Bose AR's sensor/gesture from one browser disables it for any browser observing the Bose AR device's sensors/gestures.__
+
+__ALSO ALSO NOTE: The browser needs permission from the user to connect to the Bose AR device (as an AR device as mentioned in the first "NOTE"), but no action on the Bose AR device is needed (e.g. pressing a "connect" button on the Bose AR device). This means anyone can access an unassuming user's Bose AR device from their browser and enable/disable/read sensor/gesture data without the Bose AR device owner even knowing. I'm not sure why they designed them this way, but I don't work there.__
 
 ## 🔓 Enabling and Disabling Sensors
 🔓 To enable sensors before runtime, add them as attributes in the custom element, with an attribute value indicating the refresh rate (in milliseconds or as a string):
