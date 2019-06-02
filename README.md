@@ -200,6 +200,8 @@ document.querySelector("bose-ar-device").addEventListener("accelerometer", event
 <a href="https://twitter.com/ckundo/status/1134293692225937414" target="_blank">![Cameron](developerShowcase/developerShowcase12.gif)</a>
 <br>
 <a href="https://twitter.com/ConcreteSciFi/status/1134181855379435520" target="_blank">![Cameron](developerShowcase/developerShowcase13.gif)</a>
+<br>
+<a href="https://twitter.com/ckundo/status/1135003825750839296" target="_blank">![Cameron](developerShowcase/developerShowcase14.gif)</a>
 
 ## 🙏 Developer Wishlist
 *Our time is limited, so we'd greatly appreciate it if you guys could implement some of these ideas:*
