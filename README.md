@@ -1,7 +1,7 @@
 <a href="https://twitter.com/utopiah/status/1113829382269865984" target="_blank">![Fabien](developerShowcase/developerShowcase6.gif)</a>
 
 # 🕶️ Bose AR Web SDK
-_A JavaScript SDK for [Bose AR](https://www.bose.com/en_us/better_with_bose/augmented_reality.html)-enabled products. [Click here](https://zakaton.github.io/Bose-Frames-Web-SDK/) for a Live Demo!_
+_A JavaScript SDK for [Bose AR](https://www.bose.com/en_us/better_with_bose/augmented_reality.html)-enabled products, including the [Bose Frames](https://www.bose.com/en_us/products/frames/bose-frames-alto.html#v=bose_frames_alto_black_us), [Bose QuietComfort 35 Wireless II](https://www.bose.com/en_us/products/headphones/over_ear_headphones/quietcomfort-35-wireless-ii.html#v=qc35_ii_black), and [Bose 700 Wireless](https://www.bose.com/en_us/products/headphones/noise_cancelling_headphones/noise-cancelling-headphones-700.html#v=noise_cancelling_headphones_700_black) . [Click here](https://zakaton.github.io/Bose-Frames-Web-SDK/) for a Live Demo!_
 
 ## 📚 Table of Contents
 [⚙️ Setting up the SDK](#-setting-up-the-sdk)
@@ -25,14 +25,14 @@ _A JavaScript SDK for [Bose AR](https://www.bose.com/en_us/better_with_bose/augm
 
 1. Update your [Bose AR-enabled](https://www.bose.com/en_us/better_with_bose/augmented_reality.html#Bose%20AR_tab1) headset's firmware [on their website](https://btu.bose.com/)
 
-1. Save a local copy of [`bose-ar-web-sdk.min.js`](https://raw.githubusercontent.com/zakaton/Bose-Frames-Web-SDK/master/bose-ar-web-sdk.min.js)
+2. Save a local copy of [`bose-ar-web-sdk.min.js`](https://raw.githubusercontent.com/zakaton/Bose-Frames-Web-SDK/master/bose-ar-web-sdk.min.js)
 
-2. In your HTML `<head></head>` element, insert the file in a script element:
+3. In your HTML `<head></head>` element, insert the file in a script element:
 ```html
 <script src="bose-ar-web-sdk.min.js"></script>
 ```
 
-3. In your HTML `<body></body>` element, insert the following custom element:
+4. In your HTML `<body></body>` element, insert the following custom element:
 ```html
 <bose-ar-device></bose-ar-device>
 ```
