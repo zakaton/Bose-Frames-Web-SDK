@@ -1,7 +1,7 @@
 <a href="https://twitter.com/utopiah/status/1113829382269865984" target="_blank">![Fabien](developerShowcase/developerShowcase6.gif)</a>
 
 # 🕶️ Bose AR Web SDK
-_A JavaScript SDK for [Bose AR](https://www.bose.com/en_us/better_with_bose/augmented_reality.html)-enabled products. [Click here](https://zakaton.github.io/Bose-Frames-Web-SDK/) for a Live Demo!_
+_A JavaScript SDK for [Bose AR](https://www.bose.com/en_us/better_with_bose/augmented_reality.html)-enabled products, including the [Bose Frames](https://www.bose.com/en_us/products/frames/bose-frames-alto.html#v=bose_frames_alto_black_us), [Bose QuietComfort 35 Wireless II](https://www.bose.com/en_us/products/headphones/over_ear_headphones/quietcomfort-35-wireless-ii.html#v=qc35_ii_black), and [Bose 700 Wireless](https://www.bose.com/en_us/products/headphones/noise_cancelling_headphones/noise-cancelling-headphones-700.html#v=noise_cancelling_headphones_700_black) . [Click here](https://zakaton.github.io/Bose-Frames-Web-SDK/) for a Live Demo!_
 
 ## 📚 Table of Contents
 [⚙️ Setting up the SDK](#-setting-up-the-sdk)
@@ -23,14 +23,16 @@ _A JavaScript SDK for [Bose AR](https://www.bose.com/en_us/better_with_bose/augm
     - **Chrome for Desktop**: enable Web Bluetooth by going to `chrome://flags/#enable-experimental-web-platform-features` and check `Experimental Web Platform features` 
     - **iOS**: Use [this app](https://itunes.apple.com/us/app/webble/id1193531073?mt=8) to demo your web apps. Unfortunately iOS is [very negligent](https://github.com/WebBluetoothCG/web-bluetooth/blob/master/implementation-status.md) on various Web API's.
 
-1. Save a local copy of [`bose-ar-web-sdk.min.js`](https://raw.githubusercontent.com/zakaton/Bose-Frames-Web-SDK/master/bose-ar-web-sdk.min.js)
+1. Update your [Bose AR-enabled](https://www.bose.com/en_us/better_with_bose/augmented_reality.html#Bose%20AR_tab1) headset's firmware [on their website](https://btu.bose.com/)
 
-2. In your HTML `<head></head>` element, insert the file in a script element:
+2. Save a local copy of [`bose-ar-web-sdk.min.js`](https://raw.githubusercontent.com/zakaton/Bose-Frames-Web-SDK/master/bose-ar-web-sdk.min.js)
+
+3. In your HTML `<head></head>` element, insert the file in a script element:
 ```html
 <script src="bose-ar-web-sdk.min.js"></script>
 ```
 
-3. In your HTML `<body></body>` element, insert the following custom element:
+4. In your HTML `<body></body>` element, insert the following custom element:
 ```html
 <bose-ar-device></bose-ar-device>
 ```
@@ -206,7 +208,7 @@ document.querySelector("bose-ar-device").addEventListener("accelerometer", event
 ## 🙏 Developer Wishlist
 *Our time is limited, so we'd greatly appreciate it if you guys could implement some of these ideas:*
 - [ ] **Social Area Network** 🗺️🗫 - Place [voice recordings](https://developers.google.com/web/fundamentals/media/recording-audio/) on a [map](https://developers.google.com/web/fundamentals/native-hardware/user-location/) for others to hear (or only for yourself as a location-triggered notes app or to-do list).
-- [ ] **Where You At?** 🤷 - Call a friend (or a group of friends) and know where they are by listening to what direction their voice is coming from, using [WebRTC](https://webrtc.org/) (or a [WebRTC wrapper](https://peerjs.com/)) to stream both [Voice](https://developers.google.com/web/fundamentals/media/recording-audio/) and [Location Data](https://developers.google.com/web/fundamentals/native-hardware/user-location/), as well as using the [Resonance Audio SDK](https://resonance-audio.github.io/resonance-audio/) for sound spatialization.
+- [ ] **Where You At?** 🤷 - Call a friend (or a group of friends) and know where they are by listening to what direction their voice is coming from, using [WebRTC](https://webrtc.org/) (or a WebRTC wrapper like [Simple-Peer](https://github.com/feross/simple-peer) to stream both [Voice](https://developers.google.com/web/fundamentals/media/recording-audio/) and [Location Data](https://developers.google.com/web/fundamentals/native-hardware/user-location/), as well as using the [Resonance Audio SDK](https://resonance-audio.github.io/resonance-audio/) for sound spatialization.
 - [ ] **Yelp Radio** 🥡😋💬 🤤 - Hear Yelp reviews as you pass by restaurants, using your location and [Yelp's APIs](https://www.yelp.com/developers) to convert written reviews to speech using the [Web Speech API](https://developers.google.com/web/updates/2013/01/Voice-Driven-Web-Apps-Introduction-to-the-Web-Speech-API).
 - [ ] **Twitter Extension** 🗨️🐦 - Go on [Twitter](https://twitter.com/) and convert [tweets to speech](https://developers.google.com/web/updates/2013/01/Voice-Driven-Web-Apps-Introduction-to-the-Web-Speech-API), listening to your feed in the background. You can even nod to "like" a tweet or double-tap to comment.
 - [ ] **Spotify Spots** 🎵🗺️ - Use the [Spotify Web API](https://developer.spotify.com/documentation/web-api/) and [Location Data](https://developers.google.com/web/fundamentals/native-hardware/user-location/) to create playlists for frequent places and paths! You can curate your routine and play certain songs when you're at the gym, on the road, or at work.
