@@ -1,0 +1,19 @@
+{
+  "name": "bose-for-max",
+  "version": "1.0.0",
+  "description": "Websocket stream between the BoseAR WebSDK and Max via Node for Max",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "BoseAR",
+    "Node-for-Max"
+  ],
+  "author": "Zack Qattan",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^2.2.0"
+  }
+}
