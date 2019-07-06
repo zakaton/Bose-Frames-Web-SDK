@@ -30,8 +30,15 @@ maxAPI.post(`Setting up Socket.IO...`);
 const sockets = [];
 io.on("connection", socket => {
     maxAPI.post(`new connection`);
+
     sockets.push(socket);
-    // maxAPI.outlet();
+
+    sockets.forEach((_socket, index) => {
+        io.to(_socket.id).emit("socket-index", {
+            index : index,
+        });    
+    });
+    
 
     socket.on("disconnect", () => {
         maxAPI.post(`disconnected`);
@@ -42,22 +49,22 @@ io.on("connection", socket => {
     // Messages from Client
     socket.on("bose-ar-connect", message => {
         maxAPI.post("bose-ar-connect");
-        maxAPI.outlet("newDevice", sockets.indexOf(socket));
+        maxAPI.outlet(sockets.indexOf(socket), "newDevice");
     });
     socket.on("bose-ar-disconnect", message => {
         maxAPI.post("bose-ar-disconnect");
-        maxAPI.outlet("removeDevice", sockets.indexOf(socket));
+        maxAPI.outlet(sockets.indexOf(socket), "removeDevice");
     });
 
     socket.on("bose-ar-sensor-input", message => {
         maxAPI.post(`bose-ar-sensor-input, ${message.sensor}, ${message.value}`);
 
-        maxAPI.outlet("sensorInput", sockets.indexOf(socket), message.sensor, message.value);
+        maxAPI.outlet(sockets.indexOf(socket), "sensorInput", message.sensor, message.value);
     });
     socket.on("bose-ar-gesture-input", message => {
         maxAPI.post(`bose-ar-gesture-input, ${message.gesture}, ${message.value}`);
 
-        maxAPI.outlet("gestureInput", sockets.indexOf(socket), message.gesture, message.value);
+        maxAPI.outlet(sockets.indexOf(socket), "gestureInput", message.gesture, message.value);
     });
 
     socket.on("bose-ar-sensor-data", message => {
@@ -88,38 +95,46 @@ io.on("connection", socket => {
         
         maxAPI.outlet(sockets.indexOf(socket), "gestureData", message.gesture, message.timestamp);
     });
+});
 
-    // Messages from Max
-    maxAPI.addHandler("enable-sensor", (sensor, rate) => {
-        maxAPI.post(`enabling sensor ${sensor} at ${rate}`);
-        
-        io.to(socket.id).emit("enable-sensor", {
-            sensor : sensor,
-            rate : rate,
-        });
+// Messages from Max
+maxAPI.addHandler("enable-sensor", (sensor, rate, socketIndex) => {
+    maxAPI.post(`enabling sensor ${sensor} at ${rate}`);
+
+    const socket = sockets[socketIndex];
+    
+    io.to(socket.id).emit("enable-sensor", {
+        sensor : sensor,
+        rate : rate,
     });
+});
 
-    maxAPI.addHandler("disable-sensor", sensor => {
-        maxAPI.post(`disabling sensor ${sensor}`);
+maxAPI.addHandler("disable-sensor", (sensor, rate, socketIndex) => {
+    maxAPI.post(`disabling sensor ${sensor}`);
 
-        io.to(socket.id).emit("disable-sensor", {
-            sensor : sensor,
-        });
+    const socket = sockets[socketIndex];
+
+    io.to(socket.id).emit("disable-sensor", {
+        sensor : sensor,
     });
+});
 
-    maxAPI.addHandler("enable-gesture", gesture => {
-        maxAPI.post(`enabling gesture ${gesture}`);
+maxAPI.addHandler("enable-gesture", (gesture, socketIndex) => {
+    maxAPI.post(`enabling gesture ${gesture}`);
 
-        io.to(socket.id).emit("enable-gesture", {
-            gesture : gesture,
-        });
+    const socket = sockets[socketIndex];
+
+    io.to(socket.id).emit("enable-gesture", {
+        gesture : gesture,
     });
-    maxAPI.addHandler("disable-gesture", gesture => {
-        maxAPI.post(`disabling gesture ${gesture}`);
+});
+maxAPI.addHandler("disable-gesture", (gesture, socketIndex) => {
+    maxAPI.post(`disabling gesture ${gesture}`);
 
-        io.to(socket.id).emit("disable-gesture", {
-            gesture : gesture,
-        });
+    const socket = sockets[socketIndex];
+
+    io.to(socket.id).emit("disable-gesture", {
+        gesture : gesture,
     });
 });
 

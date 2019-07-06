@@ -28,7 +28,7 @@
             
             <div id=dataContainer style="display: none ">
     
-                <h1>Bose Frames</h1>
+                <h1>Bose Device #<span id=socketIndexSpan></span></h1>
     
                 <h2>Sensor Data</h2>
     
@@ -332,6 +332,10 @@
             socket.emit("bose-ar-disconnect");
         });
 
+        socket.on("socket-index", message => {
+            socketIndexSpan.innerText = message.index;
+        });
+
         ["accelerometer", "gyroscope", "rotation", "gameRotation"].forEach(sensor => {
             boseARDeviceElement.addEventListener(sensor, event => {
                 const value = {};
@@ -389,10 +393,12 @@
 
             const sensorSelect = document.querySelector(`select[data-sensor=${sensor}]`);
             sensorSelect.addEventListener("input", event => {
-                socket.emit("bose-ar-sensor-input", {
-                    sensor : sensor,
-                    value : event.target.value,
-                });
+
+                if(event.isTrusted)
+                    socket.emit("bose-ar-sensor-input", {
+                        sensor : sensor,
+                        value : event.target.value,
+                    });
             });
         });
 
@@ -406,16 +412,16 @@
 
             const gestureSelect = document.querySelector(`select[data-gesture=${gesture}]`);
             gestureSelect.addEventListener("input", event => {
-                socket.emit("bose-ar-gesture-input", {
-                    gesture : gesture,
-                    value : (event.target.value == "enable"),
-                });
+                if(event.isTrusted)
+                    socket.emit("bose-ar-gesture-input", {
+                        gesture : gesture,
+                        value : (event.target.value == "enable"),
+                    });
             });
         });
 
         socket.on("enable-sensor", message => {
             console.log(`enabling ${message.sensor} sensor at ${message.rate}`);
-            
             const sensorSelect = document.querySelector(`select[data-sensor=${message.sensor}]`);
                 sensorSelect.value = message.rate;
                 sensorSelect.dispatchEvent(new Event("input"));
