@@ -1,1 +1,2 @@
-# (WIP) Bose for Max - Access your BoseAR devices in Max/MSP!
+# Bose for Max (Work in Progress)
+_Use your BoseAR device in Max/MSP patches! _
