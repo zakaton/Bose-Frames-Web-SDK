@@ -27,14 +27,16 @@ _A JavaScript SDK for [Bose AR](https://www.bose.com/en_us/better_with_bose/augm
 
 1. Update your [Bose AR-enabled](https://www.bose.com/en_us/better_with_bose/augmented_reality.html#Bose%20AR_tab1) headset's firmware [on their website](https://btu.bose.com/)
 
-2. Save a local copy of [`bose-ar-web-sdk.min.js`](https://raw.githubusercontent.com/zakaton/Bose-Frames-Web-SDK/master/bose-ar-web-sdk.min.js)
+2. Disconnect your [Bose AR-enabled](https://www.bose.com/en_us/better_with_bose/augmented_reality.html#Bose%20AR_tab1) from your smartphone if you have the [Bose Connect App](https://www.bose.com/en_us/support/article/bose-connect-app-pulse.html) installed.
 
-3. In your HTML `<head></head>` element, insert the file in a script element:
+3. Save a local copy of [`bose-ar-web-sdk.min.js`](https://raw.githubusercontent.com/zakaton/Bose-Frames-Web-SDK/master/bose-ar-web-sdk.min.js)
+
+4. In your HTML `<head></head>` element, insert the file in a script element:
 ```html
 <script src="bose-ar-web-sdk.min.js"></script>
 ```
 
-4. In your HTML `<body></body>` element, insert the following custom element:
+5. In your HTML `<body></body>` element, insert the following custom element:
 ```html
 <bose-ar-device></bose-ar-device>
 ```
