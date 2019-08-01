@@ -215,6 +215,19 @@ document.querySelector("bose-ar-device").addEventListener("accelerometer", event
 <a href="https://twitter.com/ConcreteSciFi/status/1134181855379435520" target="_blank">![Cameron](developerShowcase/developerShowcase13.gif)</a>
 <br>
 <a href="https://twitter.com/ckundo/status/1135003825750839296" target="_blank">![Cameron](developerShowcase/developerShowcase14.gif)</a>
+<br>
+<a href="https://twitter.com/ConcreteSciFi/status/1150631793848197122" target="_blank">![Zack](developerShowcase/developerShowcase15.gif)</a>
+<br>
+<a href="https://twitter.com/ConcreteSciFi/status/1154160202742059008" target="_blank">![Zack](developerShowcase/developerShowcase16.gif)</a>
+<br>
+<a href="https://twitter.com/ConcreteSciFi/status/1156663791980912640" target="_blank">![Zack](developerShowcase/developerShowcase17.gif)</a>
+<br>
+<a href="https://twitter.com/ConcreteSciFi/status/1154575658808299521" target="_blank">![Zack](developerShowcase/developerShowcase18.gif)</a>
+<br>
+<a href="https://twitter.com/ConcreteSciFi/status/1152627900513828866" target="_blank">![Zack](developerShowcase/developerShowcase19.gif)</a>
+<br>
+<a href="https://twitter.com/ConcreteSciFi/status/1149059903094321152" target="_blank">![Zack](developerShowcase/developerShowcase20.gif)</a>
+
 
 ## 🙏 Developer Wishlist
 *Our time is limited, so we'd greatly appreciate it if you guys could implement some of these ideas:*
