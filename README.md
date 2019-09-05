@@ -1,5 +1,3 @@
-# [LEARN MORE ABOUT THE BOSE DEVELOPER RELATIONS TEAM](https://docs.google.com/document/d/1OLT5R8P2Aheu2WSUW0cJF8Br9l7gIBK4ejeAg4sT8Fo/edit#)
-
 <a href="https://twitter.com/utopiah/status/1113829382269865984" target="_blank">![Fabien](developerShowcase/developerShowcase6.gif)</a>
 
 # 🕶️ Bose AR Web SDK
