@@ -68,7 +68,7 @@ io.on("connection", socket => {
     });
 
     socket.on("bose-ar-sensor-data", message => {
-        maxAPI.post(`bose-ar-sensor-data, ${message.sensor}`);
+        //maxAPI.post(`bose-ar-sensor-data, ${message.sensor}`);
 
         const {w, x, y, z, yaw, pitch, roll} = message.value;
         const values = [Number(x), Number(y), Number(z)];
@@ -91,7 +91,7 @@ io.on("connection", socket => {
     });
 
     socket.on("bose-ar-gesture-data", message => {
-        maxAPI.post(`bose-ar-gesture-data, ${message.gesture}`);
+        //maxAPI.post(`bose-ar-gesture-data, ${message.gesture}`);
         
         maxAPI.outlet(sockets.indexOf(socket), "gestureData", message.gesture, message.timestamp);
     });

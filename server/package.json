@@ -1,0 +1,11 @@
+{
+  "name": "leap-motion",
+  "version": "1.0.0",
+  "description": "Stream Leap Motion data to other devices",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
