@@ -227,6 +227,8 @@ document.querySelector("bose-ar-device").addEventListener("accelerometer", event
 <a href="https://twitter.com/ConcreteSciFi/status/1162792737025875968" target="_blank">![Zack](developerShowcase/developerShowcase19.gif)</a>
 <br>
 <a href="https://twitter.com/ConcreteSciFi/status/1149059903094321152" target="_blank">![Zack](developerShowcase/developerShowcase20.gif)</a>
+<br>
+<a href="https://twitter.com/zeGladScientist/status/1192504458342629376" target="_blank">![Zack](developerShowcase/developerShowcase21.gif)</a>
 
 
 ## 🙏 Developer Wishlist
