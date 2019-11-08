@@ -27,14 +27,16 @@ _A JavaScript SDK for [Bose AR](https://www.bose.com/en_us/better_with_bose/augm
 
 1. Update your [Bose AR-enabled](https://www.bose.com/en_us/better_with_bose/augmented_reality.html#Bose%20AR_tab1) headset's firmware [on their website](https://btu.bose.com/)
 
-2. Save a local copy of [`bose-ar-web-sdk.min.js`](https://raw.githubusercontent.com/zakaton/Bose-Frames-Web-SDK/master/bose-ar-web-sdk.min.js)
+2. Disconnect your [Bose AR-enabled](https://www.bose.com/en_us/better_with_bose/augmented_reality.html#Bose%20AR_tab1) from your smartphone if you have the [Bose Connect App](https://www.bose.com/en_us/support/article/bose-connect-app-pulse.html) installed.
 
-3. In your HTML `<head></head>` element, insert the file in a script element:
+3. Save a local copy of [`bose-ar-web-sdk.min.js`](https://raw.githubusercontent.com/zakaton/Bose-Frames-Web-SDK/master/bose-ar-web-sdk.min.js)
+
+4. In your HTML `<head></head>` element, insert the file in a script element:
 ```html
 <script src="bose-ar-web-sdk.min.js"></script>
 ```
 
-4. In your HTML `<body></body>` element, insert the following custom element:
+5. In your HTML `<body></body>` element, insert the following custom element:
 ```html
 <bose-ar-device></bose-ar-device>
 ```
@@ -213,6 +215,19 @@ document.querySelector("bose-ar-device").addEventListener("accelerometer", event
 <a href="https://twitter.com/ConcreteSciFi/status/1134181855379435520" target="_blank">![Cameron](developerShowcase/developerShowcase13.gif)</a>
 <br>
 <a href="https://twitter.com/ckundo/status/1135003825750839296" target="_blank">![Cameron](developerShowcase/developerShowcase14.gif)</a>
+<br>
+<a href="https://twitter.com/ConcreteSciFi/status/1150631793848197122" target="_blank">![Zack](developerShowcase/developerShowcase15.gif)</a>
+<br>
+<a href="https://twitter.com/ConcreteSciFi/status/1154160202742059008" target="_blank">![Zack](developerShowcase/developerShowcase16.gif)</a>
+<br>
+<a href="https://twitter.com/ConcreteSciFi/status/1156663791980912640" target="_blank">![Zack](developerShowcase/developerShowcase17.gif)</a>
+<br>
+<a href="https://twitter.com/ConcreteSciFi/status/1154575658808299521" target="_blank">![Zack](developerShowcase/developerShowcase18.gif)</a>
+<br>
+<a href="https://twitter.com/ConcreteSciFi/status/1152627900513828866" target="_blank">![Zack](developerShowcase/developerShowcase19.gif)</a>
+<br>
+<a href="https://twitter.com/ConcreteSciFi/status/1149059903094321152" target="_blank">![Zack](developerShowcase/developerShowcase20.gif)</a>
+
 
 ## 🙏 Developer Wishlist
 *Our time is limited, so we'd greatly appreciate it if you guys could implement some of these ideas:*
