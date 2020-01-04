@@ -230,17 +230,17 @@ document.querySelector("bose-ar-device").addEventListener("accelerometer", event
 <br>
 <a href="https://twitter.com/zeGladScientist/status/1192504458342629376" target="_blank">![Zack](developerShowcase/developerShowcase21.gif)</a>
 <br>
-<a href="https://twitter.com/zeGladScientist/status/1192504458342629376" target="_blank">![Zack](developerShowcase/developerShowcase22.gif)</a>
+<a href="https://twitter.com/ConcreteSciFi/status/1203797587045703686?s=20" target="_blank">![Zack](developerShowcase/developerShowcase22.gif)</a>
 <br>
-<a href="https://twitter.com/zeGladScientist/status/1192504458342629376" target="_blank">![Zack](developerShowcase/developerShowcase23.gif)</a>
+<a href="https://twitter.com/ConcreteSciFi/status/1201342080942895105" target="_blank">![Zack](developerShowcase/developerShowcase23.gif)</a>
 <br>
-<a href="https://twitter.com/zeGladScientist/status/1192504458342629376" target="_blank">![Zack](developerShowcase/developerShowcase24.gif)</a>
+<a href="https://twitter.com/ConcreteSciFi/status/1204190055578791936?s=20" target="_blank">![Michael](developerShowcase/developerShowcase24.gif)</a>
 <br>
-<a href="https://twitter.com/zeGladScientist/status/1192504458342629376" target="_blank">![Zack](developerShowcase/developerShowcase25.gif)</a>
+<a href="https://twitter.com/ConcreteSciFi/status/1211068827225640961?s=20" target="_blank">![Zack](developerShowcase/developerShowcase25.gif)</a>
 <br>
-<a href="https://twitter.com/zeGladScientist/status/1192504458342629376" target="_blank">![Zack](developerShowcase/developerShowcase26.gif)</a>
+<a href="https://twitter.com/ConcreteSciFi/status/1182442907233472512" target="_blank">![Zack](developerShowcase/developerShowcase26.gif)</a>
 <br>
-<a href="https://twitter.com/zeGladScientist/status/1192504458342629376" target="_blank">![Zack](developerShowcase/developerShowcase27.gif)</a>
+<a href="https://twitter.com/zeGladScientist/status/1204795862771097601" target="_blank">![Sabio](developerShowcase/developerShowcase27.gif)</a>
 
 
 ## 🙏 Developer Wishlist
