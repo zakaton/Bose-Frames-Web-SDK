@@ -241,6 +241,14 @@ document.querySelector("bose-ar-device").addEventListener("accelerometer", event
 <a href="https://twitter.com/ConcreteSciFi/status/1182442907233472512" target="_blank">![Zack](developerShowcase/developerShowcase26.gif)</a>
 <br>
 <a href="https://twitter.com/zeGladScientist/status/1204795862771097601" target="_blank">![Sabio](developerShowcase/developerShowcase27.gif)</a>
+<br>
+<a href="https://twitter.com/ConcreteSciFi/status/1213665643934863360" target="_blank">![Zack](developerShowcase/developerShowcase28.gif)</a>
+<br>
+<a href="https://twitter.com/ConcreteSciFi/status/1213872089532256256" target="_blank">![Zack](developerShowcase/developerShowcase29.gif)</a>
+<br>
+<a href="https://twitter.com/ConcreteSciFi/status/1214310331255681024" target="_blank">![Zack](developerShowcase/developerShowcase30.gif)</a>
+<br>
+<a href="https://www.youtube.com/watch?v=b2_RJWNydcw" target="_blank">![Zack](developerShowcase/developerShowcase31.gif)</a>
 
 
 ## 🙏 Developer Wishlist
