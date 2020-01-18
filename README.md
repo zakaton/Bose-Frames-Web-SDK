@@ -12,11 +12,11 @@ _A JavaScript SDK for [Bose AR](https://www.bose.com/en_us/better_with_bose/augm
 
 [👂 Listening for Events](#-listening-for-events)
 
+[🏆 Developer Showcase](#-developer-showcase)
+
 [🛠️ Creating an Extension](#-creating-an-extension)
 
 [🎛️ Bose for Max](#-bose-for-max)
-
-[🏆 Developer Showcase](#-developer-showcase)
 
 [🙏 Developer Wishlist](#-developer-wishlist)
 
@@ -160,6 +160,75 @@ document.querySelector("bose-ar-device").addEventListener("accelerometer", event
     - `"headShakeTimestamp"`
 
 
+
+## 🏆 Developer Showcase
+*Send us an email at zack@ukaton.com if you have a cool application made with our sdk!*
+<a href="https://twitter.com/ConcreteSciFi/status/1215427076506865664" target="_blank">![Zack](developerShowcase/developerShowcase32.gif)</a>
+<br>
+<a href="https://twitter.com/ConcreteSciFi/status/1214344297329262593" target="_blank">![Zack](developerShowcase/developerShowcase31.gif)</a>
+<br>
+<a href="https://twitter.com/ConcreteSciFi/status/1214310331255681024" target="_blank">![Zack](developerShowcase/developerShowcase30.gif)</a>
+<br>
+<a href="https://twitter.com/ConcreteSciFi/status/1213872089532256256" target="_blank">![Zack](developerShowcase/developerShowcase29.gif)</a>
+<br>
+<a href="https://twitter.com/ConcreteSciFi/status/1213665643934863360" target="_blank">![Zack](developerShowcase/developerShowcase28.gif)</a>
+<br>
+<a href="https://twitter.com/zeGladScientist/status/1204795862771097601" target="_blank">![Sabio](developerShowcase/developerShowcase27.gif)</a>
+<br>
+<a href="https://twitter.com/ConcreteSciFi/status/1182442907233472512" target="_blank">![Zack](developerShowcase/developerShowcase26.gif)</a>
+<br>
+<a href="https://twitter.com/ConcreteSciFi/status/1211068827225640961?s=20" target="_blank">![Zack](developerShowcase/developerShowcase25.gif)</a>
+<br>
+<a href="https://twitter.com/ConcreteSciFi/status/1204190055578791936?s=20" target="_blank">![Michael](developerShowcase/developerShowcase24.gif)</a>
+<br>
+<a href="https://twitter.com/ConcreteSciFi/status/1201342080942895105" target="_blank">![Zack](developerShowcase/developerShowcase23.gif)</a>
+<br>
+<a href="https://twitter.com/ConcreteSciFi/status/1203797587045703686?s=20" target="_blank">![Zack](developerShowcase/developerShowcase22.gif)</a>
+<br>
+<a href="https://twitter.com/zeGladScientist/status/1192504458342629376" target="_blank">![Zack](developerShowcase/developerShowcase21.gif)</a>
+<br>
+<a href="https://twitter.com/ConcreteSciFi/status/1149059903094321152" target="_blank">![Zack](developerShowcase/developerShowcase20.gif)</a>
+<br>
+<a href="https://twitter.com/ConcreteSciFi/status/1162792737025875968" target="_blank">![Zack](developerShowcase/developerShowcase19.gif)</a>
+<br>
+<a href="https://twitter.com/ConcreteSciFi/status/1154575658808299521" target="_blank">![Zack](developerShowcase/developerShowcase18.gif)</a>
+<br>
+<a href="https://twitter.com/ConcreteSciFi/status/1156663791980912640" target="_blank">![Zack](developerShowcase/developerShowcase17.gif)</a>
+<br>
+<a href="https://twitter.com/ConcreteSciFi/status/1154160202742059008" target="_blank">![Zack](developerShowcase/developerShowcase16.gif)</a>
+<br>
+<a href="https://twitter.com/ConcreteSciFi/status/1150631793848197122" target="_blank">![Zack](developerShowcase/developerShowcase15.gif)</a>
+<br>
+<a href="https://twitter.com/ckundo/status/1135003825750839296" target="_blank">![Cameron](developerShowcase/developerShowcase14.gif)</a>
+<br>
+<a href="https://twitter.com/ConcreteSciFi/status/1134181855379435520" target="_blank">![Cameron](developerShowcase/developerShowcase13.gif)</a>
+<br>
+<a href="https://twitter.com/ckundo/status/1134293692225937414" target="_blank">![Cameron](developerShowcase/developerShowcase12.gif)</a>
+<br>
+<a href="https://www.youtube.com/watch?v=sCJ7YQSfeyE" target="_blank">![Cameron](developerShowcase/developerShowcase11.gif)</a>
+<br>
+<a href="https://www.youtube.com/watch?v=rk_SEOyMN9g" target="_blank">![Cameron](developerShowcase/developerShowcase10.gif)</a>
+<br>
+<a href="https://www.youtube.com/watch?v=ThkYJTmqIp4" target="_blank">![Zack](developerShowcase/developerShowcase9.gif)</a>
+<br>
+<a href="https://www.youtube.com/watch?v=W8UvGehtQvs" target="_blank">![Zack](developerShowcase/developerShowcase8.gif)</a>
+<br>
+<a href="https://twitter.com/ckundo/status/1132817208881614848" target="_blank">![Cameron](developerShowcase/developerShowcase7.gif)</a>
+<br>
+<a href="https://twitter.com/utopiah/status/1113829382269865984" target="_blank">![Fabien](developerShowcase/developerShowcase6.gif)</a>
+<br>
+<a href="https://twitter.com/utopiah/status/1115286049536843782" target="_blank">![Fabien](developerShowcase/developerShowcase5.gif)</a>
+<br>
+<a href="https://twitter.com/ckundo/status/1109563901463674881" target="_blank">![Cameron](developerShowcase/developerShowcase4.gif)</a>
+<br>
+<a href="https://twitter.com/ckundo/status/1109603745497784326" target="_blank">![Cameron](developerShowcase/developerShowcase3.gif)</a>
+<br>
+<a href="https://twitter.com/ckundo/status/1109872642520166400" target="_blank">![Cameron](developerShowcase/developerShowcase2.gif)</a>
+<br>
+<a href="https://www.youtube.com/watch?v=SZagtIsUx9Q" target="_target">![Cameron](developerShowcase/developerShowcase1.gif)</a>
+<br>
+
+
 ## 🛠️ Creating an Extension
 1. Download the [extension folder](https://github.com/zakaton/Bose-Frames-Web-SDK/tree/master/extension)
 2. Add your custom code in a Promise returned in [`injection.js`](https://github.com/zakaton/Bose-Frames-Web-SDK/blob/master/extension/injection.js) by the [`window.boseARDeviceElement.connect();`](https://github.com/zakaton/Bose-Frames-Web-SDK/blob/master/extension/injection.js#L20) method 
@@ -185,73 +254,6 @@ document.querySelector("bose-ar-device").addEventListener("accelerometer", event
 3. Go to `localhost:3000` to connect your BoseAR device via the WebSDK (the top of the webpage will display the socket connection index to distinguish multiple devices in the Patch)
 4. Once connected, you can enable/disable sensors/gestures either in the Patch or the webpage
 5. For multiple devices, copy-and-paste the BoseAR device region under `Bose AR Device #`, and change the # to indicate other devices via their socket connection index (shown at the top of the web page)
-
-## 🏆 Developer Showcase
-*Send us an email at zack@ukaton.com if you have a cool application made with our sdk!*
-<a href="https://www.youtube.com/watch?v=SZagtIsUx9Q" target="_target">![Cameron](developerShowcase/developerShowcase1.gif)</a>
-<br>
-<a href="https://twitter.com/ckundo/status/1109872642520166400" target="_blank">![Cameron](developerShowcase/developerShowcase2.gif)</a>
-<br>
-<a href="https://twitter.com/ckundo/status/1109603745497784326" target="_blank">![Cameron](developerShowcase/developerShowcase3.gif)</a>
-<br>
-<a href="https://twitter.com/ckundo/status/1109563901463674881" target="_blank">![Cameron](developerShowcase/developerShowcase4.gif)</a>
-<br>
-<a href="https://twitter.com/utopiah/status/1115286049536843782" target="_blank">![Fabien](developerShowcase/developerShowcase5.gif)</a>
-<br>
-<a href="https://twitter.com/utopiah/status/1113829382269865984" target="_blank">![Fabien](developerShowcase/developerShowcase6.gif)</a>
-<br>
-<a href="https://twitter.com/ckundo/status/1132817208881614848" target="_blank">![Cameron](developerShowcase/developerShowcase7.gif)</a>
-<br>
-<a href="https://www.youtube.com/watch?v=W8UvGehtQvs" target="_blank">![Zack](developerShowcase/developerShowcase8.gif)</a>
-<br>
-<a href="https://www.youtube.com/watch?v=ThkYJTmqIp4" target="_blank">![Zack](developerShowcase/developerShowcase9.gif)</a>
-<br>
-<a href="https://www.youtube.com/watch?v=rk_SEOyMN9g" target="_blank">![Cameron](developerShowcase/developerShowcase10.gif)</a>
-<br>
-<a href="https://www.youtube.com/watch?v=sCJ7YQSfeyE" target="_blank">![Cameron](developerShowcase/developerShowcase11.gif)</a>
-<br>
-<a href="https://twitter.com/ckundo/status/1134293692225937414" target="_blank">![Cameron](developerShowcase/developerShowcase12.gif)</a>
-<br>
-<a href="https://twitter.com/ConcreteSciFi/status/1134181855379435520" target="_blank">![Cameron](developerShowcase/developerShowcase13.gif)</a>
-<br>
-<a href="https://twitter.com/ckundo/status/1135003825750839296" target="_blank">![Cameron](developerShowcase/developerShowcase14.gif)</a>
-<br>
-<a href="https://twitter.com/ConcreteSciFi/status/1150631793848197122" target="_blank">![Zack](developerShowcase/developerShowcase15.gif)</a>
-<br>
-<a href="https://twitter.com/ConcreteSciFi/status/1154160202742059008" target="_blank">![Zack](developerShowcase/developerShowcase16.gif)</a>
-<br>
-<a href="https://twitter.com/ConcreteSciFi/status/1156663791980912640" target="_blank">![Zack](developerShowcase/developerShowcase17.gif)</a>
-<br>
-<a href="https://twitter.com/ConcreteSciFi/status/1154575658808299521" target="_blank">![Zack](developerShowcase/developerShowcase18.gif)</a>
-<br>
-<a href="https://twitter.com/ConcreteSciFi/status/1162792737025875968" target="_blank">![Zack](developerShowcase/developerShowcase19.gif)</a>
-<br>
-<a href="https://twitter.com/ConcreteSciFi/status/1149059903094321152" target="_blank">![Zack](developerShowcase/developerShowcase20.gif)</a>
-<br>
-<a href="https://twitter.com/zeGladScientist/status/1192504458342629376" target="_blank">![Zack](developerShowcase/developerShowcase21.gif)</a>
-<br>
-<a href="https://twitter.com/ConcreteSciFi/status/1203797587045703686?s=20" target="_blank">![Zack](developerShowcase/developerShowcase22.gif)</a>
-<br>
-<a href="https://twitter.com/ConcreteSciFi/status/1201342080942895105" target="_blank">![Zack](developerShowcase/developerShowcase23.gif)</a>
-<br>
-<a href="https://twitter.com/ConcreteSciFi/status/1204190055578791936?s=20" target="_blank">![Michael](developerShowcase/developerShowcase24.gif)</a>
-<br>
-<a href="https://twitter.com/ConcreteSciFi/status/1211068827225640961?s=20" target="_blank">![Zack](developerShowcase/developerShowcase25.gif)</a>
-<br>
-<a href="https://twitter.com/ConcreteSciFi/status/1182442907233472512" target="_blank">![Zack](developerShowcase/developerShowcase26.gif)</a>
-<br>
-<a href="https://twitter.com/zeGladScientist/status/1204795862771097601" target="_blank">![Sabio](developerShowcase/developerShowcase27.gif)</a>
-<br>
-<a href="https://twitter.com/ConcreteSciFi/status/1213665643934863360" target="_blank">![Zack](developerShowcase/developerShowcase28.gif)</a>
-<br>
-<a href="https://twitter.com/ConcreteSciFi/status/1213872089532256256" target="_blank">![Zack](developerShowcase/developerShowcase29.gif)</a>
-<br>
-<a href="https://twitter.com/ConcreteSciFi/status/1214310331255681024" target="_blank">![Zack](developerShowcase/developerShowcase30.gif)</a>
-<br>
-<a href="https://twitter.com/ConcreteSciFi/status/1214344297329262593" target="_blank">![Zack](developerShowcase/developerShowcase31.gif)</a>
-<br>
-<a href="https://twitter.com/ConcreteSciFi/status/1215427076506865664" target="_blank">![Zack](developerShowcase/developerShowcase32.gif)</a>
-
 
 ## 🙏 Developer Wishlist
 *Our time is limited, so we'd greatly appreciate it if you guys could implement some of these ideas:*
