@@ -162,7 +162,9 @@ document.querySelector("bose-ar-device").addEventListener("accelerometer", event
 
 
 ## 🏆 Developer Showcase
-*Send us an email at zack@ukaton.com if you have a cool application made with our sdk!*
+*Send us an email at zack@ukaton.com if you have a cool application made with our sdk!*  
+<a href="https://twitter.com/utopiah/status/1258475990197645312?s=20" target="_blank">![Fabien](developerShowcase/developerShowcase35.gif)</a>
+<br>
 <a href="https://twitter.com/ConcreteSciFi/status/1222309702597406720?s=20" target="_blank">![Zack](developerShowcase/developerShowcase34.gif)</a>
 <br>
 <a href="https://twitter.com/ConcreteSciFi/status/1220873068567908352?s=20" target="_blank">![Zack](developerShowcase/developerShowcase33.gif)</a>
@@ -231,7 +233,6 @@ document.querySelector("bose-ar-device").addEventListener("accelerometer", event
 <br>
 <a href="https://www.youtube.com/watch?v=SZagtIsUx9Q" target="_target">![Cameron](developerShowcase/developerShowcase1.gif)</a>
 <br>
-
 
 ## 🛠️ Creating an Extension
 1. Download the [extension folder](https://github.com/zakaton/Bose-Frames-Web-SDK/tree/master/extension)
