@@ -16,7 +16,7 @@ class SensorInformationEntry {
         let sensorId = dataView.getUint8(offset);
 
         let minScaled = dataView.getInt16(offset+1, false);
-        let maxScaled = dataView.getInt16(offset+2, false);
+        let maxScaled = dataView.getInt16(offset+3, false);
 
         let minRaw = dataView.getInt16(offset+5, false);
         let maxRaw = dataView.getInt16(offset+7, false);
