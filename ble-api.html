@@ -1,0 +1,2725 @@
+<html>
+    <head>
+        <title>Bose AR BLE API</title>
+        <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+    </head>
+
+    <style>
+        pre {
+            overflow-x: scroll;
+        }
+    </style>
+
+    <body>
+        <h1 style='text-align: center;'>Bose AR BLE API</h1>
+
+        <hr>
+
+        <div id='bluetoothWarning'>
+            <div style='text-align: center;'><i>You don't have Web Bluetooth enabled. The demos won't work <a href='https://github.com/zakaton/Bose-Frames-Web-SDK#%EF%B8%8F-setting-up-the-sdk'>unless you enable it</a></i></div>
+            <hr>
+
+            <script>
+                const bluetoothWarning = document.getElementById('bluetoothWarning');
+                if(navigator.bluetooth)
+                    bluetoothWarning.remove();
+            </script>
+        </div>
+
+        <h2>Table of Contents:</h2>
+        <ol id='tableOfContents'>
+            <a><li>What is Bose AR?</li></a>
+
+            <a><li>Connecting to Your Bose AR device</li></a>
+
+            <a><li>Gestures</li></a>
+            <a><li>Gesture Information</li></a>
+            <a><li>Gesture Configuration</li></a>
+            <a><li>Gesture Data</li></a>
+
+            <a><li>Sensors</li></a>
+            <a><li>Sensor Information</li></a>
+            <a><li>Sensor Configuration</li></a>
+            <a><li>Sensor Data</li></a>
+
+            <a><li>Active and Controllable Noise Cancellation</li></a>
+
+            <a><li>Why Bose AR Failed</li></a>
+            <a><li>The Potential of Bose AR</li></a>
+        </ol>
+
+        <script>
+            document.querySelectorAll('#tableOfContents a').forEach(a => {
+                a.href = `#${a.querySelector('li').innerText.toLowerCase().replace(/ /g, '-')}`;
+            });
+        </script>
+
+        <hr>
+
+        <a><h2>What is Bose AR?</h2></a>
+        <p>"Bose AR" just is a motion sensor Bose slapped on a bunch of their headphones, specifically:</p>
+        <ul>
+            <li><a href='https://www.amazon.com/Bose-Frames-Audio-Sunglasses-Black/dp/B07P7VVCDD/ref=sr_1_2?dchild=1&keywords=bose+frames&qid=1593754190&sr=8-2'>Bose Frames</a></li>
+            <li><a href='https://www.amazon.com/dp/B0756CYWWD/ref=twister_B075RYG44J?_encoding=UTF8&psc=1'>Bose QuietComfort 35 II</a></li>
+            <li><a href='https://www.amazon.com/Bose-Cancelling-Wireless-Bluetooth-Headphones/dp/B07Q9MJKBV/ref=sr_1_2?dchild=1&keywords=700+bose&qid=1593754225&s=electronics&sr=1-2'>Bose 700</a> (the demos may not work unless you are connected via the <a href='https://www.bose.com/en_us/support/article/bose-connect-app-pulse.html'>Bose Connect App</a>)</li>
+        </ul>
+
+        <p>It contains an accelerometer, gyroscope, and magnetometer, and provides the following services:</p>
+
+        <ul>
+            <li><b>Raw Sensor Data</b></li>
+            <ul>
+                <li>accelerometer</li>
+                <li>gyroscope</li>
+            </ul>
+
+            <li><b>Head Orientation</b></li>
+            <ul>
+                <li>Relative to initial orientation when connected</li>
+                <li>Relative to north using the magnetometer like a compass</li>
+            </ul>
+            <li><b>Gestures</b></li>
+            <ul>
+                <li>Hold and Press (not available on the Bose Frames)</li>
+                <li>Double Tap</li>
+                <li>Head Nod</li>
+                <li>Head Shake</li>
+            </ul>
+
+            <li>That's it</li>
+            <ul>
+                <li>No "Spatial Audio" engine</li>
+                <li>No Video Overlay</li>
+                <li>It's just a stripped-down 3DoF headset without a visual display</li>
+            </ul>
+        </ul>
+
+        <p>
+            The official Bose AR SDK's (iOS, Android, and Unity) simply provide access to this motion sensor and nothing more.
+            Since Bose has removed their official SDK's, this tutorial will show you how to access this motion sensor yourself.
+        </p>
+
+        <p>
+            Note that while Bose refers to it as an <i>SDK</i>, it's really more of an <i>API</i>, since it's just an interface to the motion sensor.
+        </p>
+
+        <p>
+            <i>You may need to <a href='https://btu.bose.com/'>update your Bose AR device's firmware</a> for the demos to work</i>
+        </p>
+
+
+        <hr>
+
+        <a><h2>Connecting to Your Bose AR device</h2></a>
+
+        <h3>Service UUID: <code>"0000fdd2-0000-1000-8000-00805f9b34fb"</code></h3>
+        
+        <p>
+            Start by connecting to the Bose AR device via Bluetooth LE (Low Energy).
+            The service UUID for all Bose AR devices is <b><code>"0000fdd2-0000-1000-8000-00805f9b34fb"</code></b>.
+            You can see it in action in the <a href='https://github.com/zakaton/Bose-Frames-Web-SDK/blob/master/script/BoseARDevice.js#L41'>Bose AR Web SDK</a>.
+        </p>
+
+        <p>
+            Note that the "Bose AR device" is separate from the headphones itself.
+            The "Bose AR Device" refers to the motion sensor that you connect via Bluetooth LE, whereas the headphones is just a regular pair of audio headphones you connect via Bluetooth Classic.
+            This requires you to connect to your device twice - once to get the motion sensor data and again to get audio playback and microphone access.
+        </p>
+
+        <p>
+            While this may be annoying, it also has its advantages.
+            You can have the Bose AR device connected to one system while the audio headset is connected to another system, decoupling motion sensor streaming and audio streaming.
+        </p>
+
+        <p>
+            Also note that a single Bose AR device can be connected to multiple systems at once, since it's just broadcasting motion sensor data.
+            This is a bit of a <a href='https://twitter.com/ConcreteSciFi/status/1213665643934863360'>security issue</a> since anyone can enable/disable/access motion sensor data without the wearer's permission or even awareness.
+        </p>
+
+        <p>
+            You can also connect to multiple Bose AR devices from the same system for multi-user applications.
+            Thus, you can even have a many-to-many connection (several Bose AR devices connected to several systems)
+        </p>
+
+        <p>
+            This tutorial just shows you how to connect to the motion sensor; you can connect to the audio headset like you do any other bluetooth headset (going to whatever system settings your platform OS has)
+        </p>
+
+        <h3>Demo</h3>
+        <div>
+            <button id='connectButton'>connect</button> <span id='connectSpan'></span>
+            <script type='module'>
+                const BOSE_AR_SERVICE_UUID = "0000fdd2-0000-1000-8000-00805f9b34fb";
+                
+                const button = document.getElementById('connectButton');
+                const span = document.getElementById('connectSpan');
+
+                button.addEventListener('click', event => {
+                    // request bluetooth device
+                    navigator.bluetooth.requestDevice({
+                        filters : [
+                            {services : [BOSE_AR_SERVICE_UUID]}
+                        ]
+                    }).then(device => {
+                        span.innerText = 'got device';
+                        span.style.color = 'green';
+    
+                        // connect to device
+                        return device.gatt.connect();
+                    }).then(server => {
+                        span.innerText = 'connected to device';
+                        span.style.color = 'green';
+    
+                        // get service providing Bose AR-related characteristics
+                        return server.getPrimaryService(BOSE_AR_SERVICE_UUID);
+                    }).then(service => {
+                        button.disabled = true;
+                        span.innerText = 'connected';
+                        span.style.color = 'green';
+                    }).catch(error => {
+                        console.error(error);
+    
+                        span.innerText = 'connection failed';
+                        span.style.color = 'red';
+                    });
+                });
+            </script>
+        </div>
+
+        <h3>Code</h3>
+        <pre></pre>
+
+        <hr>
+
+        <a><h2>Gestures</h2></a>
+
+        <p>Bose AR devices allow you to enable/disable gestures, as well as be notified when they are trigged by the user.</p>
+
+        <p>There are 3 characteristics related to gestures:</p>
+
+        <ul>
+            <li><a href='#gesture-information'><b>Gesture Information</b></a> - provides information about which gestures are available and how to parse payloads from <i>Gesture Configuration</i></li>
+            <li><a href='#gesture-configuration'><b>Gesture Configuration</b></a> - allows you to enable/disable gestures (as well as see which are currently enabled/disabled)</li>
+            <li><a href='#gesture-data'><b>Gesture Data</b></a> - notifies you when gestures are triggered by the user (if enabled)
+        </ul>
+
+        <hr>
+
+        <a><h2>Gesture Information</h2></a>
+
+        <h3>Characteristic UUID: <code>"a0384f52-f95a-4bcd-b898-7b9ceec92dad"</code></h3>
+
+        <p>
+            This is a <b>Read</b> characteristic that provides how large each entry in <a href='#gesture-configuration'><i>Gesture Configuration</i></a> is to help with parsing.
+            The payload size is always 1 byte (a Uint8 byte indicating whether it's enabled or not), but we'll still use it when parsing <a href='#gesture-configuration'><i>Gesture Configuration</i></a> anyway.
+        </p>
+
+        <p>Below is each gesture's id number (it's pretty random, especially the gap between 131 and 192):</p>
+
+        <ol>
+            <li value='129'>Double Tap</li>
+            <li>Head Nod</li>
+            <li>Head Shake</li>
+            <br>
+            <li value='192'>Unknown (on the Bose Frames it behaves the same as double-tap, though it may be something else on the QC35's or the 700's)</li>
+            <li>Unknown (same as 192, but for Head Nod)</li>
+            <li>Unknown (same as 192, but for Head Shake)</li>
+        </ol>
+
+        <p>
+            <b>Characteristic Value</b>
+        </p>
+
+        <style>
+            [data-byte-grid] {
+                display: grid;
+                border: solid black;
+            }
+
+            [data-byte-grid] > div {
+                text-align: center;
+                border: solid black 1px;
+            }
+
+            [data-byte-grid] > [data-title] {
+                grid-column: 1 / span 1 !important;
+            }
+
+            [data-byte-grid] > [data-byte-index] {
+                grid-row: 1;
+                background-color: lightsteelblue;
+            }
+
+            [data-byte-grid] > [data-value-index] {
+                grid-row: 2;
+            }
+
+            [data-byte-grid] > [data-type] {
+                grid-row: 3;
+            }
+            [data-byte-grid] > [data-type="Uint8"] {
+                grid-column: auto / span 1;
+            }
+            [data-byte-grid] > [data-type="Uint16"] {
+                grid-column: auto / span 2;
+            }
+            [data-byte-grid] > [data-type="Int16"] {
+                grid-column: auto / span 2;
+            }
+
+            [data-byte-grid] > [data-name] {
+                grid-row: 4;
+            }
+            [data-byte-grid] > [data-name="gestureId"] {
+                grid-column: auto / span 1;
+            }
+            [data-byte-grid] > [data-name="timestamp"] {
+                grid-column: auto / span 2;
+            }
+            [data-byte-grid] > [data-name="sensorId"] {
+                grid-column: auto / span 1;
+            }
+
+            [data-byte-grid] > [data-name="vectorX"] {
+                grid-column: auto / span 2;
+            }
+            [data-byte-grid] > [data-name="vectorY"] {
+                grid-column: auto / span 2;
+            }
+            [data-byte-grid] > [data-name="vectorZ"] {
+                grid-column: auto / span 2;
+            }
+
+            [data-byte-grid] > [data-name="quaternionX"] {
+                grid-column: auto / span 2;
+            }
+            [data-byte-grid] > [data-name="quaternionY"] {
+                grid-column: auto / span 2;
+            }
+            [data-byte-grid] > [data-name="quaternionZ"] {
+                grid-column: auto / span 2;
+            }
+            [data-byte-grid] > [data-name="quaternionW"] {
+                grid-column: auto / span 2;
+            }
+        </style>
+
+        <style>
+            #gestureInformationGrid {
+                grid-template-columns: repeat(19, 1fr);
+            }
+
+            #gestureInformationGrid > [data-name="payload"] {
+                grid-column: auto / span 2;
+            }
+
+            #gestureInformationGrid > [data-value-index] {
+                grid-column: auto / span 3;
+            }
+        </style>
+
+        <div data-byte-grid id='gestureInformationGrid'>
+            <div data-title data-byte-index>byte #</div>
+            <div data-title data-value-index>entry #</div>
+            <div data-title data-type>type</div>
+            <div data-title data-name>name</div>
+        </div>
+
+        <script>
+            const gestureInformationGrid = document.getElementById('gestureInformationGrid');
+            for(let byteIndex = 0; byteIndex < 6*3; byteIndex++) {
+                const byteIndexDiv = document.createElement('div');
+                byteIndexDiv.innerText = byteIndex;
+                byteIndexDiv.dataset.byteIndex = byteIndex;
+                gestureInformationGrid.appendChild(byteIndexDiv);
+
+                if(byteIndex % 3 == 0) {
+                    const valueIndex = byteIndex/3;
+
+                    const indexDiv = document.createElement('div');
+                    indexDiv.innerText = indexDiv.dataset.valueIndex = valueIndex;
+                    gestureInformationGrid.appendChild(indexDiv);
+                }
+
+                const typeDiv = document.createElement('div');
+                const nameDiv = document.createElement('div');
+
+                const valueByteIndex = byteIndex % 3;
+                switch(valueByteIndex) {
+                    case 0:
+                        typeDiv.innerText = typeDiv.dataset.type = 'Uint8';
+                        gestureInformationGrid.appendChild(typeDiv);
+
+                        nameDiv.dataset.name = 'gestureId';
+                        nameDiv.innerText = 'gesture id';
+                        gestureInformationGrid.appendChild(nameDiv);
+                        break;
+                    case 1:
+                        typeDiv.dataset.type = 'Uint16';
+                        typeDiv.innerText = 'little-endian Uint16';
+                        gestureInformationGrid.appendChild(typeDiv);
+
+                        nameDiv.dataset.name = 'payload';
+                        nameDiv.innerText = 'payload size'
+                        gestureInformationGrid.appendChild(nameDiv);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        </script>
+
+        <h3>Demo</h3>
+        <div>
+            <button id='gestureInformationButton'>connect</button>
+            <span id='gestureInformationSpan'></span>
+            <div id='gestureInformationDiv'></div>
+            <script type='module'>
+                const BOSE_AR_SERVICE_UUID = "0000fdd2-0000-1000-8000-00805f9b34fb";
+                const BOSE_AR_GESTURE_INFORMATION_CHARACTERISTIC_UUID = "a0384f52-f95a-4bcd-b898-7b9ceec92dad";
+                
+                const button = document.getElementById('gestureInformationButton');
+                const span = document.getElementById('gestureInformationSpan');
+
+                const output = document.getElementById('gestureInformationDiv');
+
+                const gestureInformationEntryLength = 3;
+
+                const gestureNames = {
+                    129 : 'double tap',
+                    130 : 'head nod',
+                    131 : 'head shake',
+
+                    192 : 'unknown gesture 192',
+                    193 : 'unknown gesture 193',
+                    194 : 'unknown gesture 194',
+                };
+                
+                button.addEventListener('click', event => {
+                    output.innerText = '';
+                    
+                    // request bluetooth device
+                    navigator.bluetooth.requestDevice({
+                        filters : [
+                            {services : [BOSE_AR_SERVICE_UUID]}
+                        ]
+                    }).then(device => {
+                        span.innerText = 'got device';
+                        span.style.color = 'green';
+
+                        // connect to device
+                        return device.gatt.connect();
+                    }).then(server => {
+                        span.innerText = 'connected to device';
+                        span.style.color = 'green';
+
+                        // get service providing Bose AR-related characteristics
+                        return server.getPrimaryService(BOSE_AR_SERVICE_UUID);
+                    }).then(service => {
+                        span.innerText = 'connected';
+                        span.style.color = 'green';
+
+                        // get gesture information characteristic
+                        service.getCharacteristic(BOSE_AR_GESTURE_INFORMATION_CHARACTERISTIC_UUID)
+                            .then(gestureInformationCharacteristic => {
+                                span.innerText = 'got gesture information characteristic';
+                                span.style.color = 'green';
+
+                                // read gesture information characteristic value
+                                gestureInformationCharacteristic.readValue()
+                                    .then(dataView => {
+                                        const buffer = Array.from(new Uint8Array(dataView.buffer));
+
+                                        output.innerText += `gesture information raw byte array: ${JSON.stringify(buffer)}\n\n`;
+
+                                        button.disabled = true;
+
+                                        span.innerText = 'gesture information characteristic read';
+                                        span.style.color = 'green';
+
+                                        let index = 0;
+                                        const gestureInformationEntries = [];
+
+                                        output.innerText += 'parsing byte array...\n\n'
+                                        while(index + length < dataView.byteLength) {
+                                            output.innerText += `parsing new gesture at index: ${index}\n`;
+
+                                            const gestureId = dataView.getUint8(index);
+                                            output.innerText += `gesture id (parsed as a Uint8 starting at index ${index}): ${gestureId}\n`;
+                                            
+                                            const gestureName = gestureNames[gestureId];
+                                            output.innerText += `gesture name (indexed by gesture id): "${gestureName}"\n`;
+
+                                            const configurationPayloadLength = dataView.getUint16(index+1, true);
+                                            output.innerText += `configuration payload length (parsed as little-endian Uint16 starting at index ${index+1}): ${configurationPayloadLength}\n`;
+                                            
+                                            const gestureInformationEntry = {
+                                                gestureId,
+                                                gestureName,
+                                                configurationPayloadLength,
+                                            };
+
+                                            output.innerText += `\n`;
+                                            gestureInformationEntries.push(gestureInformationEntry);
+                                            
+                                            index += gestureInformationEntryLength;
+                                        }
+                                    }).catch(error => {
+                                        console.error(error);
+
+                                        span.innerText = 'unable to get gesture information characteristic';
+                                        span.style.color = 'red';
+                                    });
+                            }).catch(error => {
+                                console.error(error);
+
+                                span.innerText = 'unable to get gesture information characteristic';
+                                span.style.color = 'red';
+                            });
+                    }).catch(error => {
+                        console.error(error);
+
+                        span.innerText = 'connection failed';
+                        span.style.color = 'red';
+                    });
+                });
+            </script>
+        </div>
+
+        <h3>Code</h3>
+        <pre></pre>
+
+        <hr>
+
+        <a><h2>Gesture Configuration</h2></a>
+
+        <h3>Characteristic UUID: <code>"21e550af-f780-477b-9334-1f983296f1d7"</code></h3>
+
+        <p>
+            This is a <b>Read/Write/Notify</b> characteristic that describes which gestures are enabled.
+            The byte array is composed of an array of [gestureId, isEnabled] entries, each a Uint8 byte.
+        </p>
+
+        <p>
+            To enable or disable a gesture, write a byte array in the same format as the characteristic value itself (see below).
+            In the byte array, substitute a <b>0</b> or <b>1</b> in the <b>isEnabled</b> byte index after a given <b>sensorId</b>.
+        </p>
+
+        <p>
+            <i>
+                See <a href='#gesture-information'>Gesture Information</a> to see each gesture's id number.
+            </i>
+        </p>
+
+        <p>
+            <b>Characteristic Value</b>
+        </p>
+
+        <style>
+            #gestureConfigurationGrid {
+                grid-template-columns: repeat(13, 1fr);
+            }
+
+            #gestureConfigurationGrid > [data-value-index] {
+                grid-column: auto / span 2;
+            }
+        </style>
+
+        <div data-byte-grid id='gestureConfigurationGrid'>
+            <div data-title data-byte-index>byte #</div>
+            <div data-title data-value-index>entry #</div>
+            <div data-title data-type>type</div>
+            <div data-title data-name>name</div>
+        </div>
+
+        <script>
+            const gestureConfigurationGrid = document.getElementById('gestureConfigurationGrid');
+            for(let byteIndex = 0; byteIndex < 6*2; byteIndex++) {
+                const byteIndexDiv = document.createElement('div');
+                byteIndexDiv.innerText = byteIndex;
+                byteIndexDiv.dataset.byteIndex = byteIndex;
+                gestureConfigurationGrid.appendChild(byteIndexDiv);
+
+                if(byteIndex % 2 == 0) {
+                    const valueIndex = byteIndex/2;
+
+                    const indexDiv = document.createElement('div');
+                    indexDiv.innerText = indexDiv.dataset.valueIndex = valueIndex;
+                    gestureConfigurationGrid.appendChild(indexDiv);
+                }
+
+                const typeDiv = document.createElement('div');
+                typeDiv.innerText = typeDiv.dataset.type = 'Uint8';
+
+                const nameDiv = document.createElement('div');
+
+                const valueByteIndex = byteIndex % 2;
+                switch(valueByteIndex) {
+                    case 0:
+                        nameDiv.dataset.name = 'gestureId';
+                        nameDiv.innerText = 'gesture id';
+                        break;
+                    case 1:
+                        nameDiv.dataset.name = 'enabled';
+                        nameDiv.innerText = 'is enabled';
+                        break;
+                    default:
+                        break;
+                }
+
+                gestureConfigurationGrid.appendChild(typeDiv);
+                gestureConfigurationGrid.appendChild(nameDiv);
+            }
+        </script>
+
+        <h3>Demo</h3>
+        <div>
+            <button id='gestureConfigurationButton'>connect</button>
+            <span id='gestureConfigurationSpan'></span>
+            <br>
+            <div id='gestureConfigurationSelects'>
+                <label>
+                    Double Tap (129): <select data-gesture-id='129' disabled>
+                        <option selected>disabled</option>
+                        <option>enabled</option>
+                    </select>
+                </label>
+                <br>
+
+                <label>
+                    Head Nod (130): <select data-gesture-id='130' disabled>
+                        <option selected>disabled</option>
+                        <option>enabled</option>
+                    </select>
+                </label>
+                <br>
+
+                <label>
+                    Head Shake (131): <select data-gesture-id='131' disabled>
+                        <option selected>disabled</option>
+                        <option>enabled</option>
+                    </select>
+                </label>
+                <br>
+
+                <label>
+                    Gesture 192 <select data-gesture-id='192' disabled>
+                        <option selected>disabled</option>
+                        <option>enabled</option>
+                    </select>
+                </label>
+                <br>
+
+                <label>
+                    Gesture 193: <select data-gesture-id='193' disabled>
+                        <option selected>disabled</option>
+                        <option>enabled</option>
+                    </select>
+                </label>
+                <br>
+
+                <label>
+                    Gesture 194 <select data-gesture-id='194' disabled>
+                        <option selected>disabled</option>
+                        <option>enabled</option>
+                    </select>
+                </label>
+                <br>
+            </div>
+            <br>
+            <div id='gestureConfigurationOutput'></div>
+
+            <script type='module'>
+                const BOSE_AR_SERVICE_UUID = "0000fdd2-0000-1000-8000-00805f9b34fb";
+                const BOSE_AR_GESTURE_INFORMATION_CHARACTERISTIC_UUID = "a0384f52-f95a-4bcd-b898-7b9ceec92dad";
+                const BOSE_AR_GESTURE_CONFIGURATION_CHARACTERISTIC_UUID = "21e550af-f780-477b-9334-1f983296f1d7";
+
+                const button = document.getElementById('gestureConfigurationButton');
+                const span = document.getElementById('gestureConfigurationSpan');
+                const selectsContainer = document.getElementById('gestureConfigurationSelects');
+                
+                const output = document.getElementById('gestureConfigurationOutput');
+
+                const gestureInformationEntryLength = 3;
+
+                const gestureNames = {
+                    129 : 'double tap',
+                    130 : 'head nod',
+                    131 : 'head shake',
+
+                    192 : 'unknown gesture 192',
+                    193 : 'unknown gesture 193',
+                    194 : 'unknown gesture 194',
+                };
+                
+                button.addEventListener('click', event => {
+                    output.innerText = '';
+
+                    // request bluetooth device
+                    navigator.bluetooth.requestDevice({
+                        filters : [
+                            {services : [BOSE_AR_SERVICE_UUID]}
+                        ]
+                    }).then(device => {
+                        span.innerText = 'got device';
+                        span.style.color = 'green';
+
+                        // connect to device
+                        return device.gatt.connect();
+                    }).then(server => {
+                        span.innerText = 'connected to device';
+                        span.style.color = 'green';
+
+                        // get service providing Bose AR-related characteristics
+                        return server.getPrimaryService(BOSE_AR_SERVICE_UUID);
+                    }).then(service => {
+                        span.innerText = 'connected';
+                        span.style.color = 'green';
+
+                        // get gesture information characteristic
+                        service.getCharacteristic(BOSE_AR_GESTURE_INFORMATION_CHARACTERISTIC_UUID)
+                            .then(gestureInformationCharacteristic => {
+                                span.innerText = 'got gesture information characteristic';
+                                span.style.color = 'green';
+
+                                // read gesture information characteristic value
+                                gestureInformationCharacteristic.readValue()
+                                    .then(dataView => {
+                                        const buffer = Array.from(new Uint8Array(dataView.buffer));
+
+                                        output.innerText += `gesture information raw byte array: ${JSON.stringify(buffer)}\n\n`;
+
+                                        button.disabled = true;
+
+                                        span.innerText = 'gesture information characteristic read';
+                                        span.style.color = 'green';
+
+                                        let index = 0;
+                                        const gestureInformationEntries = [];
+
+                                        output.innerText += 'parsing byte array...\n\n'
+                                        while(index + length < dataView.byteLength) {
+                                            output.innerText += `parsing new gesture at index: ${index}\n`;
+
+                                            const gestureId = dataView.getUint8(index);
+                                            output.innerText += `gesture id (parsed as a Uint8 starting at index ${index}): ${gestureId}\n`;
+                                            
+                                            const gestureName = gestureNames[gestureId];
+                                            output.innerText += `gesture name (indexed by gesture id): "${gestureName}"\n`;
+
+                                            const configurationPayloadLength = dataView.getUint16(index+1, true);
+                                            output.innerText += `configuration payload length (parsed as little-endian Uint16 starting at index ${index+1}): ${configurationPayloadLength}\n`;
+                                            
+                                            const gestureInformationEntry = {
+                                                gestureId,
+                                                gestureName,
+                                                configurationPayloadLength,
+                                            };
+
+                                            output.innerText += `\n`;
+                                            gestureInformationEntries.push(gestureInformationEntry);
+                                            
+                                            index += gestureInformationEntryLength;
+                                        }
+
+                                        // get gesture configuration characteristic
+                                        service.getCharacteristic(BOSE_AR_GESTURE_CONFIGURATION_CHARACTERISTIC_UUID)
+                                            .then(gestureConfigurationCharacteristic => {
+                                                span.innerText = 'got gesture configuration characteristic';
+                                                span.style.color = 'green';
+                
+                                                // set initial state of selects
+                                                function updateSelects(dataView) {
+                                                    const byteArray = Array.from(new Uint8Array(dataView.buffer));
+                                                    output.innerText = `gesture configuration raw byte array: ${JSON.stringify(byteArray)}`;
+                
+                                                    let index = 0;
+                                                    while(index < byteArray.length) {
+                                                        const gestureId = byteArray[index];
+                                                        const enabled = byteArray[index+1] == 1;
+                
+                                                        const select = selectsContainer.querySelector(`select[data-gesture-id="${gestureId}"]`);
+                                                        select.value = enabled? 'enabled':'disabled';
+
+                                                        const gestureInformationEntry = gestureInformationEntries.find(gestureInformationEntry => gestureInformationEntry.gestureId == gestureId);
+                
+                                                        index += 1 + gestureInformationEntry;
+                                                    }
+                                                }
+                
+                                                // read gesture configuration characteristic value
+                                                gestureConfigurationCharacteristic.readValue()
+                                                    .then(dataView => {
+                                                        button.disabled = true;
+                
+                                                        span.innerText = 'gesture configuration characteristic read';
+                                                        span.style.color = 'green';
+                
+                                                        updateSelects(dataView);
+                
+                                                        // listen for gesture configuration characteristic updates
+                                                        gestureConfigurationCharacteristic.startNotifications();
+                                                        gestureConfigurationCharacteristic.addEventListener('characteristicvaluechanged', event => {
+                                                            const dataView = gestureConfigurationCharacteristic.value;
+                                                            updateSelects(dataView);
+                                                        });
+                                                    }).catch(error => {
+                                                        console.error(error);
+                
+                                                        span.innerText = 'unable to connect to gesture configuration characteristic';
+                                                        span.style.color = 'red';
+                                                    });
+                                                
+                                                // add eventlisteners to selects to enable/disable gestures
+                                                selectsContainer.querySelectorAll('select').forEach(select => {
+                                                    select.disabled = false;
+                
+                                                    select.addEventListener('input', event => {
+                                                        const gestureId = Number(select.dataset.gestureId);
+                                                        const enabled = event.target.value == 'enabled';
+                                                        
+                                                        const dataView = gestureConfigurationCharacteristic.value;
+                                                        let byteArray = Array.from(new Uint8Array(dataView.buffer));
+                                                        byteArray[byteArray.indexOf(gestureId)+1] = enabled? 1:0;
+                
+                                                        byteArray = new Uint8Array(byteArray);
+                                                        gestureConfigurationCharacteristic.writeValue(byteArray);
+                                                    });
+                                                });
+                
+                                            }).catch(error => {
+                                                console.error(error);
+                
+                                                span.innerText = 'unable get gesture configuration characteristic';
+                                                span.style.color = 'red';
+                                            });
+                                    }).catch(error => {
+                                        console.error(error);
+
+                                        span.innerText = 'unable to get gesture information characteristic';
+                                        span.style.color = 'red';
+                                    });
+                            }).catch(error => {
+                                console.error(error);
+
+                                span.innerText = 'unable to get gesture information characteristic';
+                                span.style.color = 'red';
+                            });
+
+                    }).catch(error => {
+                        console.error(error);
+
+                        span.innerText = 'connection failed';
+                        span.style.color = 'red';
+                    });
+                });
+            </script>
+        </div>
+
+        <h3>Code</h3>
+        <pre></pre>
+
+        <hr>
+
+        <a><h2>Gesture Data</h2></a>
+        
+        <h3>Characteristic UUID: <code>"9014dd4e-79ba-4802-a275-894d3b85ac74"</code></h3>
+
+        <p>
+            This is a <b>Notify</b> characteristic that notifies you when gestures are triggered by the user.
+            The first byte (<b>Uint8</b>) is the <b>gesture id</b>, and the next 2 bytes (<b>big-endian Uint16</b>) is the <b>timestamp</b>.
+        </p>
+
+        <p>
+            <b>Characteristic Value</b>
+        </p>
+
+        <style>
+            #gestureDataGrid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            #gestureDataGrid > [data-value-index] {
+                grid-column: auto / span 3;
+            }
+        </style>
+
+        <div data-byte-grid id='gestureDataGrid'>
+            <div data-title data-byte-index>byte #</div>
+            <div data-title data-value-index>entry #</div>
+            <div data-title data-type>type</div>
+            <div data-title data-name>name</div>
+        </div>
+
+        <script>
+            const gestureDataGrid = document.getElementById('gestureDataGrid');
+            for(let byteIndex = 0; byteIndex < 3; byteIndex++) {
+                const byteIndexDiv = document.createElement('div');
+                byteIndexDiv.innerText = byteIndex;
+                byteIndexDiv.dataset.byteIndex = byteIndex;
+                gestureDataGrid.appendChild(byteIndexDiv);
+
+                if(byteIndex % 3 == 0) {
+                    const valueIndex = byteIndex/2;
+
+                    const indexDiv = document.createElement('div');
+                    indexDiv.innerText = indexDiv.dataset.valueIndex = valueIndex;
+                    gestureDataGrid.appendChild(indexDiv);
+                }
+
+                const typeDiv = document.createElement('div');
+                const nameDiv = document.createElement('div');
+
+                const valueByteIndex = byteIndex % 3;
+                switch(valueByteIndex) {
+                    case 0:
+                        nameDiv.dataset.name = 'gestureId';
+                        nameDiv.innerText = 'gesture id';
+
+                        typeDiv.innerText = 'Uint8';
+                        typeDiv.dataset.type = 'Uint8';
+
+                        gestureDataGrid.appendChild(typeDiv);
+                        gestureDataGrid.appendChild(nameDiv);
+                        break;
+                    case 1:
+                        nameDiv.dataset.name = 'timestamp';
+                        nameDiv.innerText = 'timestamp';
+
+                        typeDiv.innerText = 'big-endian Uint16';
+                        typeDiv.dataset.type = 'Uint16';
+
+                        gestureDataGrid.appendChild(typeDiv);
+                        gestureDataGrid.appendChild(nameDiv);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        </script>
+
+        <h3>Demo</h3>
+        <div>
+            <button id='gestureDataButton'>connect</button>
+            <span id='gestureDataSpan'></span>
+            <br>
+            <div id='gestureDataSelects'>
+                <label>
+                    Double Tap (129): <select data-gesture-id='129' disabled>
+                        <option selected>disabled</option>
+                        <option>enabled</option>
+                    </select>
+                </label>
+                <br>
+
+                <label>
+                    Head Nod (130): <select data-gesture-id='130' disabled>
+                        <option selected>disabled</option>
+                        <option>enabled</option>
+                    </select>
+                </label>
+                <br>
+
+                <label>
+                    Head Shake (131): <select data-gesture-id='131' disabled>
+                        <option selected>disabled</option>
+                        <option>enabled</option>
+                    </select>
+                </label>
+                <br>
+
+                <label>
+                    Gesture 192 <select data-gesture-id='192' disabled>
+                        <option selected>disabled</option>
+                        <option>enabled</option>
+                    </select>
+                </label>
+                <br>
+
+                <label>
+                    Gesture 193: <select data-gesture-id='193' disabled>
+                        <option selected>disabled</option>
+                        <option>enabled</option>
+                    </select>
+                </label>
+                <br>
+
+                <label>
+                    Gesture 194 <select data-gesture-id='194' disabled>
+                        <option selected>disabled</option>
+                        <option>enabled</option>
+                    </select>
+                </label>
+                <br>
+            </div>
+            <br>
+            <div id='gestureDataOutput'></div>
+            <div id='gestureDataOutput2'></div>
+
+            <script type='module'>
+                const BOSE_AR_SERVICE_UUID = "0000fdd2-0000-1000-8000-00805f9b34fb";
+                const BOSE_AR_GESTURE_INFORMATION_CHARACTERISTIC_UUID = "a0384f52-f95a-4bcd-b898-7b9ceec92dad";
+                const BOSE_AR_GESTURE_CONFIGURATION_CHARACTERISTIC_UUID = "21e550af-f780-477b-9334-1f983296f1d7";
+                const BOSE_AR_GESTURE_DATA_CHARACTERISTIC_UUID = "9014dd4e-79ba-4802-a275-894d3b85ac74";
+
+                const button = document.getElementById('gestureDataButton');
+                const span = document.getElementById('gestureDataSpan');
+                const selectsContainer = document.getElementById('gestureDataSelects');
+
+                const output = document.getElementById('gestureDataOutput');
+                const output2 = document.getElementById('gestureDataOutput2');
+
+                const gestureInformationEntryLength = 3;
+
+                const gestureNames = {
+                    129 : 'double tap',
+                    130 : 'head nod',
+                    131 : 'head shake',
+
+                    192 : 'unknown gesture 192',
+                    193 : 'unknown gesture 193',
+                    194 : 'unknown gesture 194',
+                };
+                
+                button.addEventListener('click', event => {
+                    output.innerText = '';
+                    output2.innerText = '';
+
+                    // request bluetooth device
+                    navigator.bluetooth.requestDevice({
+                        filters : [
+                            {services : [BOSE_AR_SERVICE_UUID]}
+                        ]
+                    }).then(device => {
+                        span.innerText = 'got device';
+                        span.style.color = 'green';
+
+                        // connect to device
+                        return device.gatt.connect();
+                    }).then(server => {
+                        span.innerText = 'connected to device';
+                        span.style.color = 'green';
+
+                        // get service providing Bose AR-related characteristics
+                        return server.getPrimaryService(BOSE_AR_SERVICE_UUID);
+                    }).then(service => {
+                        span.innerText = 'connected';
+                        span.style.color = 'green';
+
+                        // get gesture information characteristic
+                        service.getCharacteristic(BOSE_AR_GESTURE_INFORMATION_CHARACTERISTIC_UUID)
+                            .then(gestureInformationCharacteristic => {
+                                span.innerText = 'got gesture information characteristic';
+                                span.style.color = 'green';
+
+                                // read gesture information characteristic value
+                                gestureInformationCharacteristic.readValue()
+                                    .then(dataView => {
+                                        const buffer = Array.from(new Uint8Array(dataView.buffer));
+
+                                        output.innerText += `gesture information raw byte array: ${JSON.stringify(buffer)}\n\n`;
+
+                                        button.disabled = true;
+
+                                        span.innerText = 'gesture information characteristic read';
+                                        span.style.color = 'green';
+
+                                        let index = 0;
+                                        const gestureInformationEntries = [];
+
+                                        output.innerText += 'parsing byte array...\n\n'
+                                        while(index + length < dataView.byteLength) {
+                                            output.innerText += `parsing new gesture at index: ${index}\n`;
+
+                                            const gestureId = dataView.getUint8(index);
+                                            output.innerText += `gesture id (parsed as a Uint8 starting at index ${index}): ${gestureId}\n`;
+                                            
+                                            const gestureName = gestureNames[gestureId];
+                                            output.innerText += `gesture name (indexed by gesture id): "${gestureName}"\n`;
+
+                                            const configurationPayloadLength = dataView.getUint16(index+1, true);
+                                            output.innerText += `configuration payload length (parsed as little-endian Uint16 starting at index ${index+1}): ${configurationPayloadLength}\n`;
+                                            
+                                            const gestureInformationEntry = {
+                                                gestureId,
+                                                gestureName,
+                                                configurationPayloadLength,
+                                            };
+
+                                            output.innerText += `\n`;
+                                            gestureInformationEntries.push(gestureInformationEntry);
+                                            
+                                            index += gestureInformationEntryLength;
+                                        }
+
+                                        // get gesture configuration characteristic
+                                        service.getCharacteristic(BOSE_AR_GESTURE_CONFIGURATION_CHARACTERISTIC_UUID)
+                                            .then(gestureConfigurationCharacteristic => {
+                                                span.innerText = 'got gesture configuration characteristic';
+                                                span.style.color = 'green';
+                
+                                                // set initial state of selects
+                                                function updateSelects(dataView) {
+                                                    const byteArray = Array.from(new Uint8Array(dataView.buffer));
+                                                    output.innerText = `gesture configuration raw byte array: ${JSON.stringify(byteArray)}`;
+                
+                                                    let index = 0;
+                                                    while(index < byteArray.length) {
+                                                        const gestureId = byteArray[index];
+                                                        const enabled = byteArray[index+1] == 1;
+                
+                                                        const select = selectsContainer.querySelector(`select[data-gesture-id="${gestureId}"]`);
+                                                        select.value = enabled? 'enabled':'disabled';
+
+                                                        const gestureInformationEntry = gestureInformationEntries.find(gestureInformationEntry => gestureInformationEntry.gestureId == gestureId);
+                
+                                                        index += 1 + gestureInformationEntry;
+                                                    }
+                                                }
+                
+                                                // read gesture configuration characteristic value
+                                                gestureConfigurationCharacteristic.readValue()
+                                                    .then(dataView => {
+                                                        button.disabled = true;
+                
+                                                        span.innerText = 'gesture configuration characteristic read';
+                                                        span.style.color = 'green';
+                
+                                                        updateSelects(dataView);
+                
+                                                        // listen for gesture configuration characteristic updates
+                                                        gestureConfigurationCharacteristic.startNotifications();
+                                                        gestureConfigurationCharacteristic.addEventListener('characteristicvaluechanged', event => {
+                                                            const dataView = gestureConfigurationCharacteristic.value;
+                                                            updateSelects(dataView);
+                                                        });
+
+                                                        // NEW CODE
+        
+                                                        // get gesture data characteristic
+                                                        service.getCharacteristic(BOSE_AR_GESTURE_DATA_CHARACTERISTIC_UUID)
+                                                            .then(gestureDataCharacteristic => {
+                                                                span.innerText = 'got gesture data characteristic';
+                                                                span.style.color = 'green';
+        
+                                                                gestureDataCharacteristic.startNotifications();
+                                                                gestureDataCharacteristic.addEventListener('characteristicvaluechanged', event => {
+                                                                    output2.innerText += `\nGesture Detected\n`;
+                                                                    
+                                                                    const dataView = gestureDataCharacteristic.value;
+                                                                    output2.innerText += `raw byte array: ${JSON.stringify(Array.from(new Uint8Array(dataView.buffer)))}\n`;
+                                                                    
+                                                                    const gestureId = dataView.getUint8(0);
+                                                                    output2.innerText += `gesture id (first Uint8 byte): ${gestureId}\n`;
+                                                                    
+                                                                    const gestureName = gestureNames[gestureId];
+                                                                    output2.innerText += `gesture name: "${gestureName}"\n`;                                                    
+                                                                    
+                                                                    const timestamp = dataView.getUint16(1, false);
+                                                                    output2.innerText += `timestamp (big-endian Uint16 from last 2 bytes): ${timestamp} ms\n`;
+                                                                });
+        
+                                                            }).catch(error => {
+                                                                console.error(error);
+        
+                                                                span.innerText = 'unable to connect to get gesture data characteristic';
+                                                                span.style.color = 'red';
+                                                            });
+
+                                                    }).catch(error => {
+                                                        console.error(error);
+                
+                                                        span.innerText = 'unable to connect to gesture configuration characteristic';
+                                                        span.style.color = 'red';
+                                                    });
+                                                
+                                                // add eventlisteners to selects to enable/disable gestures
+                                                selectsContainer.querySelectorAll('select').forEach(select => {
+                                                    select.disabled = false;
+                
+                                                    select.addEventListener('input', event => {
+                                                        const gestureId = Number(select.dataset.gestureId);
+                                                        const enabled = event.target.value == 'enabled';
+                                                        
+                                                        const dataView = gestureConfigurationCharacteristic.value;
+                                                        let byteArray = Array.from(new Uint8Array(dataView.buffer));
+                                                        byteArray[byteArray.indexOf(gestureId)+1] = enabled? 1:0;
+                
+                                                        byteArray = new Uint8Array(byteArray);
+                                                        gestureConfigurationCharacteristic.writeValue(byteArray);
+                                                    });
+                                                });
+                
+                                            }).catch(error => {
+                                                console.error(error);
+                
+                                                span.innerText = 'unable get gesture configuration characteristic';
+                                                span.style.color = 'red';
+                                            });
+                                    }).catch(error => {
+                                        console.error(error);
+
+                                        span.innerText = 'unable to get gesture information characteristic';
+                                        span.style.color = 'red';
+                                    });
+                            }).catch(error => {
+                                console.error(error);
+
+                                span.innerText = 'unable to get gesture information characteristic';
+                                span.style.color = 'red';
+                            });
+
+                    }).catch(error => {
+                        console.error(error);
+
+                        span.innerText = 'connection failed';
+                        span.style.color = 'red';
+                    });
+                });
+            </script>
+        </div>
+
+        <h3>Code</h3>
+        <pre></pre>
+
+        <hr>
+
+        <a><h2>Sensors</h2></a>
+
+        <p>
+            Bose AR devices allow you to enable/disable sensors (accelerometer, gyroscope, rotation, game rotation), as well as be notified at given intervals of new values.
+        </p>
+
+        <p>
+            There are 3 characteristics related to sensors:
+        </p>
+
+        <ul>
+            <li><a href='#sensor-information'><b>Sensor Information</b></a> - provides information about what sensors are available and how to parse payloads received from <i>Sensor Configuration</i></li>
+            <li><a href='#sensor-configuration'><b>Sensor Configuration</b></a> - allows you to enable/disable sensors and specify the sample rate (as well as see which are currently enabled/disabled and their current sample rates)</li>
+            <li><a href='#sensor-data'><b>Sensor Data</b></a> - notifes you with new sensor values at a given sample rate</li>
+        </ul>
+
+        <a><h2>Sensor Information</h2></a>
+
+        <h3>Characteristic UUID: <code>"855cb3e7-98ff-42a6-80fc-40b32a2221c1"</code></h3>
+        
+        <p>
+            This is a <b>Read</b> characteristic that describes how large each entry in <a href='#sensor-configuration'><i>Sensor Configuration</i></a> is to help with parsing.
+        </p>
+
+        <p>
+            Below is each sensor's id number:
+        </p>
+
+        <ol>
+            <li value='0'>Acceleration</li>
+            <li>Gyroscope</li>
+            <li>Rotation</li>
+            <li>Game Rotation</li>
+        </ol>
+
+        <p>
+            <b>Characteristic Value</b>
+        </p>
+
+        <style>
+            #sensorInformationGrid {
+                grid-template-columns: repeat((12*4)+1, 1fr);
+                overflow-x: scroll;
+            }
+
+            #sensorInformationGrid > [data-value-index] {
+                grid-column: auto / span 12;
+            }
+
+            #sensorInformationGrid > [data-name="minScaled"] {
+                grid-column: auto / span 2;
+            }
+            #sensorInformationGrid > [data-name="maxScaled"] {
+                grid-column: auto / span 2;
+            }
+
+            #sensorInformationGrid > [data-name="minRaw"] {
+                grid-column: auto / span 2;
+            }
+            #sensorInformationGrid > [data-name="maxRaw"] {
+                grid-column: auto / span 2;
+            }
+
+            #sensorInformationGrid > [data-name="samplePeriodBitmask"] {
+                grid-column: auto / span 2;
+            }
+        </style>
+
+        <div data-byte-grid id='sensorInformationGrid'>
+            <div data-title data-byte-index>byte #</div>
+            <div data-title data-value-index>entry #</div>
+            <div data-title data-type>type</div>
+            <div data-title data-name>name</div>
+        </div>
+
+        <script>
+            const sensorInformationGrid = document.getElementById('sensorInformationGrid');
+            for(let byteIndex = 0; byteIndex < 12*4; byteIndex++) {
+                const byteIndexDiv = document.createElement('div');
+                byteIndexDiv.innerText = byteIndex;
+                byteIndexDiv.dataset.byteIndex = byteIndex;
+                sensorInformationGrid.appendChild(byteIndexDiv);
+
+                if(byteIndex % 12 == 0) {
+                    const valueIndex = byteIndex/12;
+
+                    const indexDiv = document.createElement('div');
+                    indexDiv.innerText = indexDiv.dataset.valueIndex = valueIndex;
+                    sensorInformationGrid.appendChild(indexDiv);
+                }
+
+                const typeDiv = document.createElement('div');
+                const nameDiv = document.createElement('div');
+
+                const valueByteIndex = byteIndex % 12;
+                switch(valueByteIndex) {
+                    case 0:
+                        typeDiv.innerText = typeDiv.dataset.type = 'Uint8';
+                        sensorInformationGrid.appendChild(typeDiv);
+
+                        nameDiv.dataset.name = 'sensorId';
+                        nameDiv.innerText = 'sensor id';
+                        sensorInformationGrid.appendChild(nameDiv);
+                        break;
+                    case 1:
+                        typeDiv.dataset.type = 'Int16';
+                        typeDiv.innerText = 'big-endian Int16';
+                        sensorInformationGrid.appendChild(typeDiv);
+
+                        nameDiv.dataset.name = 'minScaled';
+                        nameDiv.innerText = 'min scaled'
+                        sensorInformationGrid.appendChild(nameDiv);
+                        break;
+                    case 3:
+                        typeDiv.dataset.type = 'Int16';
+                        typeDiv.innerText = 'big-endian Int16';
+                        sensorInformationGrid.appendChild(typeDiv);
+
+                        nameDiv.dataset.name = 'maxScaled';
+                        nameDiv.innerText = 'max scaled'
+                        sensorInformationGrid.appendChild(nameDiv);
+                        break;
+                    case 5:
+                        typeDiv.dataset.type = 'Int16';
+                        typeDiv.innerText = 'big-endian Int16';
+                        sensorInformationGrid.appendChild(typeDiv);
+
+                        nameDiv.dataset.name = 'minRaw';
+                        nameDiv.innerText = 'min raw';
+                        sensorInformationGrid.appendChild(nameDiv);
+                        break;
+                    case 7:
+                        typeDiv.dataset.type = 'Int16';
+                        typeDiv.innerText = 'big-endian Int16';
+                        sensorInformationGrid.appendChild(typeDiv);
+
+                        nameDiv.dataset.name = 'maxRaw';
+                        nameDiv.innerText = 'max raw';
+                        sensorInformationGrid.appendChild(nameDiv);
+                        break;
+                    case 9:
+                        typeDiv.dataset.type = 'Uint16';
+                        typeDiv.innerText = 'big-endian Uint16';
+                        sensorInformationGrid.appendChild(typeDiv);
+
+                        nameDiv.dataset.name = 'samplePeriodBitmask';
+                        nameDiv.innerText = 'sample period bitmask';
+                        sensorInformationGrid.appendChild(nameDiv);
+                        break;
+                    case 11:
+                        typeDiv.dataset.type = 'Uint8';
+                        typeDiv.innerText = 'Uint8';
+                        sensorInformationGrid.appendChild(typeDiv);
+
+                        nameDiv.dataset.name = 'sampleLength';
+                        nameDiv.innerText = 'sample length';
+                        sensorInformationGrid.appendChild(nameDiv);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        </script>
+
+        <h3>Demo</h3>
+        <div>
+            <button id='sensorInformationButton'>connect</button>
+            <span id='sensorInformationSpan'></span>
+            <br>
+            <div id='sensorInformationOutput'></div>
+
+            <script type='module'>
+                const BOSE_AR_SERVICE_UUID = "0000fdd2-0000-1000-8000-00805f9b34fb";
+                const BOSE_AR_SENSOR_INFORMATION_CHARACTERISTIC_UUID = "855cb3e7-98ff-42a6-80fc-40b32a2221c1";
+
+                const button = document.getElementById('sensorInformationButton');
+                const span = document.getElementById('sensorInformationSpan');
+
+                const output = document.getElementById('sensorInformationOutput');
+
+                const sensorInformationEntryLength = 12;
+
+                const sensorNames = ['accelerometer', 'gyroscope', 'rotation', 'game rotation', 'orientation', 'magnetometer'];
+
+                const sensorSamplePeriods = [320, 160, 80, 40, 20];
+
+                button.addEventListener('click', event => {
+                    output.innerText = '';
+
+                    // request bluetooth device
+                    navigator.bluetooth.requestDevice({
+                        filters : [
+                            {services : [BOSE_AR_SERVICE_UUID]}
+                        ]
+                    }).then(device => {
+                        span.innerText = 'got device';
+                        span.style.color = 'green';
+    
+                        // connect to device
+                        return device.gatt.connect();
+                    }).then(server => {
+                        span.innerText = 'connected to device';
+                        span.style.color = 'green';
+    
+                        // get service providing Bose AR-related characteristics
+                        return server.getPrimaryService(BOSE_AR_SERVICE_UUID);
+                    }).then(service => {
+                        span.innerText = 'connected';
+                        span.style.color = 'green';
+                        
+                        // get sensor information characteristic
+                        service.getCharacteristic(BOSE_AR_SENSOR_INFORMATION_CHARACTERISTIC_UUID)
+                            .then(sensorInformationCharacteristic => {
+                                button.disabled = true;
+                                
+                                span.innerText = 'got sensor information characteristic';
+                                span.style.color = 'green';
+
+                                sensorInformationCharacteristic.readValue()
+                                    .then(dataView => {
+                                        span.innerText = 'read sensor information characteristic';
+                                        span.style.color = 'green';
+
+                                        output.innerText += `sensor information raw byte array: ${JSON.stringify(Array.from(new Uint8Array(dataView.buffer)))}\n\n`;
+                                        
+                                        const sensorInformationEntries = [];
+                                        let index = 0;
+
+                                        output.innerText += `parsing byte array\n\n`;
+                                        while(index < dataView.buffer.byteLength) {
+                                            output.innerText += `parsing sensor information entry #${sensorInformationEntries.length} at index ${index}\n`;
+
+                                            const sensorId = dataView.getUint8(index);
+                                            output.innerText += `sensor id (Uint8 at index ${index}): ${sensorId}\n`;
+
+                                            const sensorName = sensorNames[sensorId];
+                                            output.innerText += `sensor name: "${sensorName}"\n`;
+                                            
+                                            const minScaled = dataView.getInt16(index+1, false);
+                                            output.innerText += `min scaled (big-endian Int16 at index ${index+1}): ${minScaled}\n`;
+                                            const maxScaled = dataView.getInt16(index+3, false);
+                                            output.innerText += `max scaled (big-endian Int16 at index ${index+3}): ${maxScaled}\n`;
+
+                                            const minRaw = dataView.getInt16(index+5, false);
+                                            output.innerText += `min raw (big-endian Int16 at index ${index+5}); ${minRaw}\n`;
+                                            const maxRaw = dataView.getInt16(index+7, false);
+                                            output.innerText += `max raw (big-endian Int16 at index ${index+7}); ${maxRaw}\n`;
+
+                                            const scaleFactor = (maxScaled - minScaled)/(maxRaw - minRaw);
+                                            output.innerText += `scale factor ((maxScaled-minScaled)/(maxRaw-minRaw)): ${scaleFactor}\n`;
+
+                                            const samplePeriodBitmask = dataView.getUint16(index+9, false);
+                                            output.innerText += `sample period bitmask (2 bytes at index ${index+9}): ${samplePeriodBitmask.toString(2)}\n`;
+                                            const availableSamplePeriods = sensorSamplePeriods.filter((sensorSamplePeriod, bitIndex) => (1 << bitIndex) & samplePeriodBitmask);
+                                            output.innerText += `available sample periods: ${JSON.stringify(availableSamplePeriods)}\n`;
+
+                                            const sampleLength = dataView.getUint8(index+11);
+                                            output.innerText += `sample length (Uint8 at index ${index+11}): ${sampleLength}\n`;
+
+                                            const sensorInformationEntry = {
+                                                sensorId,
+
+                                                minScaled,
+                                                maxScaled,
+
+                                                minRaw,
+                                                maxRaw,
+
+                                                scaleFactor,
+
+                                                samplePeriodBitmask,
+                                                availableSamplePeriods,
+
+                                                sampleLength,
+                                                scale(value) {
+                                                    return (((value - this.minRaw) * this.scaleFactor) + this.minScaled);
+                                                }
+                                            };
+
+                                            sensorInformationEntries.push(sensorInformationEntry);
+                                            
+                                            index += sensorInformationEntryLength;
+                                            output.innerText += `\n`;
+                                        }
+                                    }).catch(error => {
+                                        console.error(error);
+
+                                        span.innerText = 'unable to read sensor information characteristic';
+                                        span.style.color = 'red';
+                                    });
+                            }).catch(error => {
+                                span.innerText = 'failed to get sensor information characteristic';
+                                span.style.color = 'red';
+                            });
+                    }).catch(error => {
+                        console.error(error);
+    
+                        span.innerText = 'connection failed';
+                        span.style.color = 'red';
+                    });
+                });
+            </script>
+        </div>
+
+        <h3>Code</h3>
+        <pre></pre>
+
+        <hr>
+
+        <a><h2>Sensor Configuration</h2></a>
+
+        <h3>Characteristic UUID: <code>"5af38af6-000e-404b-9b46-07f77580890b"</code></h3>
+
+        <p>
+            This is a <b>Read/Write/Notify</b> characteristic that describes which sensors are enabled, and at what sampling rate.
+            The byte array is composed of an array of [sensorId, sampleRate] entries, the first a <b>Uint8</b>, the second a <b>Uint16</b>.
+        </p>
+
+        <p>
+            <i>See <a href='#sensor-information'>Sensor Information</a> to see each sensor's id number</i>
+        </p>
+
+        <p>
+            <b>Characteristic Value</b>
+        </p>
+
+        <style>
+            #sensorConfigurationGrid {
+                grid-template-columns: repeat((4*3)+1, 1fr);
+            }
+
+            #sensorConfigurationGrid > [data-value-index] {
+                grid-column: auto / span 3;
+            }
+
+            #sensorConfigurationGrid > [data-name='samplePeriod'] {
+                grid-column: auto / span 2;
+            }
+        </style>
+
+        <div data-byte-grid id='sensorConfigurationGrid'>
+            <div data-title data-byte-index>byte #</div>
+            <div data-title data-value-index>entry #</div>
+            <div data-title data-type>type</div>
+            <div data-title data-name>name</div>
+        </div>
+
+        <script>
+            const sensorConfigurationGrid = document.getElementById('sensorConfigurationGrid');
+            for(let byteIndex = 0; byteIndex < 4*3; byteIndex++) {
+                const byteIndexDiv = document.createElement('div');
+                byteIndexDiv.innerText = byteIndex;
+                byteIndexDiv.dataset.byteIndex = byteIndex;
+                sensorConfigurationGrid.appendChild(byteIndexDiv);
+
+                if(byteIndex % 3 == 0) {
+                    const valueIndex = byteIndex/3;
+
+                    const indexDiv = document.createElement('div');
+                    indexDiv.innerText = indexDiv.dataset.valueIndex = valueIndex;
+                    sensorConfigurationGrid.appendChild(indexDiv);
+                }
+
+                const typeDiv = document.createElement('div');
+
+                const nameDiv = document.createElement('div');
+
+                const valueByteIndex = byteIndex % 3;
+                switch(valueByteIndex) {
+                    case 0:
+                        nameDiv.dataset.name = 'sensorId';
+                        nameDiv.innerText = 'sensor id';
+
+                        typeDiv.dataset.type = 'Uint8';
+                        typeDiv.innerText = 'Uint8';
+
+                        sensorConfigurationGrid.appendChild(typeDiv);
+                        sensorConfigurationGrid.appendChild(nameDiv);
+                        break;
+                    case 1:
+                        nameDiv.dataset.name = 'samplePeriod';
+                        nameDiv.innerText = 'sample period';
+
+                        typeDiv.dataset.type = 'Uint16';
+                        typeDiv.innerText = 'Uint16';
+
+                        sensorConfigurationGrid.appendChild(typeDiv);
+                        sensorConfigurationGrid.appendChild(nameDiv);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        </script>
+
+        <hr>
+
+        <h3>Demo</h3>
+        <div>
+            <button id='sensorConfigurationButton'>connect</button>
+            <span id='sensorConfigurationSpan'></span>
+            <br>
+            <div id='sensorConfigurationSelects'>
+                <label>
+                    Accelerometer <select data-sensor-id='0' disabled>
+                        <option selected>0</option>
+                        <option>20</option>
+                        <option>40</option>
+                        <option>80</option>
+                        <option>160</option>
+                        <option>320</option>
+                    </select>
+                </label>
+                <br>
+
+                <label>
+                    Gyroscope <select data-sensor-id='1' disabled>
+                        <option selected>0</option>
+                        <option>20</option>
+                        <option>40</option>
+                        <option>80</option>
+                        <option>160</option>
+                        <option>320</option>
+                    </select>
+                </label>
+                <br>
+
+                <label>
+                    Rotation <select data-sensor-id='2' disabled>
+                        <option selected>0</option>
+                        <option>20</option>
+                        <option>40</option>
+                        <option>80</option>
+                        <option>160</option>
+                        <option>320</option>
+                    </select>
+                </label>
+                <br>
+
+                <label>
+                    Game Rotation <select data-sensor-id='3' disabled>
+                        <option selected>0</option>
+                        <option>20</option>
+                        <option>40</option>
+                        <option>80</option>
+                        <option>160</option>
+                        <option>320</option>
+                    </select>
+                </label>
+                <br>
+                <div id='sensorConfigurationOutput'></div>
+            </div>
+
+            <script type='module'>
+                const BOSE_AR_SERVICE_UUID = "0000fdd2-0000-1000-8000-00805f9b34fb";
+                const BOSE_AR_SENSOR_INFORMATION_CHARACTERISTIC_UUID = "855cb3e7-98ff-42a6-80fc-40b32a2221c1";
+                const BOSE_AR_SENSOR_CONFIGURATION_CHARACTERISTIC_UUID = "5af38af6-000e-404b-9b46-07f77580890b";
+
+                const button = document.getElementById('sensorConfigurationButton');
+                const span = document.getElementById('sensorConfigurationSpan');
+
+                const selectsContainer = document.getElementById('sensorConfigurationSelects');
+
+                const output = document.getElementById('sensorConfigurationOutput');
+
+                const sensorInformationEntryLength= 12;
+
+                const sensorNames = ['accelerometer', 'gyroscope', 'rotation', 'game rotation', 'orientation', 'magnetometer'];
+
+                const sensorSamplePeriods = [320, 160, 80, 40, 20];
+
+                const sensorConfigurationEntryLength = 3;
+
+                button.addEventListener('click', event => {
+                    output.innerText = '';
+
+                    // request bluetooth device
+                    navigator.bluetooth.requestDevice({
+                        filters : [
+                            {services : [BOSE_AR_SERVICE_UUID]}
+                        ]
+                    }).then(device => {
+                        span.innerText = 'got device';
+                        span.style.color = 'green';
+    
+                        // connect to device
+                        return device.gatt.connect();
+                    }).then(server => {
+                        span.innerText = 'connected to device';
+                        span.style.color = 'green';
+    
+                        // get service providing Bose AR-related characteristics
+                        return server.getPrimaryService(BOSE_AR_SERVICE_UUID);
+                    }).then(service => {
+                        span.innerText = 'connected';
+                        span.style.color = 'green';
+                        
+                        // get sensor information characteristic
+                        service.getCharacteristic(BOSE_AR_SENSOR_INFORMATION_CHARACTERISTIC_UUID)
+                            .then(sensorInformationCharacteristic => {
+                                button.disabled = true;
+                                
+                                span.innerText = 'got sensor information characteristic';
+                                span.style.color = 'green';
+
+                                sensorInformationCharacteristic.readValue()
+                                    .then(dataView => {
+                                        span.innerText = 'read sensor information characteristic';
+                                        span.style.color = 'green';
+                                        
+                                        const sensorInformationEntries = [];
+                                        let index = 0;
+
+                                        while(index < dataView.buffer.byteLength) {
+                                            const sensorId = dataView.getUint8(index);
+                                            const sensorName = sensorNames[sensorId];                                            
+                                            
+                                            const minScaled = dataView.getInt16(index+1, false);
+                                            const maxScaled = dataView.getInt16(index+3, false);
+
+                                            const minRaw = dataView.getInt16(index+5, false);
+                                            const maxRaw = dataView.getInt16(index+7, false);
+
+                                            const scaleFactor = (maxScaled - minScaled)/(maxRaw - minRaw);
+
+                                            const samplePeriodBitmask = dataView.getUint16(index+9, false);
+                                            const availableSamplePeriods = sensorSamplePeriods.filter((sensorSamplePeriod, bitIndex) => (1 << bitIndex) & samplePeriodBitmask);
+
+                                            const sampleLength = dataView.getUint8(index+11);
+
+                                            const sensorInformationEntry = {
+                                                sensorId,
+
+                                                minScaled,
+                                                maxScaled,
+
+                                                minRaw,
+                                                maxRaw,
+
+                                                scaleFactor,
+
+                                                samplePeriodBitmask,
+                                                availableSamplePeriods,
+
+                                                sampleLength,
+                                                scale(value) {
+                                                    return (((value - this.minRaw) * this.scaleFactor) + this.minScaled);
+                                                }
+                                            };
+
+                                            sensorInformationEntries.push(sensorInformationEntry);
+                                            
+                                            index += sensorInformationEntryLength;
+                                        }
+
+                                        // NEW CODE
+                                        service.getCharacteristic(BOSE_AR_SENSOR_CONFIGURATION_CHARACTERISTIC_UUID)
+                                            .then(sensorConfigurationCharacteristic => {
+                                                span.innerText = 'got sensor configuration characteristic';
+                                                span.style.color = 'green';
+
+                                                function updateSelects(dataView) {
+                                                    output.innerText = `sensor configuration raw byte array: ${JSON.stringify(Array.from(new Uint8Array(dataView.buffer)))}`;
+                                                    let index = 0;
+                                                    while(index < dataView.buffer.byteLength) {
+                                                        const sensorId = dataView.getUint8(index);
+                                                        const sensorName = sensorNames[sensorId];
+
+                                                        const samplePeriod = dataView.getUint16(index+1, false);
+                                                        
+                                                        const select = selectsContainer.querySelector(`select[data-sensor-id="${sensorId}"]`);
+                                                        select.value = samplePeriod;
+
+                                                        index += sensorConfigurationEntryLength;
+                                                    }
+                                                }
+
+                                                sensorConfigurationCharacteristic.readValue()
+                                                    .then(dataView => {
+                                                        button.disabled = true;
+
+                                                        span.innerText = 'read sensor configuration characteristic';
+                                                        span.style.color = 'green';
+
+                                                        updateSelects(dataView);
+
+                                                        sensorConfigurationCharacteristic.startNotifications();
+                                                        sensorConfigurationCharacteristic.addEventListener('characteristicvaluechanged', event => {
+                                                            const dataView = sensorConfigurationCharacteristic.value;
+                                                            updateSelects(dataView);
+                                                        });
+                                                    }).catch(error => {
+                                                        span.innerText = 'unable to read sensor configuration characteristic';
+                                                        span.style.color = 'red';
+                                                    });
+
+                                                selectsContainer.querySelectorAll('select').forEach(select => {
+                                                    select.disabled = false;
+
+                                                    select.addEventListener('input', event => {
+                                                        const sensorId = Number(select.dataset.sensorId);
+                                                        const samplePeriod = Number(select.value);
+
+                                                        const dataView = sensorConfigurationCharacteristic.value;
+                                                        const index = sensorId * sensorConfigurationEntryLength;
+                                                        dataView.setUint16(index+1, samplePeriod, false);
+
+                                                        sensorConfigurationCharacteristic.writeValue(dataView);
+                                                    });
+                                                });
+                                            }).catch(error => {
+                                                console.error(error);
+
+                                                span.innerText = 'unable to get sensor configuration characteristic';
+                                                span.style.color = 'red';
+                                            });
+                                    }).catch(error => {
+                                        console.error(error);
+
+                                        span.innerText = 'unable to read sensor information characteristic';
+                                        span.style.color = 'red';
+                                    });
+                            }).catch(error => {
+                                span.innerText = 'failed to get sensor information characteristic';
+                                span.style.color = 'red';
+                            });
+                    }).catch(error => {
+                        console.error(error);
+    
+                        span.innerText = 'connection failed';
+                        span.style.color = 'red';
+                    });
+                });
+            </script>
+        </div>
+
+        <h3>Code</h3>
+        <pre></pre>
+
+        <hr>
+
+        <a><h2>Sensor Data</h2></a>
+        
+        <h3>Characteristic UUID: <code>"56a72ab8-4988-4cc8-a752-fbd1d54a953d"</code></h3>
+
+        <p>
+            This is a <b>Notify</b> characteristic that notifies you with new sensor values at a given sample rate.
+            The first byte (<b>Uint8</b>) is the <b>sensor id</b>, the next 2 bytes (<b>big-endian Uint16</b>) is a <b>timestamp</b>.
+            The following bytes are parsed differently depending on the <b>sensor id</b>.
+            I've provided different parsing tables for each instance (the parsing table is the same for <b>accelerometer</b> and <b>gyroscope</b>)
+        </p>
+
+        <p>
+            Accelerometer and Gyroscope provide a 3D Vector, while Rotation/Game Rotation provide a Quaternion.
+            Also while Rotation provides an 'accuracy' <b>big-endian Uint16</b>, Game Rotation does not.
+        </p>
+
+        <p>
+            The Orientation of the 3D Vector (relative to the direction the wearer is facing) is:
+        </p>
+
+        <ul>
+            <li><b>X</b> is <b>Right</b></li>
+            <li><b>Y</b> is <b>Backward</b></li>
+            <li><b>Z</b> is <b>Downward</b></li>
+        </ul>
+
+        <p>
+            Sometimes you will receive 2 entries in the same notification byte array, but in the byte tables below just provide a single entry for simplicity.
+            However the code/demo will parse the entire notification byte array, so you'll sometimes see 2 sensor values in the output if you run the demo.
+        </p>
+
+        <p>
+            <b>Characteristic Values</b>
+        </p>
+
+        <p><b>Accelerometer (sensor id = 0) and Gyroscope (sensor id = 1)</b></p>
+
+        <style>
+            #sensorDataGridAccelerometer {
+                /*grid-template-columns: repeat(11, 1fr);*/
+            }
+
+            #sensorDataGridAccelerometer > [data-value-index] {
+                grid-column: auto / span 10;
+            }
+        </style>
+
+        <div data-byte-grid id='sensorDataGridAccelerometer'>
+            <div data-title data-byte-index>byte #</div>
+            <div data-title data-value-index>entry #</div>
+            <div data-title data-type>type</div>
+            <div data-title data-name>name</div>
+        </div>
+
+        <script>
+            const sensorDataGridAccelerometer = document.getElementById('sensorDataGridAccelerometer');
+            for(let byteIndex = 0; byteIndex < 10; byteIndex++) {
+                // FIX
+                const byteIndexDiv = document.createElement('div');
+                byteIndexDiv.innerText = byteIndex;
+                byteIndexDiv.dataset.byteIndex = byteIndex;
+                sensorDataGridAccelerometer.appendChild(byteIndexDiv);
+
+                if(byteIndex == 0) {
+                    const valueIndex = byteIndex/2;
+
+                    const indexDiv = document.createElement('div');
+                    indexDiv.innerText = indexDiv.dataset.valueIndex = valueIndex;
+                    sensorDataGridAccelerometer.appendChild(indexDiv);
+                }
+
+                const typeDiv = document.createElement('div');
+                const nameDiv = document.createElement('div');
+
+                const valueByteIndex = byteIndex;
+                switch(valueByteIndex) {
+                    case 0:
+                        nameDiv.dataset.name = 'sensorId';
+                        nameDiv.innerText = 'sensor id';
+
+                        typeDiv.dataset.type = 'Uint8';
+                        typeDiv.innerText = 'Uint8';
+
+                        sensorDataGridAccelerometer.appendChild(typeDiv);
+                        sensorDataGridAccelerometer.appendChild(nameDiv);
+                        break;
+                    case 1:
+                        nameDiv.dataset.name = 'timestamp';
+                        nameDiv.innerText = 'timestamp';
+
+                        typeDiv.dataset.type = 'Uint16';
+                        typeDiv.innerText = 'big-endian Uint16';
+
+                        sensorDataGridAccelerometer.appendChild(typeDiv);
+                        sensorDataGridAccelerometer.appendChild(nameDiv);
+                        break;
+                    case 3:
+                        nameDiv.dataset.name = 'vectorX';
+                        nameDiv.innerText = 'vector x';
+
+                        typeDiv.dataset.type = 'Uint16';
+                        typeDiv.innerText = 'big-endian Uint16';
+
+                        sensorDataGridAccelerometer.appendChild(typeDiv);
+                        sensorDataGridAccelerometer.appendChild(nameDiv);
+                        break;
+                    case 5:
+                        nameDiv.dataset.name = 'vectorY';
+                        nameDiv.innerText = 'vector y';
+
+                        typeDiv.dataset.type = 'Uint16';
+                        typeDiv.innerText = 'big-endian Uint16';
+
+                        sensorDataGridAccelerometer.appendChild(typeDiv);
+                        sensorDataGridAccelerometer.appendChild(nameDiv);
+                        break;
+                    case 7:
+                        nameDiv.dataset.name = 'vectorZ';
+                        nameDiv.innerText = 'vector z';
+
+                        typeDiv.dataset.type = 'Uint16';
+                        typeDiv.innerText = 'big-endian Uint16';
+
+                        sensorDataGridAccelerometer.appendChild(typeDiv);
+                        sensorDataGridAccelerometer.appendChild(nameDiv);
+                        break;
+                    case 9:
+                        nameDiv.dataset.name = 'accuracy';
+                        nameDiv.innerText = 'accuracy';
+
+                        typeDiv.innerText = 'Uint8';
+                        typeDiv.dataset.type = 'Uint8';
+
+                        sensorDataGridAccelerometer.appendChild(typeDiv);
+                        sensorDataGridAccelerometer.appendChild(nameDiv);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        </script>
+
+        <p><b>Rotation (sensor id = 2)</b></p>
+
+        <style>
+            #sensorDataGridRotation {
+                grid-template-columns: repeat(13+1, 1fr);
+            }
+
+            #sensorDataGridRotation > [data-value-index] {
+                grid-column: auto / span 13;
+            }
+
+            #sensorDataGridRotation > [data-name="accuracy"] {
+                grid-column: auto / span 2;
+            }
+        </style>
+
+        <div data-byte-grid id='sensorDataGridRotation'>
+            <div data-title data-byte-index>byte #</div>
+            <div data-title data-value-index>entry #</div>
+            <div data-title data-type>type</div>
+            <div data-title data-name>name</div>
+        </div>
+
+        <script>
+            const sensorDataGridRotation = document.getElementById('sensorDataGridRotation');
+            for(let byteIndex = 0; byteIndex < 13; byteIndex++) {
+                const byteIndexDiv = document.createElement('div');
+                byteIndexDiv.innerText = byteIndex;
+                byteIndexDiv.dataset.byteIndex = byteIndex;
+                sensorDataGridRotation.appendChild(byteIndexDiv);
+
+                if(byteIndex == 0) {
+                    const valueIndex = byteIndex/2;
+
+                    const indexDiv = document.createElement('div');
+                    indexDiv.innerText = indexDiv.dataset.valueIndex = valueIndex;
+                    sensorDataGridRotation.appendChild(indexDiv);
+                }
+
+                const typeDiv = document.createElement('div');
+                const nameDiv = document.createElement('div');
+
+                const valueByteIndex = byteIndex;
+                switch(valueByteIndex) {
+                    case 0:
+                        nameDiv.dataset.name = 'sensorId';
+                        nameDiv.innerText = 'sensor id';
+
+                        typeDiv.dataset.type = 'Uint8';
+                        typeDiv.innerText = 'Uint8';
+
+                        sensorDataGridRotation.appendChild(typeDiv);
+                        sensorDataGridRotation.appendChild(nameDiv);
+                        break;
+                    case 1:
+                        nameDiv.dataset.name = 'timestamp';
+                        nameDiv.innerText = 'timestamp';
+
+                        typeDiv.dataset.type = 'Uint16';
+                        typeDiv.innerText = 'big-endian Uint16';
+
+                        sensorDataGridRotation.appendChild(typeDiv);
+                        sensorDataGridRotation.appendChild(nameDiv);
+                        break;
+                    case 3:
+                        nameDiv.dataset.name = 'quaternionX';
+                        nameDiv.innerText = 'quaternion x';
+
+                        typeDiv.dataset.type = 'Uint16';
+                        typeDiv.innerText = 'big-endian Uint16';
+
+                        sensorDataGridRotation.appendChild(typeDiv);
+                        sensorDataGridRotation.appendChild(nameDiv);
+                        break;
+                    case 5:
+                        nameDiv.dataset.name = 'quaternionY';
+                        nameDiv.innerText = 'quaternion y';
+
+                        typeDiv.dataset.type = 'Uint16';
+                        typeDiv.innerText = 'big-endian Uint16';
+
+                        sensorDataGridRotation.appendChild(typeDiv);
+                        sensorDataGridRotation.appendChild(nameDiv);
+                        break;
+                    case 7:
+                        nameDiv.dataset.name = 'quaternionZ';
+                        nameDiv.innerText = 'quaternion z';
+
+                        typeDiv.dataset.type = 'Uint16';
+                        typeDiv.innerText = 'big-endian Uint16';
+
+                        sensorDataGridRotation.appendChild(typeDiv);
+                        sensorDataGridRotation.appendChild(nameDiv);
+                        break;
+                    case 9:
+                        nameDiv.dataset.name = 'quaternionW';
+                        nameDiv.innerText = 'quaternion w';
+
+                        typeDiv.dataset.type = 'Uint16';
+                        typeDiv.innerText = 'big-endian Uint16';
+
+                        sensorDataGridRotation.appendChild(typeDiv);
+                        sensorDataGridRotation.appendChild(nameDiv);
+                        break;
+                    case 11:
+                        nameDiv.dataset.name = 'accuracy';
+                        nameDiv.innerText = 'accuracy';
+
+                        typeDiv.innerText = 'big-endian Uint16';
+                        typeDiv.dataset.type = 'Uint16';
+
+                        sensorDataGridRotation.appendChild(typeDiv);
+                        sensorDataGridRotation.appendChild(nameDiv);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        </script>
+
+        <p><b>Game Rotation (sensor id = 3)</b></p>
+
+        <style>
+            #sensorDataGridGameRotation {
+                grid-template-columns: repeat(11+1, 1fr);
+            }
+
+            #sensorDataGridGameRotation > [data-value-index] {
+                grid-column: auto / span 11;
+            }
+        </style>
+
+        <div data-byte-grid id='sensorDataGridGameRotation'>
+            <div data-title data-byte-index>byte #</div>
+            <div data-title data-value-index>entry #</div>
+            <div data-title data-type>type</div>
+            <div data-title data-name>name</div>
+        </div>
+
+        <script>
+            const sensorDataGridGameRotation = document.getElementById('sensorDataGridGameRotation');
+            for(let byteIndex = 0; byteIndex < 11; byteIndex++) {
+                const byteIndexDiv = document.createElement('div');
+                byteIndexDiv.innerText = byteIndex;
+                byteIndexDiv.dataset.byteIndex = byteIndex;
+                sensorDataGridGameRotation.appendChild(byteIndexDiv);
+
+                if(byteIndex == 0) {
+                    const valueIndex = byteIndex/2;
+
+                    const indexDiv = document.createElement('div');
+                    indexDiv.innerText = indexDiv.dataset.valueIndex = valueIndex;
+                    sensorDataGridGameRotation.appendChild(indexDiv);
+                }
+
+                const typeDiv = document.createElement('div');
+                const nameDiv = document.createElement('div');
+
+                const valueByteIndex = byteIndex;
+                switch(valueByteIndex) {
+                    case 0:
+                        nameDiv.dataset.name = 'sensorId';
+                        nameDiv.innerText = 'sensor id';
+
+                        typeDiv.dataset.type = 'Uint8';
+                        typeDiv.innerText = 'Uint8';
+
+                        sensorDataGridGameRotation.appendChild(typeDiv);
+                        sensorDataGridGameRotation.appendChild(nameDiv);
+                        break;
+                    case 1:
+                        nameDiv.dataset.name = 'timestamp';
+                        nameDiv.innerText = 'timestamp';
+
+                        typeDiv.dataset.type = 'Uint16';
+                        typeDiv.innerText = 'big-endian Uint16';
+
+                        sensorDataGridGameRotation.appendChild(typeDiv);
+                        sensorDataGridGameRotation.appendChild(nameDiv);
+                        break;
+                    case 3:
+                        nameDiv.dataset.name = 'quaternionX';
+                        nameDiv.innerText = 'quaternion x';
+
+                        typeDiv.dataset.type = 'Uint16';
+                        typeDiv.innerText = 'big-endian Uint16';
+
+                        sensorDataGridGameRotation.appendChild(typeDiv);
+                        sensorDataGridGameRotation.appendChild(nameDiv);
+                        break;
+                    case 5:
+                        nameDiv.dataset.name = 'quaternionY';
+                        nameDiv.innerText = 'quaternion y';
+
+                        typeDiv.dataset.type = 'Uint16';
+                        typeDiv.innerText = 'big-endian Uint16';
+
+                        sensorDataGridGameRotation.appendChild(typeDiv);
+                        sensorDataGridGameRotation.appendChild(nameDiv);
+                        break;
+                    case 7:
+                        nameDiv.dataset.name = 'quaternionZ';
+                        nameDiv.innerText = 'quaternion z';
+
+                        typeDiv.dataset.type = 'Uint16';
+                        typeDiv.innerText = 'big-endian Uint16';
+
+                        sensorDataGridGameRotation.appendChild(typeDiv);
+                        sensorDataGridGameRotation.appendChild(nameDiv);
+                        break;
+                    case 9:
+                        nameDiv.dataset.name = 'quaternionW';
+                        nameDiv.innerText = 'quaternion w';
+
+                        typeDiv.dataset.type = 'Uint16';
+                        typeDiv.innerText = 'big-endian Uint16';
+
+                        sensorDataGridGameRotation.appendChild(typeDiv);
+                        sensorDataGridGameRotation.appendChild(nameDiv);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        </script>
+
+        <h3>Demo</h3>
+        <div>
+            <button id='sensorDataButton'>connect</button>
+            <span id='sensorDataSpan'></span>
+            <br>
+            <div id='sensorDataSelects'>
+                <label>
+                    Accelerometer <select data-sensor-id='0' disabled>
+                        <option selected>0</option>
+                        <option>20</option>
+                        <option>40</option>
+                        <option>80</option>
+                        <option>160</option>
+                        <option>320</option>
+                    </select>
+                </label>
+                <br>
+
+                <label>
+                    Gyroscope <select data-sensor-id='1' disabled>
+                        <option selected>0</option>
+                        <option>20</option>
+                        <option>40</option>
+                        <option>80</option>
+                        <option>160</option>
+                        <option>320</option>
+                    </select>
+                </label>
+                <br>
+
+                <label>
+                    Rotation <select data-sensor-id='2' disabled>
+                        <option selected>0</option>
+                        <option>20</option>
+                        <option>40</option>
+                        <option>80</option>
+                        <option>160</option>
+                        <option>320</option>
+                    </select>
+                </label>
+                <br>
+
+                <label>
+                    Game Rotation <select data-sensor-id='3' disabled>
+                        <option selected>0</option>
+                        <option>20</option>
+                        <option>40</option>
+                        <option>80</option>
+                        <option>160</option>
+                        <option>320</option>
+                    </select>
+                </label>
+                <br>
+
+                <div id='sensorDataOutput'></div>
+                <br>
+                <div id='sensorDataOutput2'></div>
+                <br>
+            </div>
+
+            <script type='module'>
+                const BOSE_AR_SERVICE_UUID = "0000fdd2-0000-1000-8000-00805f9b34fb";
+                const BOSE_AR_SENSOR_INFORMATION_CHARACTERISTIC_UUID = "855cb3e7-98ff-42a6-80fc-40b32a2221c1";
+                const BOSE_AR_SENSOR_CONFIGURATION_CHARACTERISTIC_UUID = "5af38af6-000e-404b-9b46-07f77580890b";
+                const BOSE_AR_SENSOR_DATA_CHARACTERISTIC_UUID = "56a72ab8-4988-4cc8-a752-fbd1d54a953d";
+
+                const button = document.getElementById('sensorDataButton');
+                const span = document.getElementById('sensorDataSpan');
+
+                const selectsContainer = document.getElementById('sensorDataSelects');
+
+                const output = document.getElementById('sensorDataOutput');
+                const output2 = document.getElementById('sensorDataOutput2');
+
+                const sensorInformationEntryLength= 12;
+
+                const sensorNames = ['accelerometer', 'gyroscope', 'rotation', 'game rotation', 'orientation', 'magnetometer'];
+
+                const sensorSamplePeriods = [320, 160, 80, 40, 20];
+
+                const sensorConfigurationEntryLength = 3;
+
+                const accuracyNames = ['unreliable', 'low', 'medium', 'high'];
+
+                button.addEventListener('click', event => {
+                    output.innerText = '';
+
+                    // request bluetooth device
+                    navigator.bluetooth.requestDevice({
+                        filters : [
+                            {services : [BOSE_AR_SERVICE_UUID]}
+                        ]
+                    }).then(device => {
+                        span.innerText = 'got device';
+                        span.style.color = 'green';
+    
+                        // connect to device
+                        return device.gatt.connect();
+                    }).then(server => {
+                        span.innerText = 'connected to device';
+                        span.style.color = 'green';
+    
+                        // get service providing Bose AR-related characteristics
+                        return server.getPrimaryService(BOSE_AR_SERVICE_UUID);
+                    }).then(service => {
+                        span.innerText = 'connected';
+                        span.style.color = 'green';
+                        
+                        // get sensor information characteristic
+                        service.getCharacteristic(BOSE_AR_SENSOR_INFORMATION_CHARACTERISTIC_UUID)
+                            .then(sensorInformationCharacteristic => {
+                                button.disabled = true;
+                                
+                                span.innerText = 'got sensor information characteristic';
+                                span.style.color = 'green';
+
+                                sensorInformationCharacteristic.readValue()
+                                    .then(dataView => {
+                                        span.innerText = 'read sensor information characteristic';
+                                        span.style.color = 'green';
+                                        
+                                        const sensorInformationEntries = [];
+                                        let index = 0;
+
+                                        while(index < dataView.buffer.byteLength) {
+                                            const sensorId = dataView.getUint8(index);
+                                            const sensorName = sensorNames[sensorId];                                            
+                                            
+                                            const minScaled = dataView.getInt16(index+1, false);
+                                            const maxScaled = dataView.getInt16(index+3, false);
+
+                                            const minRaw = dataView.getInt16(index+5, false);
+                                            const maxRaw = dataView.getInt16(index+7, false);
+
+                                            const scaleFactor = (maxScaled - minScaled)/(maxRaw - minRaw);
+
+                                            const samplePeriodBitmask = dataView.getUint16(index+9, false);
+                                            const availableSamplePeriods = sensorSamplePeriods.filter((sensorSamplePeriod, bitIndex) => (1 << bitIndex) & samplePeriodBitmask);
+
+                                            const sampleLength = dataView.getUint8(index+11);
+
+                                            const sensorInformationEntry = {
+                                                sensorId,
+
+                                                minScaled,
+                                                maxScaled,
+
+                                                minRaw,
+                                                maxRaw,
+
+                                                scaleFactor,
+
+                                                samplePeriodBitmask,
+                                                availableSamplePeriods,
+
+                                                sampleLength,
+                                                scale(value) {
+                                                    return (((value - this.minRaw) * this.scaleFactor) + this.minScaled);
+                                                }
+                                            };
+
+                                            sensorInformationEntries.push(sensorInformationEntry);
+                                            
+                                            index += sensorInformationEntryLength;
+                                        }
+
+                                        service.getCharacteristic(BOSE_AR_SENSOR_CONFIGURATION_CHARACTERISTIC_UUID)
+                                            .then(sensorConfigurationCharacteristic => {
+                                                span.innerText = 'got sensor configuration characteristic';
+                                                span.style.color = 'green';
+
+                                                function updateSelects(dataView) {
+                                                    output.innerText = `sensor configuration raw byte array: ${JSON.stringify(Array.from(new Uint8Array(dataView.buffer)))}`;
+
+                                                    let index = 0;
+                                                    while(index < dataView.buffer.byteLength) {
+                                                        const sensorId = dataView.getUint8(index);
+                                                        const sensorName = sensorNames[sensorId];
+
+                                                        const samplePeriod = dataView.getUint16(index+1, false);
+                                                        
+                                                        const select = selectsContainer.querySelector(`select[data-sensor-id="${sensorId}"]`);
+                                                        select.value = samplePeriod
+
+                                                        index += sensorConfigurationEntryLength;
+                                                    }
+                                                }
+
+                                                sensorConfigurationCharacteristic.readValue()
+                                                    .then(dataView => {
+                                                        span.innerText = 'read sensor configuration characteristic';
+                                                        span.style.color = 'green';
+
+                                                        updateSelects(dataView);
+
+                                                        sensorConfigurationCharacteristic.startNotifications();
+                                                        sensorConfigurationCharacteristic.addEventListener('characteristicvaluechanged', event => {
+                                                            const dataView = sensorConfigurationCharacteristic.value;
+                                                            updateSelects(dataView);
+                                                        });
+
+                                                        // NEW CODE
+                                                        service.getCharacteristic(BOSE_AR_SENSOR_DATA_CHARACTERISTIC_UUID)
+                                                            .then(sensorDataCharacteristic => {
+                                                                button.disabled = true;
+
+                                                                span.innerText = 'got sensor data characteristic';
+                                                                span.style.color = 'green';
+
+                                                                sensorDataCharacteristic.startNotifications();
+                                                                sensorDataCharacteristic.addEventListener('characteristicvaluechanged', event => {
+                                                                    const dataView = sensorDataCharacteristic.value;
+                                                                    output2.innerText = `sensor data raw byte array: ${JSON.stringify(Array.from(new Uint8Array(dataView.buffer)))}\n\n`;
+                                                                    
+                                                                    let index = 0;
+                                                                    const sensorDataEntries = [];
+
+                                                                    output2.innerText += `parsing byte array\n`;
+                                                                    while(index < dataView.buffer.byteLength) {
+                                                                        output2.innerText += `parsing new sensor entry at index: ${index}\n`;
+
+                                                                        const sensorId = dataView.getUint8(index);
+                                                                        output2.innerText += `sensor id (Uint8 at index ${index}): ${sensorId}\n`;
+
+                                                                        const sensorInformationEntry = sensorInformationEntries.find(sensorInformationEntry => sensorInformationEntry.sensorId == sensorId);
+
+                                                                        const sensorName = sensorNames[sensorId];
+                                                                        output2.innerText += `sensor name: "${sensorName}"\n`;
+
+                                                                        const timestamp = dataView.getUint16(index+1, false);
+                                                                        output2.innerText += `timestamp (big-endian Uint16 at index ${index+1}): ${timestamp}\n`;
+
+                                                                        let vector, quaternion;
+                                                                        let accuracy, accuracyName;
+                                                                        
+                                                                        switch(sensorName) {
+                                                                            case 'accelerometer':
+                                                                            case 'gyroscope':
+                                                                                vector = {
+                                                                                    x : sensorInformationEntry.scale(dataView.getInt16(index+3, false)),
+                                                                                    y : sensorInformationEntry.scale(dataView.getInt16(index+5, false)),
+                                                                                    z : sensorInformationEntry.scale(dataView.getInt16(index+7, false)),
+                                                                                };
+
+                                                                                output2.innerText += `vector x (big-endian Uint16 at index ${index+3}): ${dataView.getInt16(index+3, false)}\n`;
+                                                                                output2.innerText += `vector y (big-endian Uint16 at index ${index+5}): ${dataView.getInt16(index+5, false)}\n`;
+                                                                                output2.innerText += `vector z (big-endian Uint16 at index ${index+7}): ${dataView.getInt16(index+7, false)}\n`;
+
+                                                                                output2.innerText += `vector x (scaled): ${vector.x}\n`;
+                                                                                output2.innerText += `vector y (scaled): ${vector.y}\n`;
+                                                                                output2.innerText += `vector z (scaled): ${vector.z}\n`;
+
+                                                                                accuracy = dataView.getUint8(index+9);
+                                                                                output2.innerText += `accuracy (Uint8 at index ${index+9}): ${accuracy}\n`;
+
+                                                                                accuracyName = accuracyNames[accuracy];
+                                                                                output2.innerText += `accuracy name: ${accuracyName}`;
+                                                                                break;
+                                                                            case 'rotation':
+                                                                                // we're parsing the accuracy here (unique to rotation only) so we can reuse the quaternion parsing below for both rotation and game roation
+                                                                                accuracy = dataView.getInt16(index+11, false);
+                                                                                output2.innerText += `accuracy (big-endian Uint16 at index ${index+11}): ${accuracy}\n`;
+                                                                            case 'game rotation':
+                                                                                quaternion = {
+                                                                                    x : sensorInformationEntry.scale(dataView.getInt16(index+3, false)),
+                                                                                    y : sensorInformationEntry.scale(dataView.getInt16(index+5, false)),
+                                                                                    z : sensorInformationEntry.scale(dataView.getInt16(index+7, false)),
+                                                                                    w : sensorInformationEntry.scale(dataView.getInt16(index+9, false)),
+                                                                                };
+
+                                                                                output2.innerText += `quaternion x (big-endian Uint16 at index ${index+3}): ${dataView.getInt16(index+3, false)}\n`;
+                                                                                output2.innerText += `quaternion y (big-endian Uint16 at index ${index+5}): ${dataView.getInt16(index+5, false)}\n`;
+                                                                                output2.innerText += `quaternion z (big-endian Uint16 at index ${index+7}): ${dataView.getInt16(index+7, false)}\n`;
+                                                                                output2.innerText += `quaternion w (big-endian Uint16 at index ${index+9}): ${dataView.getInt16(index+9, false)}\n`;
+
+                                                                                output2.innerText += `quaternion x (scaled): ${quaternion.x}\n`;
+                                                                                output2.innerText += `quaternion y (scaled): ${quaternion.y}\n`;
+                                                                                output2.innerText += `quaternion z (scaled): ${quaternion.z}\n`;
+                                                                                output2.innerText += `quaternion w (scaled): ${quaternion.w}\n`;
+                                                                                break;
+                                                                            default:
+                                                                                break;
+                                                                        }
+
+                                                                        // calculate yaw/pitch/roll from quaternion (for rotation and game rotation)
+                                                                        if(quaternion) {
+                                                                            const {x, y, z, w} = quaternion;
+
+                                                                            let yaw = -Math.atan2(2*(w*z+x*y), 1-2*(y*y+z*z));
+                                                                            output2.innerText += `yaw: ${yaw}\n`;
+                                                                            
+                                                                            let pitch = Math.atan2(2*(w*x+y*z), 1-2*(x*x+y*y)) + Math.PI;
+                                                                            pitch = (pitch > Math.PI)?
+                                                                                pitch - 2*Math.PI:
+                                                                                pitch;
+
+                                                                            output2.innerText += `pitch: ${pitch}\n`;
+                                                                            
+                                                                            let roll = 2*(w*y-z*x);
+                                                                            roll = (Math.abs(roll) >= 1)?
+                                                                                -(Math.sign(roll) * Math.PI/2):
+                                                                                -Math.asin(roll);
+
+                                                                            output2.innerText += `roll: ${roll}\n`;
+                                                                            
+                                                                            Object.assign(quaternion, {yaw, pitch, roll});
+                                                                        }
+
+                                                                        const sensorDataEntry = {
+                                                                            sensorId, sensorName,
+
+                                                                            timestamp,
+
+                                                                            vector, quaternion,
+                                                                            accuracy, accuracyName,
+                                                                        };
+                                                                        
+                                                                        sensorDataEntries.push(sensorDataEntry);
+                                                                        
+                                                                        index += 3 + sensorInformationEntry.sampleLength;
+
+                                                                        output2.innerText += `\n\n`;
+                                                                    }
+                                                                });
+                                                            }).catch(error => {
+                                                                console.error(error);
+
+                                                                span.innerText = 'unable to get sensor data characteristic';
+                                                                span.style.color = 'red';
+                                                            });
+
+                                                    }).catch(error => {
+                                                        span.innerText = 'unable to read sensor configuration characteristic';
+                                                        span.style.color = 'red';
+                                                    });
+
+                                                selectsContainer.querySelectorAll('select').forEach(select => {
+                                                    select.disabled = false;
+
+                                                    select.addEventListener('input', event => {
+                                                        const sensorId = Number(select.dataset.sensorId);
+                                                        const samplePeriod = Number(select.value);
+
+                                                        const dataView = sensorConfigurationCharacteristic.value;
+                                                        const index = sensorId * sensorConfigurationEntryLength;
+                                                        dataView.setUint16(index+1, samplePeriod, false);
+
+                                                        sensorConfigurationCharacteristic.writeValue(dataView);
+                                                    });
+                                                });
+
+                                            }).catch(error => {
+                                                console.error(error);
+
+                                                span.innerText = 'unable to get sensor configuration characteristic';
+                                                span.style.color = 'red';
+                                            });
+
+                                    }).catch(error => {
+                                        console.error(error);
+
+                                        span.innerText = 'unable to read sensor information characteristic';
+                                        span.style.color = 'red';
+                                    });
+
+                            }).catch(error => {
+                                span.innerText = 'failed to get sensor information characteristic';
+                                span.style.color = 'red';
+                            });
+
+                    }).catch(error => {
+                        console.error(error);
+    
+                        span.innerText = 'connection failed';
+                        span.style.color = 'red';
+                    });
+                });
+            </script>
+        </div>
+
+        <h3>Code</h3>
+        <pre></pre>
+
+        <hr>
+
+        <a><h2>Active and Controllable Noise Cancellation</h2></a>
+
+        <p>
+            The Bose QC35 II's and 700's also have the ability to control <b>Active Noise Cancellation</b> (with 3 levels of noise cancellation) and <b>Passive Noise Cancellation</b> (with 10 levels of noise cancellation) respectively.
+        </p>
+        
+        <p>
+            I haven't played with either of these headphones so I don't know how to access that stuff.
+            I only have the Bose Frames and I don't plan on wasting any more money on Bose to get either of the other 2 to find out.
+        </p>
+
+        <hr>
+
+        <a><h2>Why Bose AR Failed</h2></a>
+        <p>
+            There are 3 main reasons why I believe Bose AR failed:
+        </p>
+
+        <ol>
+            <h3><li>Bad Marketing</li></h3>
+            <ul>
+                <li>They marketed the Frames like they were the only AR-enabled device, possibly to encourage Frames sales.</li>
+                <li>Not many knew about the platform (including those who actually had the headphones), and those who knew were confused as to what it could do (some thought it had a visual overlay).</li>
+                <li>They <a href='https://youtu.be/Hd1XRAkeT28'>spoke at the Augmented Reality Expo 2019</a>, but didn't have a booth to actually demo the platform, so many at the event were confused and uninformed.</li>
+            </ul>
+
+            <h3><li>Lackluster Developer Experience</li></h3>
+            <ul>
+                <li><a href='https://twitter.com/ConcreteSciFi/status/1182140317681643523?s=20'>Unfair Terms of Use</a> that you're required to sign to enter the developer forum, essentially giving Bose rights to your work</li>
+                <li>Separate forums for <a href='https://bosedevs.bose.com/'>development</a> and <a href='https://community.bose.com/t5/English/ct-p/en'>community</a>. It would've made more sense to have a single forum so developers could communicate with users.</li>
+                <li>Bose <a href='https://twitter.com/chelscore/status/1140634898866118659?s=20'>soliciting unpaid spec work</a> - <a href='https://youtu.be/CxgtS9encp0'>video</a></li>
+                <li>Announced a <a href='https://developer.bose.com/bose-ar-creator-tool-frequently-asked-questions'>Bose AR Creator Tool</a> since January 2019 that's still not available (it was temporarily available to select developers <a href='https://www.linkedin.com/posts/cliffbaldridge_capitol-records-bose-ar-hollywood-star-tour-activity-6626047134322044928-wPex'>but then they revoked access</a>)</li>
+                <li>Little exposure for third-party applications. The only place to find them is on <a href='https://devpost.com/software/built-with/bose'>DevPost</a> and <a href='http://bosear.playcrafting.com/'>Bose ARCade</a>, which they'll have to take down since Bose is <a href='https://developer.bose.com/bose-ar-closure-faq'>closing their SDK</a></li>
+            </ul>
+
+            <h3><li>Incompetent Developer Relations</li></h3>
+            <ul>
+                <li>The DevRel team were so unhelpful that developers (including Bose employees and third-party developers) had to come to me (a high school dropout looking for a job at the time) for help, including <a href='https://twitter.com/ConcreteSciFi/status/1162792737025875968?s=20'>integrating Bose AR with Max/MSP</a></li>
+                <li><a href='https://twitter.com/ConcreteSciFi/status/1220390099407400960?s=20'>Ditched a developer meetup to attend DevRelCon in the same area</a></li>
+                <li>Ignored <a href='https://twitter.com/ConcreteSciFi/status/1213665643934863360?s=20'>security concerns</a> when I brought it up to Bose's former "Global Head of Enablement" <a href='https://www.linkedin.com/in/mludden/'>Michael Ludden</a></li>
+            </ul>
+        </ol>
+
+        <br>
+
+        <p>
+            However, I think <a href='https://www.linkedin.com/feed/update/urn:li:activity:6679322974518095872?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A6679322974518095872%2C6679326201019944960%29'>Fabien Bénétou</a> put it best:
+        </p>
+
+        <p><b><i>
+            "Bose lacked respect for the developer community.
+            There are numerous examples but the most poignant ones are IMHO <a href='https://developer.bose.com/bose-ar-closure-faq'>closing the SDK</a> or <a href='https://community.bose.com/t5/Bose-Frames/Bose-AR-experience-with-Android/td-p/192565'>not supporting Android</a>.
+            <br><br>
+            Bose is an audio hardware company that tried to emulate the success of the Apple AppStore and the Google PlayStore.
+            Unfortunately they completely misunderstood the importance of having a successful ecosystem.
+            They went back and forth between opening and closing their ecosystem. Developers have to strategically pick platforms to target.
+            Platforms that are first of all working yes but also popular.
+            If a developer invest time to learn a new SDK for a platform that could be popular they are taking a bet over actual revenue from a platform that already is, but also have more competition.
+            <br><br>
+            Developing an ecosystem goes way behind having an amazing product, it's about the relationships you establish with the community and this comes from trust.
+            Closing an SDK or not communicating clearly with the strategy does not create trust.
+            <br><br>
+            Despite a cool product that I still <a href='https://twitter.com/utopiah/status/1258475990197645312'>tinker with</a> I'm sadly not surprised."
+        </i></b></p>
+
+        <hr>
+
+        <a><h2>The Potential of Bose AR</h2></a>
+
+        <p>
+            Bose AR was led by <a href='https://www.linkedin.com/in/johnbgordon1/'>John Gordon</a> who had <a href='https://youtu.be/wrqDEQI-0LU'>a remarkable vision</a> for what it could become.
+            Unfortunately he was let go back in May 2019, as well as Business Lead <a href='https://www.linkedin.com/in/viagrawal/'>Vivek Agrawal</a> who left in February 2020.
+            Others soon followed. One reported the team as <a href='https://twitter.com/ConcreteSciFi/status/1161817169883066370?s=20'>toxic</a>.
+        </p>
+
+        <p>
+            It's interesting that Bose is closing its AR SDK's at the same time Apple is introducing <a href='https://tcrn.ch/3dppl02'>Spatial Audio to their AirPods Pro</a>.
+            The Bose AR/Frames leadership team was built by <a href='https://www.linkedin.com/in/mehul-trivedi-508aa53/'>Mehul Trivedi</a>, who had previously worked at Apple developing the <a href='https://developer.apple.com/documentation/ios-ipados-release-notes/ios-13-release-notes'>now-deprecated</a> OpenAL spatial audio library for iOS/Mac OS X.
+            One of the members of this team was <a href='https://www.linkedin.com/in/kapilkm'>Kapil Krishnamurthy</a>, who had also worked at Apple on spatial audio.
+        </p>
+
+        <p>
+            Despite Bose AR being a simple 3DoF head-tracker, it still had a lot of potential.
+            They could've marketed it as cheap research tool ($200 for the Frames, or free if you already have a pair of Bose AR headphones) for head-tracking like the <a href='https://leapmotion.com/'>Leap Motion</a> was for hand-tracking.
+            Plus Bose attempted to approach 6DoF (position tracking) by partering with <a href='https://navisens.com/'>Navisens</a>, which tracks your position using your smartphone's motion sensors.
+        </p>
+
+        <p>
+            Bose could've allowed developers to experiment with the platform (while sharing their own research from Bose Labs) in an open collaborative environment to study its design patterns, heuristics, and markets.
+            Over time they could've iterated on the hardware/software, such as programmable haptics or 6DoF (possibly by applying <a href='https://navisens.com/'>Navisens</a> <i>sensor fusion</i> on the Bose AR device's own motion sensors instead of the smartphone's).
+        </p>
+
+        <p>
+            They also could've partnered with Audio-related organizations such as the <a href='https://icad.org/'>International Community for Auditory Display</a> or <a href='https://ccrma.stanford.edu/'>Stanford Center of Computer Research in Music and Acoustics</a> for explorations in <a href='https://en.wikipedia.org/wiki/Auditory_display'>Audio-based User Interfaces</a>, including <a href='https://en.wikipedia.org/wiki/Audification'>Audification</a>, <a href='https://en.wikipedia.org/wiki/Sonification'>Sonification</a>, <a href='https://en.wikipedia.org/wiki/Earcon'>Earcons</a>, and Voice Messaging.
+            <a href='https://www.linkedin.com/in/carlascaletti/'>Carla Scaletti</a> gives a <a href='https://youtu.be/T0qdKXwRsyM'>great talk</a> on such topics.
+        </p>
+
+        <p>
+            The official SDK's are closed, so now a bunch of people are walking around with headphones that have an exposed motion sensor they can't even access.
+            That's why I made this: so people can use something they've paid hundreds of dollars for.
+        </p>
+
+        <hr>
+
+        <script>
+            document.querySelectorAll('a > h2').forEach(h2 => {
+                const id = h2.innerText.toLowerCase().replace(/ /g, '-');
+                h2.id = id;
+
+                const li = document.querySelector(`#tableOfContents a[href="#${id}"] li`);
+                if(li) {
+                    const a = li.parentElement;
+                    const index = Array.from(a.parentElement.children).indexOf(a);
+                    h2.innerText = `${index+1}. ${h2.innerText}`;
+                }
+
+                const a = h2.parentElement;
+                a.href = `#${id}`;
+            });
+        </script>
+
+        <script>
+            // Copy demo scripts to preceeding <pre> tags
+            document.querySelectorAll('pre').forEach(pre => {
+                pre.classList.add('prettyprint');
+                pre.classList.add('linenums');
+
+                let demo = pre;
+                do (demo = demo.previousElementSibling)
+                while (demo != null && demo.nodeName != 'DIV')
+                
+                if(demo) {
+                    let demoLines = demo.innerHTML.toString().split('\n');
+                    demoLines.shift();
+                    demoLines = demoLines.map(demoLine => demoLine.substr(12));
+                    pre.innerText = demoLines.join('\n');
+                }
+            });
+
+            document.querySelectorAll('code').forEach(code => {
+                code.classList.add('prettyprint');
+            });
+        </script>
+    </body>
+</html>
