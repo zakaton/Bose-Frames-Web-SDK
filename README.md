@@ -14,9 +14,11 @@ _A JavaScript SDK for [Bose AR](https://www.bose.com/en_us/better_with_bose/augm
 
 [🏆 Developer Showcase](#-developer-showcase)
 
-[🛠️ Creating an Extension](#-creating-an-extension)
+[🛠️ Creating an Extension](#%EF%B8%8F-creating-an-extension)
 
-[🎛️ Bose for Max](#-bose-for-max)
+[🎛️ Bose for Max](#%EF%B8%8F-bose-for-max)
+
+[👩‍💻 BLE Specification](https://zakaton.github.io/Bose-Frames-Web-SDK/default.html)
 
 [🙏 Developer Wishlist](#-developer-wishlist)
 
